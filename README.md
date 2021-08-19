@@ -16,6 +16,6 @@ Initial steps:
 
 Contributing:
 
-1. Get the latest work from the repo: `git pull upstream master` (alternatively you can use `git fetch` if you don't want to make changes locally).
-2. Make a new branch to start working: `git checkout -b branch-name`
-3. Do your work, commit, push that branch, and open a pull request on the main repo.
+1. Get the latest work from the repo: `git pull upstream main` (alternatively you can use `git fetch` if you don't want to make changes locally).
+2. Make a new branch to start working: `git checkout -b branch-name` (to move to an existing branch do `git checkout branch-name`)
+3. Do your work, commit (`git commit -m "message"`), push that branch (`git push upstream branch-name`), and open a pull request on the main repo.
