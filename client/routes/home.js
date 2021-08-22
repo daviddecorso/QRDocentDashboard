@@ -1,3 +1,4 @@
+import NumericCard from '../components/cards/numeric-card';
 import PrimaryButton from '../components/buttons/primary-button';
 import React from 'react';
 
@@ -13,7 +14,7 @@ export default function Index() {
                 }}>
                 Welcome back!
             </h2>
-            <div>
+            <div style={{ marginBottom: '1.7rem' }}>
                 <PrimaryButton
                     text={'View my exhibits'}
                     width={'200px'}
@@ -27,6 +28,9 @@ export default function Index() {
                     height={'45px'}
                     fontSize={'14px'}
                 />
+            </div>
+            <div>
+                <NumericCard />
             </div>
         </div>
     );
