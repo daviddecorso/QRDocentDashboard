@@ -1,6 +1,61 @@
+import ExhibitCard from '../components/cards/exhibit-card';
 import NumericCard from '../components/cards/numeric-card';
 import PrimaryButton from '../components/buttons/primary-button';
 import React from 'react';
+import TimeCard from '../components/cards/time-card';
+
+// CSS styles for the cards
+const cardStyles = {
+    root: {
+        width: '328px',
+        height: '148px',
+        borderRadius: '20px',
+        backgroundColor: '#2F333C',
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    content: {
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '211px'
+    },
+    topRightMenu: {
+        alignSelf: 'baseline',
+        marginRight: '10px',
+        paddingTop: '5px'
+    },
+    detailPositive: {
+        color: '#4cdc52',
+        backgroundColor: '#4caf501a'
+    },
+    detailNegative: {
+        color: '#f44336',
+        backgroundColor: '#90423c1a'
+    },
+    detailText: {
+        color: '#ccc'
+    },
+    headingText: {
+        marginTop: '.45rem',
+        marginBottom: '.45rem'
+    }
+};
+
+// Replace mock data with real data from db
+const mockDataTime = {
+    avgLengthMins: 141,
+    percent: 5.6
+};
+
+const mockDataNumScans = {
+    numScans: 16987,
+    percent: -12.4
+};
+
+const mockDataExhibit = {
+    name: 'Aretha Franklin',
+    change: 2
+};
 
 export default function Index() {
     return (
@@ -29,8 +84,10 @@ export default function Index() {
                     fontSize={'14px'}
                 />
             </div>
-            <div>
-                <NumericCard />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+                <NumericCard styles={cardStyles} data={mockDataNumScans} />
+                <TimeCard styles={cardStyles} data={mockDataTime} />
+                <ExhibitCard styles={cardStyles} data={mockDataExhibit} />
             </div>
         </div>
     );

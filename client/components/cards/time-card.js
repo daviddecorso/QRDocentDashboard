@@ -10,14 +10,19 @@ import {
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function NumericCard({ styles, data }) {
+const getHrs = mins => Math.floor(mins / 60);
+
+const getMins = mins => mins % 60;
+
+function TimeCard({ styles, data }) {
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    const signBool = data.percent >= 0;
-    const sign = signBool ? '+' : '-';
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [timeMenu, setTimeMenu] = useState('Today');
+
+    const signBool = data.percent >= 0;
+    const sign = signBool ? '+' : '-';
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -33,11 +38,23 @@ function NumericCard({ styles, data }) {
             <Card className={classes.root}>
                 <CardContent className={classes.content}>
                     <Typography component="h3" variant="h6">
-                        Total Scans
+                        Average Visit
                     </Typography>
-                    <Typography component="span" variant="h4" className={classes.headingText}>
-                        {data.numScans.toLocaleString()}
-                    </Typography>
+                    <div className={classes.headingText}>
+                        <Typography component="span" variant="h4" className={classes.headingText}>
+                            {getHrs(data.avgLengthMins)}
+                        </Typography>
+                        <Typography component="span" variant="body2">
+                            {'HRS '}
+                        </Typography>
+                        <Typography component="span" variant="h4" className={classes.headingText}>
+                            {getMins(data.avgLengthMins)}
+                        </Typography>
+                        <Typography component="span" variant="body2">
+                            {'MINS'}
+                        </Typography>
+                    </div>
+
                     <div>
                         <Typography
                             component="span"
@@ -53,7 +70,6 @@ function NumericCard({ styles, data }) {
                         </Typography>
                     </div>
                 </CardContent>
-
                 <div className={classes.topRightMenu}>
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                         {timeMenu}
@@ -75,9 +91,9 @@ function NumericCard({ styles, data }) {
     );
 }
 
-NumericCard.propTypes = {
+TimeCard.propTypes = {
     styles: PropTypes.object,
     data: PropTypes.object
 };
 
-export default NumericCard;
+export default TimeCard;

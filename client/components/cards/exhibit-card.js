@@ -10,14 +10,15 @@ import {
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function NumericCard({ styles, data }) {
+function ExhibitCard({ styles, data }) {
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    const signBool = data.percent >= 0;
-    const sign = signBool ? '+' : '-';
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [timeMenu, setTimeMenu] = useState('Today');
+
+    const signBool = data.change >= 0;
+    const sign = signBool ? '+' : '-';
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -33,17 +34,17 @@ function NumericCard({ styles, data }) {
             <Card className={classes.root}>
                 <CardContent className={classes.content}>
                     <Typography component="h3" variant="h6">
-                        Total Scans
+                        Popular Exhibit
                     </Typography>
-                    <Typography component="span" variant="h4" className={classes.headingText}>
-                        {data.numScans.toLocaleString()}
+                    <Typography component="span" variant="h5" className={classes.headingText}>
+                        {data.name}
                     </Typography>
                     <div>
                         <Typography
                             component="span"
                             variant="subtitle1"
                             className={signBool ? classes.detailPositive : classes.detailNegative}>
-                            {sign + data.percent + '%'}
+                            {sign + data.change + ' positions'}
                         </Typography>
                         <Typography
                             component="span"
@@ -53,7 +54,6 @@ function NumericCard({ styles, data }) {
                         </Typography>
                     </div>
                 </CardContent>
-
                 <div className={classes.topRightMenu}>
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                         {timeMenu}
@@ -75,9 +75,9 @@ function NumericCard({ styles, data }) {
     );
 }
 
-NumericCard.propTypes = {
+ExhibitCard.propTypes = {
     styles: PropTypes.object,
     data: PropTypes.object
 };
 
-export default NumericCard;
+export default ExhibitCard;
