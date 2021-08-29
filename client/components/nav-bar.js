@@ -41,14 +41,14 @@ function NavBar() {
                 />
                 <NavButton
                     text={analyticsButton}
-                    path={'analytics'}
+                    path={'/analytics'}
                     icon={anlyIcon}
                     isHover={activePage === analyticsButton}
                     setPage={setActivePage}
                 />
                 <NavButton
                     text={exhibitsButton}
-                    path={'exhibits'}
+                    path={'/exhibits'}
                     icon={notesIcon}
                     isHover={activePage === exhibitsButton}
                     setPage={setActivePage}

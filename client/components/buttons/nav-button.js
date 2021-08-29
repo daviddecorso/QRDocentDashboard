@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -23,7 +23,7 @@ function NavButton({ text, path, isHover, icon, setPage }) {
 
     return (
         <>
-            <NavLink to={path} style={{ textDecoration: 'none' }}>
+            <Link to={path} style={{ textDecoration: 'none' }}>
                 <Button
                     onClick={onClick}
                     size="large"
@@ -31,7 +31,7 @@ function NavButton({ text, path, isHover, icon, setPage }) {
                     style={isHover === true ? activeStyle : nonActiveStyle}>
                     {text}
                 </Button>
-            </NavLink>
+            </Link>
         </>
     );
 }

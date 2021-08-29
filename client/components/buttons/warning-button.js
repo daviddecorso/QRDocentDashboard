@@ -4,13 +4,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function PrimaryButton({ width, height, text, fontSize, lm, rm, icon, path, onClick }) {
-    const primaryButtonStyle = makeStyles({
+function WarningButton({ width, height, text, fontSize, lm, rm, icon, path, onClick }) {
+    const warningButtonStyle = makeStyles({
         root: {
-            background: 'linear-gradient(180deg, #614AD3, #864AD3)',
+            backgroundColor: '#DE312B',
+            color: 'white',
+            '&:hover': {
+                backgroundColor: '#FF1109',
+                color: 'white'
+            },
             border: 0,
             borderRadius: 20,
-            color: 'white',
             paddingTop: '10px',
             paddingBottom: '10px',
             paddingLeft: '35px',
@@ -23,7 +27,7 @@ function PrimaryButton({ width, height, text, fontSize, lm, rm, icon, path, onCl
         }
     });
 
-    const classes = primaryButtonStyle();
+    const classes = warningButtonStyle();
     return (
         <>
             {path ? (
@@ -41,16 +45,16 @@ function PrimaryButton({ width, height, text, fontSize, lm, rm, icon, path, onCl
     );
 }
 
-PrimaryButton.propTypes = {
+WarningButton.propTypes = {
     fontSize: PropTypes.string,
     height: PropTypes.string,
     icon: PropTypes.element,
     rm: PropTypes.string,
     lm: PropTypes.string,
-    onClick: PropTypes.function,
     path: PropTypes.string,
+    onClick: PropTypes.function,
     text: PropTypes.string,
     width: PropTypes.string
 };
 
-export default PrimaryButton;
+export default WarningButton;
