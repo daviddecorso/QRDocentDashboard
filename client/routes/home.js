@@ -68,7 +68,7 @@ export default function Index() {
                         fontWeight: '200',
                         marginBottom: '1.7rem'
                     }}>
-                    Welcome back!
+                    Welcome Back!
                 </h2>
                 <div style={{ marginBottom: '1.7rem' }}>
                     <PrimaryButton
