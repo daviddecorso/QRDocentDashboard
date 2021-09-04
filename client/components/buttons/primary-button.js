@@ -47,7 +47,7 @@ PrimaryButton.propTypes = {
     icon: PropTypes.element,
     rm: PropTypes.string,
     lm: PropTypes.string,
-    onClick: PropTypes.function,
+    onClick: PropTypes.any,
     path: PropTypes.string,
     text: PropTypes.string,
     width: PropTypes.string
