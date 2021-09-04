@@ -6,13 +6,13 @@ import React from 'react';
 function NavButton({ text, path, isHover, icon, setPage }) {
     const activeStyle = {
         backgroundColor: 'rgba(255, 255, 255, 0.08)',
-        justifyContent: 'end',
+        justifyContent: 'left',
         paddingLeft: '92px',
         width: '289px'
     };
 
     const nonActiveStyle = {
-        justifyContent: 'end',
+        justifyContent: 'left',
         paddingLeft: '92px',
         width: '289px'
     };

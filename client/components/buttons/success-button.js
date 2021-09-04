@@ -52,7 +52,7 @@ SuccessButton.propTypes = {
     rm: PropTypes.string,
     lm: PropTypes.string,
     path: PropTypes.string,
-    onClick: PropTypes.function,
+    onClick: PropTypes.any,
     text: PropTypes.string,
     width: PropTypes.string
 };

@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AddExhibit from './routes/addExhibit';
 import Analytics from './routes/analytics';
 import { CssBaseline } from '@material-ui/core';
+import EditExhibit from './routes/editExhibit';
 import Exhibits from './routes/exhibits';
 import IndexRoute from './routes/home';
 import NavBar from './components/nav-bar';
@@ -36,6 +37,10 @@ export default function App() {
                         <Route exact path="/exhibits/add">
                             <NavBar />
                             <AddExhibit />
+                        </Route>
+                        <Route exact path="/exhibits/edit">
+                            <NavBar />
+                            <EditExhibit />
                         </Route>
                     </Switch>
                 </div>
