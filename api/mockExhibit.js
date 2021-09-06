@@ -1,9 +1,11 @@
 module.exports = (req, res) => {
-    // This looks disgusting, but I wanted to mock bio text of a realistic length.
     const exhibit = {
         id: '4eb3b685-d451-4553-80a0-eff904bc33e6',
         name: 'Aretha Franklin',
-        description:
+        date: '7/21/21',
+        artistImage: 'https://i.scdn.co/image/ab6761610000f178f12270128127ba170f90097d',
+        qrStatus: 0,
+        biography:
             'Aretha Louise Franklin (March 25, 1942 – August 16, 2018) was an American singer, songwriter, and\n' +
             'pianist. Referred to as the "Queen of Soul", she has twice been placed 9th in Rolling Stone\'s 100\n' +
             'Greatest Artists of All Time. Franklin began her career as a child, singing gospel at New Bethel Ba\n' +
@@ -35,7 +37,10 @@ module.exports = (req, res) => {
             'and number nine on its list of "100 Greatest Artists of All Time". The Pulitzer Prize jury in\n' +
             '2019 awarded Franklin a posthumous special citation "for her indelible contribution to Ameri\n' +
             'can music and culture for more than five decades". In 2020, she was inducted into the Nation\n' +
-            'al Womens Hall of Fame.'
+            'al Womens Hall of Fame.',
+        videoLink: 'https://www.youtube.com/watch?v=CBKwV6oNYvw',
+        songLink: 'https://open.spotify.com/track/7s25THrKz86DM225dOYwnr?si=f32f60908fa64344',
+        website: 'https://www.arethafranklin.net/'
     };
     res.status(200).send(exhibit);
 };
