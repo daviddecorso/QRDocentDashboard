@@ -5,11 +5,48 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.content {
-    margin-left: 290px;
+/* For hiding & showing the mobile nav-bar */
+.hidden-navbar {
+    opacity: 0;
+    width: 0px;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background-color: #282b33;
+    z-index: 99;
+    visibility: hidden;
+    transition-property: visibility, opacity, width;
+    transition-duration: 0.1s, 0.1s, 0.2s;
+    transition-timing-function: cubic-bezier(0.19, 0.75, 0.58, 1), cubic-bezier(0.19, 0.75, 0.58, 1),
+        cubic-bezier(0.4, 0, 1, 1);
+}
+.mobile-navbar {
+    position: fixed;
+    height: 100vh;
+    width: 320px;
+    left: 0;
+    top: 0;
+    background-color: #282b33;
+    z-index: 99;
+    transition-property: visibility, opacity, width;
+    transition-duration: 0.2s, 0.2s, 0.2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1), cubic-bezier(0.4, 0, 1, 1),
+        cubic-bezier(0.19, 0.75, 0.58, 1);
 }
 
-/* If content isn't middle-aligned  there should be space after the navbar. */
-.left-spacing {
-    margin-left: 70px;
+.hidden {
+    visibility: hidden;
+}
+
+@media screen and (min-width: 961px) {
+    /* Makes room for the navbar on the left. */
+    .content {
+        margin-left: 290px;
+    }
+
+    /* If content isn't middle-aligned  there should be space after the navbar. */
+    .left-spacing {
+        margin-left: 70px;
+    }
 }

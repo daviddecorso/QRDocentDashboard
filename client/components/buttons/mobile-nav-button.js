@@ -3,21 +3,24 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function MobileNavButton({ text, path, isHover, icon, setPage }) {
+function NavButton({ text, path, isHover, icon, setPage, closeMenu }) {
     const activeStyle = {
         backgroundColor: 'rgba(255, 255, 255, 0.08)',
         justifyContent: 'left',
-        paddingLeft: '92px',
-        width: '289px'
+        paddingLeft: '80px',
+        width: '320px',
+        fontSize: '22px'
     };
 
     const nonActiveStyle = {
         justifyContent: 'left',
-        paddingLeft: '92px',
-        width: '289px'
+        paddingLeft: '80px',
+        width: '320px',
+        fontSize: '22px'
     };
 
     const onClick = () => {
+        closeMenu();
         setPage(text);
     };
 
@@ -36,12 +39,13 @@ function MobileNavButton({ text, path, isHover, icon, setPage }) {
     );
 }
 
-MobileNavButton.propTypes = {
+NavButton.propTypes = {
     icon: PropTypes.element,
     isHover: PropTypes.bool,
     path: PropTypes.string,
     setPage: PropTypes.func,
-    text: PropTypes.string
+    text: PropTypes.string,
+    closeMenu: PropTypes.func
 };
 
-export default MobileNavButton;
+export default NavButton;
