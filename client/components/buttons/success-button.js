@@ -72,10 +72,7 @@ function SuccessButton({
             ) : (
                 <>
                     {!isMobile && (
-                        <Button
-                            onClick={onClick}
-                            className={isMobile ? classes.mobile : classes.root}
-                            startIcon={icon}>
+                        <Button onClick={onClick} className={classes.root} startIcon={icon}>
                             {text}
                         </Button>
                     )}

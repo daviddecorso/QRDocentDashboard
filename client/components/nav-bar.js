@@ -120,13 +120,13 @@ function NavBar() {
             {isMobile && (
                 <div>
                     <span onClick={openMobileMenu}>
-                        <IconMenu2 size={'28px'} className={classes.icon} />
+                        <IconMenu2 size={'34px'} className={classes.icon} />
                     </span>
                     <>
                         <div id="mobile-nav" className="hidden-navbar ">
                             <div style={{ marginBottom: '10vh' }}>
                                 <span onClick={closeMobileMenu}>
-                                    <IconX size={'28px'} className={classes.icon} />
+                                    <IconX size={'34px'} className={classes.icon} />
                                 </span>
                             </div>
                             <div className={classes.mobileNavItems}>
