@@ -1,4 +1,4 @@
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import { Container, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import ExhibitListItem from '../components/exhibitListItem';
 import { IconPlus } from '@tabler/icons';
 import PrimaryButton from '../components/buttons/primary-button';
@@ -8,6 +8,14 @@ const pageStyles = {
     header: {
         display: 'flex',
         alignItems: 'center'
+    },
+    mobileHeader: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& button': {
+            marginTop: '1rem'
+        }
     },
     listContainer: {
         backgroundColor: '#2F333C',
@@ -20,6 +28,12 @@ const pageStyles = {
     listHeader: {
         display: 'grid',
         gridTemplateColumns: '120px 1fr 1fr 1fr 1fr',
+        textAlign: 'center',
+        paddingBottom: '1rem'
+    },
+    mobileListHeader: {
+        display: 'grid',
+        gridTemplateColumns: '80px 1fr 40px 40px',
         textAlign: 'center',
         paddingBottom: '1rem'
     }
@@ -51,11 +65,13 @@ export default function Exhibits() {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
+    const isMobile = useMediaQuery('(max-width:960px)');
+
     return (
         <div>
             <div className={'content'}>
                 <div className={'left-spacing'}>
-                    <div className={classes.header}>
+                    <div className={isMobile ? classes.mobileHeader : classes.header}>
                         <Typography component="h1" variant="h2">
                             EXHIBITS
                         </Typography>
@@ -74,11 +90,15 @@ export default function Exhibits() {
                     <div>
                         <Container maxWidth="lg">
                             <div className={classes.listContainer}>
-                                <div className={classes.listHeader}>
+                                <div
+                                    className={
+                                        isMobile ? classes.mobileListHeader : classes.listHeader
+                                    }>
                                     <span></span>
                                     <span>Exhibit Name</span>
-                                    <span>Date Created</span>
-                                    <span>QR Code Status</span>
+                                    {!isMobile && <span>Date Created</span>}
+                                    {!isMobile && <span>QR Code Status</span>}
+                                    {isMobile && <span>Status</span>}
                                 </div>
                                 <div>
                                     {mockData.map((exhibit, index) => (

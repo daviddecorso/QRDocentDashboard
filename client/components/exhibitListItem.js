@@ -10,7 +10,8 @@ import {
     Menu,
     MenuItem,
     Snackbar,
-    Typography
+    Typography,
+    useMediaQuery
 } from '@material-ui/core';
 import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons';
 import React, { useState } from 'react';
@@ -23,7 +24,7 @@ const pageStyles = {
     listItemDarkBg: {
         height: '80px',
         display: 'grid',
-        gridTemplateColumns: 'minmax(80px, 120px) 1fr 1fr 1fr 1fr',
+        gridTemplateColumns: '120px 1fr 1fr 1fr 1fr',
         alignItems: 'center',
         textAlign: 'center',
         borderRadius: '10px',
@@ -38,11 +39,35 @@ const pageStyles = {
         borderRadius: '10px',
         backgroundColor: '#343842'
     },
+    mobileListItemDarkBg: {
+        height: '80px',
+        display: 'grid',
+        gridTemplateColumns: '80px 1fr 40px 40px',
+        alignItems: 'center',
+        textAlign: 'center',
+        borderRadius: '10px',
+        backgroundColor: '#2F333C'
+    },
+    mobileListItemLightBg: {
+        height: '80px',
+        display: 'grid',
+        gridTemplateColumns: '80px 1fr 40px 40px',
+        alignItems: 'center',
+        textAlign: 'center',
+        borderRadius: '10px',
+        backgroundColor: '#343842'
+    },
     image: {
         height: '60px',
         width: '60px',
         borderRadius: '50%',
         justifySelf: 'right'
+    },
+    mobileImage: {
+        height: '60px',
+        width: '60px',
+        borderRadius: '50%',
+        justifySelf: 'center'
     },
     exhibitName: {
         fontSize: '18px'
@@ -62,6 +87,8 @@ function ExhibitListItem({ name, date, artistImg, status, index }) {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
     const history = useHistory();
+
+    const isMobile = useMediaQuery('(max-width:960px)');
 
     // Opens alert dialog
     const handleAlertOpen = () => {
@@ -106,16 +133,31 @@ function ExhibitListItem({ name, date, artistImg, status, index }) {
         handleDeleteSuccessOpen();
     };
 
+    // Get correct style
+    let style;
+    if (index % 2 === 0) {
+        isMobile ? (style = classes.mobileListItemLightBg) : (style = classes.listItemLightBg);
+    } else {
+        isMobile ? (style = classes.mobileListItemDarkBg) : (style = classes.listItemDarkBg);
+    }
+
     return (
         <>
-            <div className={index % 2 === 0 ? classes.listItemLightBg : classes.listItemDarkBg}>
-                <img className={classes.image} src={artistImg} alt={`Picture of ${name}`} />
+            <div className={style}>
+                <img
+                    className={isMobile ? classes.mobileImage : classes.image}
+                    src={artistImg}
+                    alt={`Picture of ${name}`}
+                />
                 <p className={classes.exhibitName}>{name}</p>
-                <Typography component="span" variant="body1">
-                    {date}
-                </Typography>
+                {!isMobile && (
+                    <Typography component="span" variant="body1">
+                        {date}
+                    </Typography>
+                )}
+
                 <div>
-                    <Status status={status} />
+                    <Status status={status} isMobile={isMobile} />
                 </div>
                 <div>
                     <IconButton
