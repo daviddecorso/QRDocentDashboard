@@ -1,4 +1,4 @@
-import { Container, FormControl, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Container, FormControl, makeStyles, TextField, useMediaQuery } from '@material-ui/core';
 import { IconDeviceFloppy, IconHelp, IconPrinter, IconX } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import PrimaryButton from '../components/buttons/primary-button';
@@ -34,6 +34,16 @@ const pageStyles = {
     buttons: {
         textAlign: 'center',
         marginTop: '2rem'
+    },
+    mobileButtons: {
+        textAlign: 'left',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    mobilePrintButton: {
+        textAlign: 'center',
+        marginTop: '1rem'
     }
 };
 
@@ -60,6 +70,9 @@ function ExhibitForm({
 
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
+
+    const isMobile = useMediaQuery('(max-width:960px)');
+    const isSmallMobile = useMediaQuery('(max-width:410px)');
 
     useEffect(() => {
         // Fills form with props if they exist
@@ -105,9 +118,6 @@ function ExhibitForm({
     return (
         <div className={'content'}>
             <Container maxWidth="md">
-                <Typography component="h1" variant="h4" className={classes.pageTitle}>
-                    NEW EXHIBIT
-                </Typography>
                 <div className={classes.formContainer}>
                     <div className={classes.formHeader}>
                         <FormControl fullWidth sx={{ m: 1 }}>
@@ -120,15 +130,17 @@ function ExhibitForm({
                                 helperText={noNameError ? 'Field required.' : ''}
                             />
                         </FormControl>
-                        <a href={apiRoute} style={{ textDecoration: 'none' }}>
-                            <PrimaryButton
-                                text={'PRINT QR'}
-                                width={'200px'}
-                                height={'50px'}
-                                lm={'1rem'}
-                                icon={<IconPrinter size={22} />}
-                            />
-                        </a>
+                        {!isMobile && (
+                            <a href={apiRoute} style={{ textDecoration: 'none' }}>
+                                <PrimaryButton
+                                    text={'PRINT QR'}
+                                    width={'200px'}
+                                    height={'50px'}
+                                    lm={'1rem'}
+                                    icon={<IconPrinter size={22} />}
+                                />
+                            </a>
+                        )}
                     </div>
                     <div className={classes.formInput}>
                         <TextField
@@ -142,7 +154,7 @@ function ExhibitForm({
                             tabIndex="0"
                             aria-label={tooltipText.bio}
                             role="tooltip"
-                            data-microtip-position="top"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
                             className={classes.formIcon}>
                             <IconHelp color={'white'} />
                         </span>
@@ -158,7 +170,7 @@ function ExhibitForm({
                             tabIndex="0"
                             aria-label={tooltipText.video}
                             role="tooltip"
-                            data-microtip-position="top"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
                             className={classes.formIcon}>
                             <IconHelp color={'white'} />
                         </span>
@@ -169,7 +181,7 @@ function ExhibitForm({
                             tabIndex="0"
                             aria-label={tooltipText.song}
                             role="tooltip"
-                            data-microtip-position="top"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
                             className={classes.formIcon}>
                             <IconHelp color={'white'} />
                         </span>
@@ -185,7 +197,7 @@ function ExhibitForm({
                             tabIndex="0"
                             aria-label={tooltipText.website}
                             role="tooltip"
-                            data-microtip-position="top"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
                             className={classes.formIcon}>
                             <IconHelp color={'white'} />
                         </span>
@@ -201,24 +213,39 @@ function ExhibitForm({
                             tabIndex="0"
                             aria-label={tooltipText.image}
                             role="tooltip"
-                            data-microtip-position="top"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
                             className={classes.formIcon}>
                             <IconHelp color={'white'} />
                         </span>
                     </div>
+                    {isMobile && (
+                        <div className={classes.mobilePrintButton}>
+                            <a href={apiRoute} style={{ textDecoration: 'none' }}>
+                                <PrimaryButton
+                                    text={'PRINT QR'}
+                                    width={'200px'}
+                                    height={'50px'}
+                                    icon={<IconPrinter size={22} />}
+                                />
+                            </a>
+                        </div>
+                    )}
                     <div className={classes.buttons}>
                         <WarningButton
                             text={'CANCEL'}
                             width={'140px'}
+                            rm={isSmallMobile ? '5rem' : '0'}
                             path={'/exhibits'}
                             icon={<IconX />}
+                            isMobile={isSmallMobile}
                         />
                         <SuccessButton
                             text={'SAVE'}
                             width={'140px'}
-                            lm={'2rem'}
+                            lm={isSmallMobile ? '0' : '2rem'}
                             icon={<IconDeviceFloppy />}
                             onClick={onClickSave}
+                            isMobile={isSmallMobile}
                         />
                     </div>
                 </div>

@@ -1,8 +1,15 @@
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import 'microtip/microtip.css';
 
-export default function Status({ status }) {
+const tooltipText = {
+    0: 'No QR code has been created for this exhibit.',
+    1: 'A QR code has been created for this exhibit, but has not been scanned yet.',
+    2: 'A QR code has been created for this exhibit and has been successfully scanned.'
+};
+
+export default function Status({ status, isMobile }) {
     let text = '';
     let statusStyle;
 
@@ -18,6 +25,13 @@ export default function Status({ status }) {
                 paddingTop: '2px',
                 paddingBottom: '2px',
                 textTransform: 'uppercase'
+            },
+            mobile: {
+                backgroundColor: '#E87421',
+                height: '21px',
+                width: '21px',
+                borderRadius: '50%',
+                display: 'inline-block'
             }
         });
     } else if (status === 2) {
@@ -32,6 +46,13 @@ export default function Status({ status }) {
                 paddingTop: '2px',
                 paddingBottom: '2px',
                 textTransform: 'uppercase'
+            },
+            mobile: {
+                backgroundColor: '#48CC1F',
+                height: '21px',
+                width: '21px',
+                borderRadius: '50%',
+                display: 'inline-block'
             }
         });
     } else {
@@ -46,18 +67,45 @@ export default function Status({ status }) {
                 paddingTop: '2px',
                 paddingBottom: '2px',
                 textTransform: 'uppercase'
+            },
+            mobile: {
+                backgroundColor: '#DE312B',
+                height: '21px',
+                width: '21px',
+                borderRadius: '50%',
+                display: 'inline-block'
             }
         });
     }
 
     const classes = statusStyle();
     return (
-        <span className={classes.root}>
-            <b>{text}</b>
-        </span>
+        <>
+            {!isMobile && (
+                <span
+                    className={classes.root}
+                    tabIndex="0"
+                    aria-label={tooltipText[status]}
+                    role="tooltip"
+                    data-microtip-position={'top'}
+                    data-microtip-size="large">
+                    <b>{text}</b>
+                </span>
+            )}
+            {isMobile && (
+                <span
+                    className={classes.mobile}
+                    tabIndex="0"
+                    aria-label={tooltipText[status]}
+                    role="tooltip"
+                    data-microtip-position={'top-left'}
+                    data-microtip-size="medium"></span>
+            )}
+        </>
     );
 }
 
 Status.propTypes = {
-    status: PropTypes.number
+    status: PropTypes.number,
+    isMobile: PropTypes.bool
 };

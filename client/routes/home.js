@@ -1,3 +1,4 @@
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 import ExhibitCard from '../components/cards/exhibit-card';
 import NumericCard from '../components/cards/numeric-card';
 import PrimaryButton from '../components/buttons/primary-button';
@@ -7,7 +8,8 @@ import TimeCard from '../components/cards/time-card';
 // CSS styles for the cards
 const cardStyles = {
     root: {
-        width: '328px',
+        maxWidth: '328px',
+        width: '100vw',
         height: '148px',
         borderRadius: '20px',
         backgroundColor: '#2F333C',
@@ -41,6 +43,46 @@ const cardStyles = {
     }
 };
 
+const pageStyles = {
+    cardLayoutDesktop: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr'
+    },
+    mobileCardLayout: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& div': {
+            marginBottom: '.5rem'
+        }
+    },
+    headingStyle: {
+        marginTop: '10vh',
+        fontSize: '68px',
+        fontWeight: '200',
+        marginBottom: '1.7rem'
+    },
+    mobileHeadingStyle: {
+        marginTop: '5vh',
+        fontSize: '44px',
+        fontWeight: '200',
+        marginBottom: '1.7rem',
+        textAlign: 'center'
+    },
+    buttonDivStyle: {
+        marginBottom: '1.7rem'
+    },
+    buttonDivStyleMobile: {
+        marginBottom: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& button': {
+            marginBottom: '1rem'
+        }
+    }
+};
+
 // Replace mock data with real data from db
 const mockDataTime = {
     avgLengthMins: 141,
@@ -58,26 +100,25 @@ const mockDataExhibit = {
 };
 
 export default function Index() {
+    const useStyles = makeStyles(pageStyles);
+    const classes = useStyles();
+
+    const isMobile = useMediaQuery('(max-width:960px)');
+
     return (
         <div className={'content'}>
             <div className={'left-spacing'}>
-                <h2
-                    style={{
-                        marginTop: '10vh',
-                        fontSize: '68px',
-                        fontWeight: '200',
-                        marginBottom: '1.7rem'
-                    }}>
+                <h2 className={isMobile ? classes.mobileHeadingStyle : classes.headingStyle}>
                     Welcome Back!
                 </h2>
-                <div style={{ marginBottom: '1.7rem' }}>
+                <div className={isMobile ? classes.buttonDivStyleMobile : classes.buttonDivStyle}>
                     <PrimaryButton
                         text={'View my exhibits'}
                         path={'/exhibits'}
                         width={'200px'}
                         height={'45px'}
                         fontSize={'14px'}
-                        rm={'30px'}
+                        rm={isMobile ? '0' : '30px'}
                     />
                     <PrimaryButton
                         text={'Add an exhibit'}
@@ -87,7 +128,7 @@ export default function Index() {
                         fontSize={'14px'}
                     />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+                <div className={isMobile ? classes.mobileCardLayout : classes.cardLayoutDesktop}>
                     <NumericCard styles={cardStyles} data={mockDataNumScans} />
                     <TimeCard styles={cardStyles} data={mockDataTime} />
                     <ExhibitCard styles={cardStyles} data={mockDataExhibit} />
