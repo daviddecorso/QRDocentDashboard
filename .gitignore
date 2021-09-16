@@ -65,3 +65,6 @@ dist
 .cache
 .parcel-cache
 .vercel
+
+#Mac-OS .DS_Store
+.DS_Store
