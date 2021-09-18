@@ -12,7 +12,7 @@ Initial steps:
 2. Clone your fork
 3. Add the main repo as upstream (`git remote add upstream https://github.com/daviddecorso/QRDocentDashboard`)
 4. Run `yarn` (this should be done after every pull in case new dependencies are added.)
-5. Use `yarn run dev` to run a development server. (Hosted on http://localhost:3000)
+5. Use `yarn vercel dev` to run a development server. (Hosted on http://localhost:3000)
 
 Contributing:
 
