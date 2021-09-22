@@ -64,5 +64,3 @@ module.exports =
     getBaseURL: getBaseURL,
     getDatabaseCredentials: getDatabaseCredentials
 };
-
-// TODO: Figure out how to initialize app to have NODE_ENV equal production. development is default value.
