@@ -59,8 +59,15 @@ function getDatabaseCredentials()
     return credentials;
 }
 
+const commandResult = {
+    success: false,
+    message: '',
+    result: null
+};
+
 module.exports =
 {
     getBaseURL: getBaseURL,
-    getDatabaseCredentials: getDatabaseCredentials
+    getDatabaseCredentials: getDatabaseCredentials,
+    commandResult: commandResult
 };
