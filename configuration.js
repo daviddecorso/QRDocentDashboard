@@ -59,7 +59,7 @@ function getDatabaseCredentials()
     return credentials;
 }
 
-module.exports = 
+module.exports =
 {
     getBaseURL: getBaseURL,
     getDatabaseCredentials: getDatabaseCredentials
