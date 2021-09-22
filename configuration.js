@@ -16,16 +16,18 @@ function getBaseURL()
 
 function getDatabaseCredentials()
 {
-    let credentials = {
-        user: '',
-        password: '',
-        host: '',
-        port: 0,
-        database: ''
-    };
+    let credentials;
 
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')
     {
+        credentials = {
+            user: '',
+            password: '',
+            host: '',
+            port: 0,
+            database: ''
+        };
+
         credentials.user = process.env.DEV_USER;
         credentials.password = process.env.DEV_PASSWORD;
         credentials.host = process.env.DEV_HOST;
@@ -34,11 +36,24 @@ function getDatabaseCredentials()
     }
     else if (process.env.NODE_ENV === 'production')
     {
+        credentials = {
+            user: '',
+            password: '',
+            host: '',
+            port: 0,
+            database: '',
+            ssl: {
+                rejectUnauthorized: false,
+                ca: ''
+            }
+        };
+
         credentials.user = process.env.PROD_USER;
         credentials.password = process.env.PROD_PASSWORD;
         credentials.host = process.env.PROD_HOST;
         credentials.port = process.env.PROD_PORT;
         credentials.database = process.env.PROD_DATABASE;
+        credentials.ssl.ca = process.env.PROD_SSL;
     }
 
     return credentials;
