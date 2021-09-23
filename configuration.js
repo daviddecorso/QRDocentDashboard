@@ -59,6 +59,28 @@ function getDatabaseCredentials()
     return credentials;
 }
 
+function getTwilioCredentials()
+{
+    const credentials = {
+        accountSID: '',
+        authToken: '',
+        messagingServiceSID: process.env.TWILIO_MSG_SERVICE_SID
+    };
+
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')
+    {
+        credentials.accountSID = process.env.DEV_TWILIO_SID;
+        credentials.authToken = process.env.DEV_TWILIO_TOKEN;
+    }
+    else if (process.env.NODE_ENV === 'production')
+    {
+        credentials.accountSID = process.env.PROD_TWILIO_SID;
+        credentials.authToken = process.env.PROD_TWILIO_TOKEN;
+    }
+
+    return credentials;
+}
+
 const commandResult = {
     success: false,
     message: '',
@@ -69,5 +91,6 @@ module.exports =
 {
     getBaseURL: getBaseURL,
     getDatabaseCredentials: getDatabaseCredentials,
+    getTwilioCredentials: getTwilioCredentials,
     commandResult: commandResult
 };
