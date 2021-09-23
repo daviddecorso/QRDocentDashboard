@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION museum.fn_register_museum_user(
    _phone_number VARCHAR(50) = ''
 )
-RETURNS BIT
+RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS
 $$
@@ -13,7 +13,7 @@ $$
                     LIMIT 1
                  )
         THEN
-            RETURN 0;
+            RETURN FALSE;
         ELSE
             INSERT INTO museum.user
             (
@@ -24,7 +24,7 @@ $$
                 _phone_number
             );
 
-            RETURN 1;
+            RETURN TRUE;
         END IF;
     END
 $$

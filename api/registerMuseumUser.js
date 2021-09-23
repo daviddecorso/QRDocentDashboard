@@ -8,8 +8,7 @@ module.exports = async(req, res) =>
     const parameters = [userPhoneNumber];
     const queryResult = await query(queryString, parameters);
 
-    console.log(queryResult.rows[0].success);
-    if (queryResult.rows[0].success === 1)
+    if (queryResult.rows[0].success)
     {
         commandResult.success = true;
     }
