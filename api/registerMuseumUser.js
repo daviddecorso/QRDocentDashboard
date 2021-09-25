@@ -3,7 +3,7 @@ const commandResult = require('../configuration').getCommandResult();
 
 module.exports = async(req, res) =>
 {
-    commandResult.reset();
+    // commandResult.reset();
     const userPhoneNumber = req.body.phone_number;
     const queryString = 'SELECT museum.fn_register_museum_user($1) AS success';
     const parameters = [userPhoneNumber];
