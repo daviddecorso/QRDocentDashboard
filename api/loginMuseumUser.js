@@ -1,5 +1,5 @@
 import { query } from '../database/databaseConnection';
-const commandResult = require('../configuration').getCommandResult();
+const commandResult = require('../configuration').getCommandResult().reset();
 const twilioCredentials = require('../configuration').getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
