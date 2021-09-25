@@ -1,44 +1,50 @@
 import { query } from '../database/databaseConnection';
 const { commandResult } = require('../configuration');
+const twilioCredentials = require('../configuration').getTwilioCredentials();
+const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
 module.exports = async(req, res) =>
 {
-    /*const userPhoneNumber = req.body.phone_number;
-    const queryString = 'SELECT museum.fn_register_museum_user($1) AS success';
+    const userPhoneNumber = req.body.phone_number;
+    const queryString = 'SELECT museum.fn_login_museum_user($1) AS user_id';
     const parameters = [userPhoneNumber];
     const queryResult = await query(queryString, parameters);
+    const userID = queryResult.rows[0].user_id;
 
-    if (queryResult.rows[0].success)
+    if (userID !== 0)
     {
-        commandResult.success = true;
+        const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
+
+        client.messages
+            .create({
+                body: 'Your confirmation code is: ' + randomSixDigitCode.toString(),
+                messagingServiceSid: twilioCredentials.messagingServiceSID,
+                to: userPhoneNumber
+            })
+            .then(message => {
+                console.log(message.sid);
+                const resultObject = {
+                    user_id: userID,
+                    confirmation_code: randomSixDigitCode
+                };
+                commandResult.success = true;
+                commandResult.result = resultObject;
+
+                res.status(200).send(JSON.stringify(commandResult));
+            })
+            .catch(error => {
+                console.log(error);
+                commandResult.success = false;
+                commandResult.message = 'Error sending text message.';
+
+                res.status(200).send(JSON.stringify(commandResult));
+            });
     }
     else
     {
         commandResult.success = false;
-        commandResult.message = 'User already exists.';
-    }*/
+        commandResult.message = 'User does not exists.';
 
-    const twilioCredentials = require('../configuration').getTwilioCredentials();
-    const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
-    
-    client.messages 
-    .create({ 
-        body: 'hi :D',  
-        messagingServiceSid: twilioCredentials.messagingServiceSID,
-        to: '+13057101065' 
-    }) 
-    .then(message => {
-        console.log(message.sid);
-        res.status(200).send(JSON.stringify('done'));
-    })
-    .catch((error) => {
-        console.log(error)
-        res.status(200).send(JSON.stringify('error'));
-    });
-    
-
-    //process: generate a random num and send to phone num, then pass that random generate number 
-    // down as http response and have frontend verify if user inputs the same random num to confirm login
-
-    
+        res.status(200).send(JSON.stringify(commandResult));
+    }
 };

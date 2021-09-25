@@ -15,7 +15,7 @@ async function query(queryString, parameters)
     }
     catch (error)
     {
-        throw new Error('Error executing query!\n' + error.stack);
+        throw new Error('Error executing query.\n' + error.stack);
     }
 }
 
