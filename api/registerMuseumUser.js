@@ -1,5 +1,5 @@
 import { query } from '../database/databaseConnection';
-const { commandResult } = require('../configuration');
+const commandResult = require('../configuration').getCommandResult();
 
 module.exports = async(req, res) =>
 {
