@@ -1,0 +1,36 @@
+---
+openapi: 3.0.0
+info:
+  title: QR Docent APIs
+  version: 1.0.0
+servers:
+- url: https://qrdocent.com/api
+paths:
+  /testapi:
+    get:
+      summary: Testing SwaggerHub with testapi
+      parameters:
+      - name: name
+        in: query
+        description: Hello message response with given input.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: test
+      responses:
+        "200":
+          description: Hello message with optional name query.
+          content:
+            text/*:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: No value for name.
+                  value: Hello default!
+                withName:
+                  summary: name=test.
+                  value: Hello test!
+components: {}
