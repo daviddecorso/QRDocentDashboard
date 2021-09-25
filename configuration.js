@@ -86,7 +86,12 @@ function getCommandResult()
     const commandResult = {
         success: false,
         message: '',
-        result: null
+        result: null,
+        reset: function() {
+            this.success = false;
+            this.message = '';
+            this.result = null;
+        }
     };
 
     return commandResult;
