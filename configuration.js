@@ -93,6 +93,7 @@ function getCommandResult()
             this.result = null;
         }
     };
+    commandResult.reset();
 
     return commandResult;
 }
