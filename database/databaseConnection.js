@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const { getDatabaseCredentials } = require ('../configuration');
+const { getDatabaseCredentials } = require('../configuration');
 const pool = new Pool(getDatabaseCredentials());
 
 async function query(queryString, parameters) 
@@ -15,7 +15,7 @@ async function query(queryString, parameters)
     }
     catch (error)
     {
-        throw new Error('Error executing query!\n' + error.stack);
+        throw new Error('Error executing query.\n' + error.stack);
     }
 }
 
