@@ -1,10 +1,11 @@
 import { query } from '../database/databaseConnection';
-const commandResult = require('../configuration').getCommandResult().reset();
+const commandResult = require('../configuration').getCommandResult();
 const twilioCredentials = require('../configuration').getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
 module.exports = async(req, res) =>
 {
+    commandResult.reset();
     const userPhoneNumber = req.body.phone_number;
     const queryString = 'SELECT museum.fn_login_museum_user($1) AS user_id';
     const parameters = [userPhoneNumber];
