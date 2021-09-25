@@ -1,5 +1,5 @@
 import { query } from '../database/databaseConnection';
-const { commandResult } = require('../configuration');
+const commandResult = require('../configuration').getCommandResult();
 const twilioCredentials = require('../configuration').getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
@@ -43,7 +43,7 @@ module.exports = async(req, res) =>
     else
     {
         commandResult.success = false;
-        commandResult.message = 'User does not exists.';
+        commandResult.message = 'User does not exist.';
 
         res.status(200).send(JSON.stringify(commandResult));
     }

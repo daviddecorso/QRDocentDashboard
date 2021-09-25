@@ -81,16 +81,21 @@ function getTwilioCredentials()
     return credentials;
 }
 
-const commandResult = {
-    success: false,
-    message: '',
-    result: null
-};
+function getCommandResult()
+{
+    const commandResult = {
+        success: false,
+        message: '',
+        result: null
+    };
+
+    return commandResult;
+}
 
 module.exports =
 {
     getBaseURL: getBaseURL,
     getDatabaseCredentials: getDatabaseCredentials,
     getTwilioCredentials: getTwilioCredentials,
-    commandResult: commandResult
+    getCommandResult: getCommandResult
 };
