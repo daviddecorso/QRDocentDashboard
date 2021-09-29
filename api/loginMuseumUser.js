@@ -1,11 +1,11 @@
+import { failure, success } from '../api/utility/responseObject';
+import { getTwilioCredentials } from '../configuration';
 import { query } from '../database/databaseConnection';
-const commandResult = require('../configuration').getCommandResult();
-const twilioCredentials = require('../configuration').getTwilioCredentials();
+const twilioCredentials = getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
 module.exports = async(req, res) =>
 {
-    commandResult.reset();
     const userPhoneNumber = req.body.phone_number;
     const queryString = 'SELECT museum.fn_login_museum_user($1) AS user_id';
     const parameters = [userPhoneNumber];
@@ -16,7 +16,7 @@ module.exports = async(req, res) =>
     {
         const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
 
-        client.messages
+        await client.messages
             .create({
                 body: 'Your confirmation code is: ' + randomSixDigitCode.toString(),
                 messagingServiceSid: twilioCredentials.messagingServiceSID,
@@ -28,24 +28,17 @@ module.exports = async(req, res) =>
                     user_id: userID,
                     confirmation_code: randomSixDigitCode
                 };
-                commandResult.success = true;
-                commandResult.result = resultObject;
 
-                res.status(200).send(JSON.stringify(commandResult));
+                res.status(200).send(JSON.stringify(success(resultObject)));
             })
             .catch(error => {
                 console.log(error);
-                commandResult.success = false;
-                commandResult.message = 'Error sending text message.';
 
-                res.status(200).send(JSON.stringify(commandResult));
+                res.status(200).send(JSON.stringify(failure('Error sending text message.')));
             });
     }
     else
     {
-        commandResult.success = false;
-        commandResult.message = 'User does not exist.';
-
-        res.status(200).send(JSON.stringify(commandResult));
+        res.status(200).send(JSON.stringify(failure('User does not exist.')));
     }
 };
