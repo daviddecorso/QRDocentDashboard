@@ -16,7 +16,7 @@ module.exports = async(req, res) =>
     {
         const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
 
-        client.messages
+        await client.messages
             .create({
                 body: 'Your confirmation code is: ' + randomSixDigitCode.toString(),
                 messagingServiceSid: twilioCredentials.messagingServiceSID,
