@@ -81,26 +81,9 @@ function getTwilioCredentials()
     return credentials;
 }
 
-function getCommandResult()
-{
-    const commandResult = {
-        success: false,
-        message: '',
-        result: null,
-        reset: function() {
-            this.success = false;
-            this.message = '';
-            this.result = null;
-        }
-    };
-
-    return commandResult;
-}
-
 module.exports =
 {
-    getBaseURL: getBaseURL,
-    getDatabaseCredentials: getDatabaseCredentials,
-    getTwilioCredentials: getTwilioCredentials,
-    getCommandResult: getCommandResult
+    getBaseURL,
+    getDatabaseCredentials,
+    getTwilioCredentials
 };
