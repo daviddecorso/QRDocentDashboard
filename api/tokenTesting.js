@@ -1,5 +1,9 @@
-// import generate from './utility/generateToken';
+import authentication from './middleware/authentication';
 
-module.exports = (req, res) => {
-    res.status(200).send('Hello!');
+const API = async(req, res) =>
+{
+    const userInfo = req.locals.user;
+    res.status(200).send(JSON.stringify(userInfo));
 };
+
+export default authentication(API);
