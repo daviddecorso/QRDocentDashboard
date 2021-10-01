@@ -1,5 +1,5 @@
 import { failure, success } from '../api/utility/responseObject';
-import { query } from '../database/databaseConnection';
+import query from '../database/databaseConnection';
 
 module.exports = async(req, res) =>
 {

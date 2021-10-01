@@ -15,7 +15,4 @@ async function query(queryString, parameters)
     }
 }
 
-module.exports = 
-{
-    query
-};
+export default query;

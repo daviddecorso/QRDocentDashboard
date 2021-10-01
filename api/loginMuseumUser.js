@@ -1,6 +1,6 @@
 import { failure, success } from '../api/utility/responseObject';
 import { getTwilioCredentials } from '../configuration';
-import { query } from '../database/databaseConnection';
+import query from '../database/databaseConnection';
 const twilioCredentials = getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
