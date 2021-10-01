@@ -10,15 +10,22 @@ const authentication = handler => {
         try
         {
             const tokenPayload = jwt.verify(accessToken, JWT_SECRET_KEY);
-            req.locals.user = tokenPayload;
+            if (tokenPayload.type !== 'access')
+            {
+                throw new Error('Wrong token type.');
+            }
+
+            req.middleware = {
+                user_info: tokenPayload
+            };
 
             // handler is an argument that holds our original API function after being filtered through the middleware.
-            // So it is finally if the middleware runs successfully for this particular request.
+            // So the API will finally run if the middleware runs successfully for this particular request.
             return await handler(req, res);
         }
         catch (error)
         {
-            res.status(200).send(failure('Invalid token for request.'));
+            res.status(200).send(failure('Invalid or expired token for request.'));
         }
     };
 };
