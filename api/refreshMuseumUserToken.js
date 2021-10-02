@@ -2,9 +2,10 @@ import { extractHeaderAuthorization } from './utility/extract';
 import { failure } from './utility/responseObject';
 import generate from './utility/generateToken';
 import jwt from 'jsonwebtoken';
+import query from '../database/databaseConnection';
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-module.exports = (req, res) => {
+module.exports = async(req, res) => {
     const refreshToken = extractHeaderAuthorization(req.headers.authorization);
 
     try 
@@ -15,18 +16,28 @@ module.exports = (req, res) => {
             throw new Error('Wrong token type.');
         }
 
-        const userID = tokenPayload.user_id;
-
+        const userID = tokenPayload.userID;
+        const queryString = 'SELECT phone_number FROM museum.user WHERE user_id = $1';
+        const parameters = [userID];
+        console.log(`userID: ${userID}`);
+        const queryResult = await query(queryString, parameters);
+        if (queryResult.rows.length === 0)
+        {
+            throw new Error('User does not exist.');
+        }
         
-        // const userInDb = await findUserById(userId);
-        const phoneNumber = userInDb.phone_number;
-        const keyToCompare = generate.generateKey(userId, phoneNumber);
+        const phoneNumber = queryResult.rows[0].phone_number;
+        const keyToCompare = generate.generateKey(userID, phoneNumber);
         if (keyToCompare !== tokenPayload.key) 
         {
             throw new Error('Phone number not recognized.');
         }
 
-        const newAccessToken = generate.museumUserAccessToken(userInDb);
+        const user = {
+            userID: userID,
+            phoneNumber: phoneNumber
+        };
+        const newAccessToken = generate.museumUserAccessToken(user);
         res.status(200).send(JSON.stringify({ accessToken: newAccessToken }));
     } 
     catch (error) 
