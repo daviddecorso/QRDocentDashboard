@@ -1,0 +1,14 @@
+DROP FUNCTION admin.fn_register_admin_user(_email varchar, _password varchar, _museum_id integer);
+DROP FUNCTION museum.fn_register_museum_user(_phone_number varchar);
+DROP FUNCTION museum.fn_login_museum_user(_phone_number varchar);
+DROP TABLE museum.scan;
+DROP TABLE museum.exhibit;
+DROP TABLE museum.exhibit_status;
+DROP TABLE museum.user;
+DROP TABLE admin.user;
+DROP TABLE admin.museum;
+DROP FUNCTION admin.fn_update_timestamp();
+DROP SCHEMA admin;
+DROP FUNCTION museum.fn_update_timestamp();
+DROP SCHEMA museum;
+DROP TABLE public.flyway_schema_history;

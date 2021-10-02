@@ -30,10 +30,10 @@ CREATE TABLE museum.exhibit(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX idx_unique_museum_exhibit_fk_exhibit_status_id
+CREATE INDEX idx_museum_exhibit_fk_exhibit_status_id
 ON museum.exhibit(exhibit_status_id);
 
-CREATE UNIQUE INDEX idx_unique_museum_exhibit_fk_museum_id
+CREATE INDEX idx_museum_exhibit_fk_museum_id
 ON museum.exhibit(museum_id);
 
 CREATE UNIQUE INDEX idx_unique_museum_exhibit_name
