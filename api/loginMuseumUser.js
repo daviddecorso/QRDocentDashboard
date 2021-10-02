@@ -5,8 +5,6 @@ import query from '../database/databaseConnection';
 const twilioCredentials = getTwilioCredentials();
 const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials.authToken);
 
-
-//TODO: do admin register/login (hash the pw in db) with same JWT format, test everything works with tokens working, expiring, and refreshing, and finalize an API using the authentication middleware
 module.exports = async(req, res) =>
 {
     const phoneNumber = req.body.phoneNumber;

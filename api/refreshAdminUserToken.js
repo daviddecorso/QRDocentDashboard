@@ -17,7 +17,11 @@ module.exports = async(req, res) => {
         }
 
         const userID = tokenPayload.userID;
-        const queryString = 'SELECT phone_number FROM museum.user WHERE user_id = $1';
+        const email = tokenPayload.email;
+        const museumID = tokenPayload.museumID;
+        const key = tokenPayload.key;
+
+        const queryString = 'SELECT password FROM admin.user WHERE user_id = $1';
         const parameters = [userID];
         const queryResult = await query(queryString, parameters);
         if (queryResult.rows.length === 0)
@@ -25,18 +29,19 @@ module.exports = async(req, res) => {
             throw new Error('user does not exist');
         }
 
-        const phoneNumber = queryResult.rows[0].phone_number;
-        const keyToCompare = generate.generateKey(userID, phoneNumber);
-        if (keyToCompare !== tokenPayload.key)
+        const passwordStoredInDatabase = queryResult.rows[0].password;
+        const keyToCompare = generate.generateKey(userID, passwordStoredInDatabase);
+        if (keyToCompare !== key)
         {
-            throw new Error('phone number not recognized');
+            throw new Error('password has changed');
         }
 
         const user = {
             userID: userID,
-            phoneNumber: phoneNumber
+            email: email,
+            museumID: museumID
         };
-        const newAccessToken = generate.museumUserAccessToken(user);
+        const newAccessToken = generate.adminUserAccessToken(user);
         res.status(200).send(JSON.stringify(success({ accessToken: newAccessToken })));
     }
     catch (error)

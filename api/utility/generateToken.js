@@ -22,8 +22,9 @@ function adminUserAccessToken(user)
 {
     const userID = user.userID;
     const email = user.email;
+    const museumID = user.museumID;
     const type = 'access';
-    const tokenPayload = { type, userID, email };
+    const tokenPayload = { type, userID, email, museumID };
     const accessToken = jwt.sign(tokenPayload, JWT_SECRET_KEY, { expiresIn: FIFTEEN_MINUTES_IN_SECONDS });
     return accessToken;
 }
@@ -32,10 +33,11 @@ function adminUserRefreshToken(user)
 {
     const userID = user.userID;
     const email = user.email;
+    const museumID = user.museumID;
     const password = user.password;
     const type = 'refresh';
     const key = generateKey(userID, password);
-    const tokenPayload = { type, userID, email, key };
+    const tokenPayload = { type, userID, email, museumID, key };
     const refreshToken = jwt.sign(tokenPayload, JWT_SECRET_KEY);
     return refreshToken;
 }
