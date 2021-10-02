@@ -34,11 +34,11 @@ module.exports = async(req, res) =>
             .catch(error => {
                 console.log(error);
 
-                res.status(200).send(JSON.stringify(failure('Error sending text message.')));
+                res.status(200).send(JSON.stringify(failure('error sending text message')));
             });
     }
     else
     {
-        res.status(200).send(JSON.stringify(failure('User does not exist.')));
+        res.status(200).send(JSON.stringify(failure('user does not exist')));
     }
 };

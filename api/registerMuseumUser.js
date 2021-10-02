@@ -15,7 +15,7 @@ module.exports = async(req, res) =>
     }
     else
     {
-        result = failure('User already exists.');
+        result = failure('user already exists');
     }
 
     res.status(200).send(JSON.stringify(result));
