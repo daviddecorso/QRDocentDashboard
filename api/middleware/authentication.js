@@ -25,7 +25,7 @@ const authentication = handler => {
         }
         catch (error)
         {
-            res.status(200).send(failure(error.message));
+            res.status(200).send(JSON.stringify(failure(error.message)));
         }
     };
 };
