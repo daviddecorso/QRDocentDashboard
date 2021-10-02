@@ -16,7 +16,7 @@ const authentication = handler => {
             }
 
             req.middleware = {
-                user_info: tokenPayload
+                userInfo: tokenPayload
             };
 
             // handler is an argument that holds our original API function after being filtered through the middleware.
