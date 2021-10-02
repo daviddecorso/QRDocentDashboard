@@ -43,6 +43,7 @@ body {
     /* Makes room for the navbar on the left. */
     .content {
         margin-left: 290px;
+        margin-top: 40px;
     }
 
     /* If content isn't middle-aligned  there should be space after the navbar. */
