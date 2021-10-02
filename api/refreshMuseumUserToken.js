@@ -13,7 +13,7 @@ module.exports = async(req, res) => {
         const tokenPayload = jwt.verify(refreshToken, JWT_SECRET_KEY);
         if (tokenPayload.type !== 'refresh')
         {
-            throw new Error('Wrong token type.');
+            throw new Error('wrong token type');
         }
 
         const userID = tokenPayload.userID;
@@ -23,14 +23,14 @@ module.exports = async(req, res) => {
         const queryResult = await query(queryString, parameters);
         if (queryResult.rows.length === 0)
         {
-            throw new Error('User does not exist.');
+            throw new Error('user does not exist');
         }
         
         const phoneNumber = queryResult.rows[0].phone_number;
         const keyToCompare = generate.generateKey(userID, phoneNumber);
         if (keyToCompare !== tokenPayload.key) 
         {
-            throw new Error('Phone number not recognized.');
+            throw new Error('phone number not recognized');
         }
 
         const user = {

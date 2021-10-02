@@ -12,7 +12,7 @@ const authentication = handler => {
             const tokenPayload = jwt.verify(accessToken, JWT_SECRET_KEY);
             if (tokenPayload.type !== 'access')
             {
-                throw new Error('Wrong token type.');
+                throw new Error('wrong token type');
             }
 
             req.middleware = {
