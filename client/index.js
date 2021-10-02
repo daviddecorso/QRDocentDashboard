@@ -5,6 +5,7 @@ import { CssBaseline } from '@material-ui/core';
 import EditExhibit from './routes/editExhibit';
 import Exhibits from './routes/exhibits';
 import IndexRoute from './routes/home';
+import Login from './routes/login';
 import NavBar from './components/nav-bar';
 import QrRedirect from './routes/qr-redirect';
 import React from 'react';
@@ -22,6 +23,9 @@ export default function App() {
                         <Route exact path="/">
                             <NavBar />
                             <IndexRoute />
+                        </Route>
+                        <Route exacy path="/login">
+                            <Login />
                         </Route>
                         <Route path="/qr">
                             <QrRedirect />

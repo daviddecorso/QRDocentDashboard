@@ -7,7 +7,7 @@ function Brand() {
     return (
         <div
             style={{
-                positon: 'fixed',
+                position: 'fixed',
                 left: '0',
                 top: '0',
                 display: 'flex',
