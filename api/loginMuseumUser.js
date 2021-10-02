@@ -25,8 +25,8 @@ module.exports = async(req, res) =>
             .then(message => {
                 console.log(message.sid);
                 const resultObject = {
-                    user_id: userID,
-                    confirmation_code: randomSixDigitCode
+                    userID: userID,
+                    confirmationCode: randomSixDigitCode
                 };
 
                 res.status(200).send(JSON.stringify(success(resultObject)));

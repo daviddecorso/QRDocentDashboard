@@ -20,7 +20,7 @@ function generateKey(id, uniqueUserString)
 
 function adminUserAccessToken(user)
 {
-    const userID = user.user_id;
+    const userID = user.userID;
     const email = user.email;
     const type = 'access';
     const tokenPayload = { type, userID, email };
@@ -30,7 +30,7 @@ function adminUserAccessToken(user)
 
 function adminUserRefreshToken(user)
 {
-    const userID = user.user_id;
+    const userID = user.userID;
     const email = user.email;
     const password = user.password;
     const type = 'refresh';
@@ -42,8 +42,8 @@ function adminUserRefreshToken(user)
 
 function museumUserAccessToken(user)
 {
-    const userID = user.user_id;
-    const phoneNumber = user.phone_number;
+    const userID = user.userID;
+    const phoneNumber = user.phoneNumber;
     const type = 'access';
     const tokenPayload = { type, userID, phoneNumber };
     const accessToken = jwt.sign(tokenPayload, JWT_SECRET_KEY, { expiresIn: FIFTEEN_MINUTES_IN_SECONDS });
@@ -52,8 +52,8 @@ function museumUserAccessToken(user)
 
 function museumUserRefreshToken(user)
 {
-    const userID = user.user_id;
-    const phoneNumber = user.phone_number;
+    const userID = user.userID;
+    const phoneNumber = user.phoneNumber;
     const type = 'refresh';
     const key = generateKey(userID, phoneNumber);
     const tokenPayload = { type, userID, phoneNumber, key };
