@@ -1,7 +1,7 @@
 CREATE TABLE admin.user(
     user_id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL DEFAULT '',
-    password CHAR(95) NOT NULL DEFAULT '',
+    email TEXT NOT NULL DEFAULT '',
+    password TEXT NOT NULL DEFAULT '',
     museum_id INT NOT NULL,
     CONSTRAINT fk_admin_user_admin_museum FOREIGN KEY(museum_id) REFERENCES admin.museum(museum_id),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

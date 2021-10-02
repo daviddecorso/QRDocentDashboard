@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION museum.fn_register_museum_user(
-   _phone_number VARCHAR(50) = ''
+   _phone_number TEXT = ''
 )
 RETURNS BOOLEAN
 LANGUAGE plpgsql

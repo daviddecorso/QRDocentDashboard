@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION admin.fn_register_admin_user(
-   _email VARCHAR(255) = '',
-   _password CHAR(95) = '',
+   _email TEXT = '',
+   _password TEXT = '',
    _museum_id INT = 0
 )
 RETURNS BOOLEAN

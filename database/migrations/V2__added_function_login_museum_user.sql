@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION museum.fn_login_museum_user(
-   _phone_number VARCHAR(50) = ''
+   _phone_number TEXT = ''
 )
 RETURNS INT
 LANGUAGE plpgsql
