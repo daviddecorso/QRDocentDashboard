@@ -19,7 +19,6 @@ module.exports = async(req, res) => {
         const userID = tokenPayload.userID;
         const queryString = 'SELECT phone_number FROM museum.user WHERE user_id = $1';
         const parameters = [userID];
-        console.log(`userID: ${userID}`);
         const queryResult = await query(queryString, parameters);
         if (queryResult.rows.length === 0)
         {

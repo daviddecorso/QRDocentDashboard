@@ -67,5 +67,6 @@ export default
     adminUserRefreshToken,
     museumUserAccessToken,
     museumUserRefreshToken,
-    generateKey
+    generateKey,
+    encrypt
 };
