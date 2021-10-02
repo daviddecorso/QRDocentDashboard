@@ -1,5 +1,5 @@
 import generate from './utility/generateToken';
-import jwt from 'jsonwebtoken';
+
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 module.exports = (req, res) => {
@@ -10,10 +10,8 @@ module.exports = (req, res) => {
         phoneNumber: phoneNumber
     };
 
-    const accessToken = generate.museumUserRefreshToken(user);
-    const decodedAccessToken = jwt.verify(accessToken, JWT_SECRET_KEY);
+    const accessToken = generate.museumUserAccessToken(user);
+    const refreshToken = generate.museumUserRefreshToken(user);
 
-    console.log(`accessToken: ${accessToken}\n\ndecoded accessToken: ${JSON.stringify(decodedAccessToken)}\n`);
-
-    res.status(200).send('hi');
+    res.status(200).send(JSON.stringify({ accessToken, refreshToken }));
 };
