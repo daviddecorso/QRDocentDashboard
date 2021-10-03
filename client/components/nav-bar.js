@@ -24,7 +24,10 @@ const pageStyles = {
         left: '0',
         top: '0',
         borderRight: '1px solid #B8B8B8',
-        paddingBottom: '20vh'
+        paddingBottom: '20vh',
+        '& button': {
+            fontSize: '18px'
+        }
     },
     darkDiv: {
         position: 'fixed',
