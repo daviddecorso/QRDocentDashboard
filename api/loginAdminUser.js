@@ -12,7 +12,8 @@ module.exports = async(req, res) =>
     const queryResult = await query(queryString, parameters);
     if (queryResult.rows.length === 0)
     {
-        res.status(200).send(JSON.stringify(failure('incorrect email or password')));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure('incorrect email or password')));
         return;
     }
 
@@ -20,7 +21,8 @@ module.exports = async(req, res) =>
     const isPasswordCorrect = await argon2.verify(passwordStoredInDatabase, password);
     if (!isPasswordCorrect)
     {
-        res.status(200).send(JSON.stringify(failure('incorrect email or password')));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure('incorrect email or password')));
         return;
     }
 
@@ -33,5 +35,6 @@ module.exports = async(req, res) =>
 
     const accessToken = generate.adminUserAccessToken(user);
     const refreshToken = generate.adminUserRefreshToken(user);
-    res.status(200).send(JSON.stringify(success({ accessToken, refreshToken })));
+    res.status(200).setHeader('Content-Type', 'application/json')
+        .send(JSON.stringify(success({ accessToken, refreshToken })));
 };
