@@ -1,36 +1,243 @@
----
 openapi: 3.0.0
 info:
-  title: QR Docent APIs
   version: 1.0.0
+  title: QR Docent APIs
+  description: ''
+  
 servers:
-- url: https://qrdocent.com/api
-paths:
-  /testapi:
-    get:
-      summary: Testing SwaggerHub with testapi
-      parameters:
-      - name: name
-        in: query
-        description: Hello message response with given input.
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          default: test
+  - url: https://qrdocent.com/api
+  
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
+  
+paths: 
+  # =============================== Museum APIs ===============================
+  
+  /registerMuseumUser:
+    post:
+      tags:
+        - Museum
+      summary: Registers a mobile user
+      description: Pass in a valid phone number in the request body following the format [+] [country code] [subscriber number including area code].
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+              example: 
+                phoneNumber: '+13057101065'
       responses:
-        "200":
-          description: Hello message with optional name query.
+        '200':
+          description: Possible responses
           content:
-            text/*:
+            application/json:
               schema:
-                type: string
-              examples:
-                default:
-                  summary: No value for name.
-                  value: Hello default!
-                withName:
-                  summary: name=test.
-                  value: Hello test!
-components: {}
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Registration successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Registration failed
+                  
+  /loginMuseumUser:
+    post:
+      tags:
+        - Museum
+      summary: Logs in a mobile user
+      description: Sends a confirmation code if the phone number is registered. Pass in a valid phone number in the request body following the format [+] [country code] [subscriber number including area code].
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+              example: 
+                phoneNumber: '+13057101065'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      accessToken: '<access token>'
+                      refreshToken: '<refresh token>'
+                      confirmationCode: 101010
+                  summary: Login successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Login failed
+                  
+  /refreshMuseumUserToken:
+    get:
+      tags:
+        - Museum
+      summary: Resfreshes a mobile users access token
+      description: Once an access token has expired, use this to receive a new one. The refresh token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {refresh token}'.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      accessToken: '<access token>'
+                  summary: Successfully retreive new access token
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Refresh token provided is invalid
+                serverfailure:
+                  value: 
+                    error: 
+                      code: "<error code>"
+                      message: '<error message>'
+                  summary: No refresh token provided in header (server error)
+                 
+                 
+  # =============================== Admin APIs ===============================        
+      
+  /registerAdminUser:
+    post:
+      tags:
+        - Admin
+      summary: Registers an admin user
+      description: An authorization code must be sent along with the credentials to register an admin.
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                museumID:
+                  type: integer
+                authorization:
+                  type: string
+              example: 
+                email: 'test@email.com'
+                password: 'mypass123'
+                museumID: 1
+                authorization: 'myAuthCode'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Registration successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Registration failed
+                  
+  /loginAdminUser:
+    post:
+      tags:
+        - Admin
+      summary: Logs in an admin user
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example: 
+                email: 'test@email.com'
+                password: 'mypass123'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      accessToken: '<access token>'
+                      refreshToken: '<refresh token>'
+                  summary: Login successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Login failed
+                  
+  /refreshAdminUserToken:
+    get:
+      tags:
+        - Admin
+      summary: Resfreshes an admin users access token
+      description: Once an access token has expired, use this to receive a new one. The refresh token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {refresh token}'.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      accessToken: '<access token>'
+                  summary: Successfully retreive new access token
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Refresh token provided is invalid
+                serverfailure:
+                  value: 
+                    error: 
+                      code: "<error code>"
+                      message: '<error message>'
+                  summary: No refresh token provided in header (server error)
