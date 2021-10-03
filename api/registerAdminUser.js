@@ -16,15 +16,18 @@ module.exports = async(req, res) =>
 
         if (queryResult.rows[0].success)
         {
-            res.status(200).send(JSON.stringify(success()));
+            res.status(200).setHeader('Content-Type', 'application/json')
+                .send(JSON.stringify(success()));
         }
         else
         {
-            res.status(200).send(JSON.stringify(failure('user already exists')));
+            res.status(200).setHeader('Content-Type', 'application/json')
+                .send(JSON.stringify(failure('user already exists')));
         }
     }
     else
     {
-        res.status(200).send(JSON.stringify(failure('not authorized to register admin')));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure('not authorized to register admin')));
     }
 };

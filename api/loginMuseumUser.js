@@ -37,16 +37,19 @@ module.exports = async(req, res) =>
                     confirmationCode: randomSixDigitCode
                 };
 
-                res.status(200).send(JSON.stringify(success(resultObject)));
+                res.status(200).setHeader('Content-Type', 'application/json')
+                    .send(JSON.stringify(success(resultObject)));
             })
             .catch(error => {
                 console.log(error);
 
-                res.status(200).send(JSON.stringify(failure(error.message)));
+                res.status(200).setHeader('Content-Type', 'application/json')
+                    .send(JSON.stringify(failure(error.message)));
             });
     }
     else
     {
-        res.status(200).send(JSON.stringify(failure('user does not exist')));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure('user does not exist')));
     }
 };

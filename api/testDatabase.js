@@ -27,5 +27,6 @@ module.exports = async(req, res) =>
         users: users
     };
 
-    res.status(200).send(JSON.stringify(jsonResult));
+    res.status(200).setHeader('Content-Type', 'application/json')
+        .send(JSON.stringify(jsonResult));
 };

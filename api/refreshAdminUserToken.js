@@ -42,10 +42,12 @@ module.exports = async(req, res) => {
             museumID: museumID
         };
         const newAccessToken = generate.adminUserAccessToken(user);
-        res.status(200).send(JSON.stringify(success({ accessToken: newAccessToken })));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(success({ accessToken: newAccessToken })));
     }
     catch (error)
     {
-        res.status(200).send(JSON.stringify(failure(error.message)));
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure(error.message)));
     }
 };

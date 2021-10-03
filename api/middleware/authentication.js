@@ -25,7 +25,8 @@ const authentication = handler => {
         }
         catch (error)
         {
-            res.status(200).send(JSON.stringify(failure(error.message)));
+            res.status(200).setHeader('Content-Type', 'application/json')
+                .send(JSON.stringify(failure(error.message)));
         }
     };
 };
