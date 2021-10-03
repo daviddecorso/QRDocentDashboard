@@ -1,4 +1,4 @@
-import { query } from '../database/databaseConnection';
+import query from '../database/databaseConnection';
 
 module.exports = async(req, res) =>
 {
@@ -14,8 +14,8 @@ module.exports = async(req, res) =>
         for (let i = 0; i < queryResult.rows.length; i++)
         {
             const user = {
-                user_id: queryResult.rows[i].user_id,
-                phone_number: queryResult.rows[i].phone_number
+                userID: queryResult.rows[i].user_id,
+                phoneNumber: queryResult.rows[i].phone_number
             };
 
             users.push(user);
@@ -23,7 +23,7 @@ module.exports = async(req, res) =>
     }
 
     const jsonResult = {
-        row_count: queryResult.rows.length,
+        rowCount: queryResult.rows.length,
         users: users
     };
 

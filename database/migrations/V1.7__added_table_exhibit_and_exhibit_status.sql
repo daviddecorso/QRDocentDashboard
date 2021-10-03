@@ -1,6 +1,6 @@
 CREATE TABLE museum.exhibit_status(
     exhibit_status_id SERIAL PRIMARY KEY,
-    description VARCHAR(256) NOT NULL DEFAULT '',
+    description TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -17,11 +17,11 @@ INSERT INTO museum.exhibit_status(exhibit_status_id, description) VALUES (2, 'A 
 
 CREATE TABLE museum.exhibit(
     exhibit_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL DEFAULT '',
+    name TEXT NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
-    image VARCHAR(512) NOT NULL DEFAULT '',
-    video VARCHAR(512) NOT NULL DEFAULT '',
-    website VARCHAR(512) NOT NULL DEFAULT '',
+    image TEXT NOT NULL DEFAULT '',
+    video TEXT NOT NULL DEFAULT '',
+    website TEXT NOT NULL DEFAULT '',
     exhibit_status_id INT NOT NULL,
     museum_id INT NOT NULL,
     CONSTRAINT fk_museum_exhibit_museum_exhibit_status FOREIGN KEY(exhibit_status_id) REFERENCES museum.exhibit_status(exhibit_status_id),
@@ -30,10 +30,10 @@ CREATE TABLE museum.exhibit(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX idx_unique_museum_exhibit_fk_exhibit_status_id
+CREATE INDEX idx_museum_exhibit_fk_exhibit_status_id
 ON museum.exhibit(exhibit_status_id);
 
-CREATE UNIQUE INDEX idx_unique_museum_exhibit_fk_museum_id
+CREATE INDEX idx_museum_exhibit_fk_museum_id
 ON museum.exhibit(museum_id);
 
 CREATE UNIQUE INDEX idx_unique_museum_exhibit_name

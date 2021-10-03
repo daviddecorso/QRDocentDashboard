@@ -20,6 +20,7 @@
     "@nivo/line": "^0.73.0",
     "@nivo/pie": "^0.73.0",
     "@tabler/icons": "^1.41.2",
+    "argon2": "^0.28.2",
     "bcrypt": "^5.0.1",
     "debug": "^4.3.1",
     "http-errors": "^1.8.0",

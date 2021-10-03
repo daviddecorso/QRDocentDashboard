@@ -11,11 +11,8 @@ async function query(queryString, parameters)
     }
     catch (error)
     {
-        throw new Error('Error executing query.\n' + error.stack);
+        throw new Error('error executing query:\n' + error.stack);
     }
 }
 
-module.exports = 
-{
-    query
-};
+export default query;

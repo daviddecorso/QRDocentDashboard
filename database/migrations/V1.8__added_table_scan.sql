@@ -8,10 +8,10 @@ CREATE TABLE museum.scan(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX idx_unique_museum_scan_fk_user_id
+CREATE INDEX idx_museum_scan_fk_user_id
 ON museum.scan(user_id);
 
-CREATE UNIQUE INDEX idx_unique_museum_scan_fk_exhibit_id
+CREATE INDEX idx_museum_scan_fk_exhibit_id
 ON museum.scan(exhibit_id);
 
 CREATE TRIGGER tr_museum_scan_update_timestamp
