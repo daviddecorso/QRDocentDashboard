@@ -7,19 +7,21 @@ CREATE OR REPLACE FUNCTION admin.fn_create_museum_exhibit(
    _exhibit_status_id INT = 0,
    _museum_id INT = 0
 )
-RETURNS BOOLEAN
+RETURNS INT
 LANGUAGE plpgsql
 AS
 $$
+    DECLARE
+        _exhibit_id INT;
     BEGIN
         IF EXISTS(
                     SELECT 1
                     FROM museum.exhibit
-                    WHERE name = _name
+                    WHERE name = _name AND museum_id = _museum_id
                     LIMIT 1
                  )
         THEN
-            RETURN FALSE;
+            RETURN 0;
         ELSE
             INSERT INTO museum.exhibit
             (
@@ -40,9 +42,10 @@ $$
                 _website,
                 _exhibit_status_id,
                 _museum_id
-            );
+            )
+            RETURNING exhibit_id INTO _exhibit_id;
 
-            RETURN TRUE;
+            RETURN _exhibit_id;
         END IF;
     END
 $$

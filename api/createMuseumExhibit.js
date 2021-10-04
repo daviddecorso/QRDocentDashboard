@@ -2,7 +2,6 @@ import { failure, success } from './utility/responseObject';
 import authentication from './middleware/authentication';
 import query from '../database/databaseConnection';
 
-// Might need to change to return the primary key on ID upon success (google returning id from an insert into). Finish rest of CRUD for exhibits
 const API = async(req, res) =>
 {
     const userInfo = req.middleware.userInfo;
@@ -14,14 +13,15 @@ const API = async(req, res) =>
     const statusID = req.body.statusID;
     const museumID = userInfo.museumID;
 
-    const queryString = 'SELECT admin.fn_create_museum_exhibit($1, $2, $3, $4, $5, $6, $7) AS success';
+    const queryString = 'SELECT admin.fn_create_museum_exhibit($1, $2, $3, $4, $5, $6, $7) AS exhibit_id';
     const parameters = [name, description, imageURL, videoURL, websiteURL, statusID, museumID];
     const queryResult = await query(queryString, parameters);
+    const exhibitID = queryResult.rows[0].exhibit_id;
     
-    if (queryResult.rows[0].success)
+    if (exhibitID !== 0)
     {
         res.status(200).setHeader('Content-Type', 'application/json')
-            .send(JSON.stringify(success()));
+            .send(JSON.stringify(success({ exhibitID })));
     }
     else
     {
