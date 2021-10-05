@@ -1,6 +1,7 @@
-DROP FUNCTION admin.fn_register_admin_user(_email varchar, _password varchar, _museum_id integer);
-DROP FUNCTION museum.fn_register_museum_user(_phone_number varchar);
-DROP FUNCTION museum.fn_login_museum_user(_phone_number varchar);
+DROP FUNCTION admin.fn_create_museum_exhibit(_name text, _description text, _image text, _video text, _website text, _exhibit_status_id integer, _museum_id integer);
+DROP FUNCTION admin.fn_register_admin_user(_email TEXT, _password TEXT, _museum_id integer);
+DROP FUNCTION museum.fn_register_museum_user(_phone_number TEXT);
+DROP FUNCTION museum.fn_login_museum_user(_phone_number TEXT);
 DROP TABLE museum.scan;
 DROP TABLE museum.exhibit;
 DROP TABLE museum.exhibit_status;

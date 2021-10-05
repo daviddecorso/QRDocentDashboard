@@ -25,6 +25,8 @@ const authentication = handler => {
         }
         catch (error)
         {
+            // This catch block will return false for any unverified JWT tokens 
+            // AND even catches any errors the requested API might throw (such as query errors)
             res.status(200).setHeader('Content-Type', 'application/json')
                 .send(JSON.stringify(failure(error.message)));
         }
