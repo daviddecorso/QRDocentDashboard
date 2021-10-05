@@ -18,7 +18,7 @@ const API = async(req, res) =>
         `;
     const parameters = [name, description, imageURL, videoURL, websiteURL, exhibitID];
     await query(queryString, parameters);
-    
+
     res.status(200).setHeader('Content-Type', 'application/json')
         .send(JSON.stringify(success()));
 };

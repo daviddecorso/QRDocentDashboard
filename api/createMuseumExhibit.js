@@ -19,7 +19,7 @@ const API = async(req, res) =>
         `;
     const parameters = [name, description, imageURL, videoURL, websiteURL, 0, museumID];
     const queryResult = await query(queryString, parameters);
-    
+
     if (queryResult.rows.length > 0)
     {
         res.status(200).setHeader('Content-Type', 'application/json')
