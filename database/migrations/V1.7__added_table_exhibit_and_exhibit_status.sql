@@ -36,7 +36,7 @@ ON museum.exhibit(exhibit_status_id);
 CREATE INDEX idx_museum_exhibit_fk_museum_id
 ON museum.exhibit(museum_id);
 
-CREATE UNIQUE INDEX idx_unique_museum_exhibit_name
+CREATE INDEX idx_museum_exhibit_name
 ON museum.exhibit(name);
 
 CREATE TRIGGER tr_museum_exhibit_update_timestamp

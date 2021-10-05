@@ -115,13 +115,7 @@ paths:
                   value: 
                     success: false
                     message: '<error message>'
-                  summary: Refresh token provided is invalid
-                serverfailure:
-                  value: 
-                    error: 
-                      code: "<error code>"
-                      message: '<error message>'
-                  summary: No refresh token provided in header (server error)
+                  summary: Refresh token provided is empty or invalid
                  
                  
   # =============================== Admin APIs ===============================        
@@ -234,10 +228,4 @@ paths:
                   value: 
                     success: false
                     message: '<error message>'
-                  summary: Refresh token provided is invalid
-                serverfailure:
-                  value: 
-                    error: 
-                      code: "<error code>"
-                      message: '<error message>'
-                  summary: No refresh token provided in header (server error)
+                  summary: Refresh token provided is empty or invalid
