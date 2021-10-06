@@ -116,6 +116,126 @@ paths:
                     success: false
                     message: '<error message>'
                   summary: Refresh token provided is empty or invalid
+                  
+  /createMuseumUserScan:
+    post:
+      tags:
+        - Museum
+      summary: Creates a scan for a mobile user
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                exhibitID:
+                  type: integer
+              example: 
+                exhibitID: 3
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      insertedScan:
+                        scanID: 21
+                        name: 'test exhibit'
+                        description: 'description for the test exhibit'
+                        imageURL: 'imageURL.com/image'
+                        videoURL: 'videoURL.com/video'
+                        websiteURL: 'websiteURL.com'
+                  summary: Scan creation successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Scan creation failed
+                  
+  /deleteMuseumUserScan:
+    post:
+      tags:
+        - Museum
+      summary: Deletes a scan for a mobile user
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                scanID:
+                  type: integer
+              example: 
+                scanID: 1
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Scan deletion successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Scan deletion failed
+                  
+  /getAllMuseumUserScans:
+    get:
+      tags:
+        - Museum
+      summary: Gets all scans for a mobile user
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      scans: 
+                        - scanID: 1
+                          name: 'My test Exhibit1'
+                          description: 'this is my test exhibit bio'
+                          imageURL: 'test.com'
+                          videoURL: 'test.com'
+                          websiteURL: 'test.com'
+                        - scanID: 2
+                          name: 'My test Exhibit2'
+                          description: 'this is my test exhibit bio 2'
+                          imageURL: 'test2.com'
+                          videoURL: 'test2.com'
+                          websiteURL: 'test2.com'
+                  summary: Scans retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Scans retrieval failed
                  
                  
   # =============================== Admin APIs ===============================        
