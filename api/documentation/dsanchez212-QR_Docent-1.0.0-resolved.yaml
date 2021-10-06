@@ -229,3 +229,184 @@ paths:
                     success: false
                     message: '<error message>'
                   summary: Refresh token provided is empty or invalid
+                  
+  /createMuseumExhibit:
+    post:
+      tags:
+        - Admin
+      summary: Creates an exhibit for a museum
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                imageURL:
+                  type: integer
+                videoURL:
+                  type: string
+                websiteURL:
+                  type: string
+              example: 
+                name: 'test exhibit'
+                description: 'this is my test exhibit bio'
+                imageURL: 'test.com'
+                videoURL: 'test.com'
+                websiteURL: 'test.com'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result: 
+                      exhibitID: 1
+                  summary: Exhibit creation successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Exhibit creation failed
+                  
+  /updateMuseumExhibit:
+    post:
+      tags:
+        - Admin
+      summary: Updates an existing exhibit for a museum
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                imageURL:
+                  type: integer
+                videoURL:
+                  type: string
+                websiteURL:
+                  type: string
+                exhibitID:
+                  type: integer
+              example: 
+                name: 'test exhibit'
+                description: 'this is my test exhibit bio'
+                imageURL: 'test.com'
+                videoURL: 'test.com'
+                websiteURL: 'test.com'
+                exhibitID: 1
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Exhibit update successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Exhibit update failed
+                  
+  /deleteMuseumExhibit:
+    post:
+      tags:
+        - Admin
+      summary: Deletes an existing exhibit for a museum
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                exhibitID:
+                  type: integer
+              example: 
+                exhibitID: 1
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Exhibit deletion successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Exhibit deletion failed
+                  
+  /getAllMuseumExhibits:
+    get:
+      tags:
+        - Admin
+      summary: Retreives all exhibits for a museum
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'.
+      security:
+        - bearerAuth: []  
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      exhibits: 
+                        - exhibitID: 1
+                          name: 'My test Exhibit1'
+                          description: 'this is my test exhibit bio'
+                          imageURL: 'test.com'
+                          videoURL: 'test.com'
+                          websiteURL: 'test.com'
+                          exhibitStatusID: 0
+                          createdAt: '2021-10-05T19:55:56.587Z'
+                        - exhibitID: 2
+                          name: 'My test Exhibit2'
+                          description: 'this is my test exhibit bio 2'
+                          imageURL: 'test2.com'
+                          videoURL: 'test2.com'
+                          websiteURL: 'test2.com'
+                          exhibitStatusID: 0
+                          createdAt: '2021-10-05T19:55:56.587Z'
+                  summary: Exhibits retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Exhibits retrieval failed
