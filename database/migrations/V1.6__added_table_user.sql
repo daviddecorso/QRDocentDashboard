@@ -1,6 +1,7 @@
 CREATE TABLE museum.user(
     user_id SERIAL PRIMARY KEY,
     phone_number TEXT NOT NULL DEFAULT '',
+    confirmation_code TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

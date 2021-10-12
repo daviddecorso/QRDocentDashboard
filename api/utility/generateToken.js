@@ -56,8 +56,9 @@ function museumUserRefreshToken(user)
 {
     const userID = user.userID;
     const phoneNumber = user.phoneNumber;
+    const confirmationCode = user.confirmationCode;
     const type = 'refresh';
-    const key = generateKey(userID, phoneNumber);
+    const key = generateKey(userID, confirmationCode);
     const tokenPayload = { type, userID, phoneNumber, key };
     const refreshToken = jwt.sign(tokenPayload, JWT_SECRET_KEY);
     return refreshToken;

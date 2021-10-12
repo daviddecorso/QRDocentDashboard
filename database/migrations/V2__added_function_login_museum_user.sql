@@ -1,7 +1,8 @@
 CREATE OR REPLACE FUNCTION museum.fn_login_museum_user(
-   _phone_number TEXT = ''
+   _phone_number TEXT = '',
+   _confirmation_code TEXT = ''
 )
-RETURNS INT
+RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS
 $$
@@ -15,9 +16,13 @@ $$
 
         IF _user_id IS NOT NULL
         THEN
-            RETURN _user_id;
+            UPDATE museum.user 
+            SET confirmation_code = _confirmation_code
+            WHERE user_id = _user_id;
+
+            RETURN TRUE;
         ELSE
-            RETURN 0;
+            RETURN FALSE;
         END IF;
     END
 $$
