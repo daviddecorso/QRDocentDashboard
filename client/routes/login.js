@@ -1,31 +1,152 @@
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, TextField, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import ActionButton from '../components/buttons/action-button';
+import ActionOutlineButton from '../components/buttons/action-outline-button';
 import { Link } from 'react-router-dom';
-import React from 'react';
+import useAuth from '../contexts/use-auth';
 
 const pageStyles = {
-    header: { marginTop: '10vh' }
+    header: { marginTop: '10vh' },
+    button: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    container: { display: 'flex', flexDirection: 'row' },
+    leftDiv: {
+        width: '45vw',
+        height: '100vh',
+        backgroundColor: '#684DD4',
+        paddingLeft: '7vw',
+        borderRadius: '0 20px 20px 0'
+    },
+    rightDiv: { maxWidth: '550px', marginTop: '20vh', marginLeft: '5vw' },
+    signinText: { fontSize: '50px', fontWeight: 'bold', marginBottom: '1rem' },
+    subtitleText: { fontSize: '22px', color: '#CBCBCB' },
+    noAcctDiv: { maxWidth: '550px', marginTop: '15vh' },
+    formDiv: { display: 'flex', flexDirection: 'column', maxWidth: '500px' },
+    formItem: { marginTop: '1rem' },
+    errorDiv: {
+        backgroundColor: '#DE312B',
+        textAlign: 'center',
+        marginTop: '1.5rem',
+        borderRadius: '10px',
+        maxWidth: '500px'
+    }
 };
 
 function Login() {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
+    const auth = useAuth();
+
+    const [errorMessage, setErrorMessage] = useState();
+
+    const loginAdminUser = () => {
+        const emailInput = document.getElementById('email-input').value;
+        const passwordInput = document.getElementById('password-input').value;
+
+        const { from } = location.state || { from: { pathname: '/' } };
+        auth.signin(emailInput, passwordInput, err => {
+            if (err) {
+                setErrorMessage(err);
+
+                return;
+            }
+
+            history.replace(from);
+        });
+    };
+
     return (
         <>
-            <div>
-                <Container maxWidth="lg">
-                    <Typography component="h1" variant="h2" className={classes.header}>
-                        Login to Your Account
-                    </Typography>
-                    <Typography component="h2" variant="h5">
-                        Sign in here to view your museum.
-                    </Typography>
-                    <Link>
-                        <Typography component="span" variant="body1">
+            <div className={classes.container}>
+                <div className={classes.leftDiv}>
+                    <div className={classes.noAcctDiv}>
+                        <Typography component="h1" className={classes.signinText}>
                             Don&apos;t have an account?
                         </Typography>
+                        <Typography component="p" className={classes.subtitleText}>
+                            Get in touch to see what QR Docent can do for your museum!
+                        </Typography>
+                        <div className={classes.formDiv}>
+                            <TextField
+                                id="name-input-contact"
+                                variant="outlined"
+                                label="Name"
+                                className={classes.formItem}
+                            />
+                            <TextField
+                                id="email-input-contact"
+                                variant="outlined"
+                                label="Email"
+                                className={classes.formItem}
+                            />
+                            <TextField
+                                id="phone-input-contact"
+                                variant="outlined"
+                                label="Phone number"
+                                className={classes.formItem}
+                            />
+                            <div className={classes.button}>
+                                <ActionOutlineButton
+                                    text={'GET IN TOUCH'}
+                                    width={'500px'}
+                                    height={'52px'}
+                                    bw={'4px'}
+                                    fontSize={'24px'}
+                                    tm={'1rem'}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={classes.rightDiv}>
+                    <Typography component="h1" className={classes.signinText}>
+                        Sign in
+                    </Typography>
+                    <Typography component="p" className={classes.subtitleText}>
+                        Welcome back! Please sign in to your account to access content from your
+                        museum.
+                    </Typography>
+                    <div className={classes.formDiv}>
+                        <TextField
+                            id="email-input"
+                            variant="outlined"
+                            label="Email"
+                            className={classes.formItem}
+                        />
+                        <TextField
+                            id="password-input"
+                            variant="outlined"
+                            label="Password"
+                            className={classes.formItem}
+                        />
+                        <div className={classes.button}>
+                            <ActionButton
+                                onClick={loginAdminUser}
+                                className={classes.button}
+                                text={'SIGN IN'}
+                                width={'500px'}
+                                height={'52px'}
+                                fontSize={'24px'}
+                                tm={'1rem'}
+                            />
+                        </div>
+                    </div>
+
+                    <Link>
+                        <Typography component="span" variant="body1">
+                            Forgot password?
+                        </Typography>
                     </Link>
-                </Container>
+                    <div className={classes.errorDiv}>
+                        <Typography component="span" variant="body1">
+                            {errorMessage}
+                        </Typography>
+                    </div>
+                </div>
             </div>
         </>
     );
