@@ -1,5 +1,4 @@
 import { failure, success } from '../api/utility/responseObject';
-import generate from './utility/generateToken';
 import { getTwilioCredentials } from '../configuration';
 import query from '../database/databaseConnection';
 const twilioCredentials = getTwilioCredentials();
@@ -8,37 +7,24 @@ const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials
 module.exports = async(req, res) =>
 {
     const phoneNumber = req.body.phoneNumber;
-    const queryString = 'SELECT museum.fn_login_museum_user($1) AS user_id';
-    const parameters = [phoneNumber];
+    const randomSixDigitCode = (Math.floor(100000 + Math.random() * 900000)).toString();
+    const queryString = 'SELECT museum.fn_login_museum_user($1, $2) AS success';
+    const parameters = [phoneNumber, randomSixDigitCode];
     const queryResult = await query(queryString, parameters);
-    const userID = queryResult.rows[0].user_id;
 
-    if (userID !== 0)
+    if (queryResult.rows[0].success)
     {
-        const user = {
-            userID,
-            phoneNumber
-        };
-        const accessToken = generate.museumUserAccessToken(user);
-        const refreshToken = generate.museumUserRefreshToken(user);
-        const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
-
         await client.messages
             .create({
-                body: 'Your confirmation code is: ' + randomSixDigitCode.toString(),
+                body: 'Your confirmation code is: ' + randomSixDigitCode,
                 messagingServiceSid: twilioCredentials.messagingServiceSID,
                 to: phoneNumber
             })
             .then(message => {
                 console.log(message.sid);
-                const resultObject = {
-                    accessToken,
-                    refreshToken,
-                    confirmationCode: randomSixDigitCode
-                };
 
                 res.status(200).setHeader('Content-Type', 'application/json')
-                    .send(JSON.stringify(success(resultObject)));
+                    .send(JSON.stringify(success()));
             })
             .catch(error => {
                 console.log(error);

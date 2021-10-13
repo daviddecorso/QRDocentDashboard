@@ -17,7 +17,8 @@ module.exports = async(req, res) => {
         }
 
         const userID = tokenPayload.userID;
-        const queryString = 'SELECT phone_number FROM museum.user WHERE user_id = $1';
+        const phoneNumber = tokenPayload.phoneNumber;
+        const queryString = 'SELECT confirmation_code FROM museum.user WHERE user_id = $1';
         const parameters = [userID];
         const queryResult = await query(queryString, parameters);
         if (queryResult.rows.length === 0)
@@ -25,11 +26,11 @@ module.exports = async(req, res) => {
             throw new Error('user does not exist');
         }
 
-        const phoneNumber = queryResult.rows[0].phone_number;
-        const keyToCompare = generate.generateKey(userID, phoneNumber);
+        const confirmationCodeStoredInDatabase = queryResult.rows[0].confirmation_code;
+        const keyToCompare = generate.generateKey(userID, confirmationCodeStoredInDatabase);
         if (keyToCompare !== tokenPayload.key)
         {
-            throw new Error('phone number not recognized');
+            throw new Error('confirmation code has changed');
         }
 
         const user = {
