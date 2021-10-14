@@ -10,10 +10,10 @@ CREATE TRIGGER tr_museum_exhibit_content_type_update_timestamp
     FOR EACH ROW
 EXECUTE PROCEDURE museum.fn_update_timestamp();
 
-INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (1, 'Image');
-INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (2, 'Video');
-INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (3, 'Song');
-INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (4, 'Website');
+INSERT INTO museum.exhibit_content_type(exhibit_content_type_id, name) VALUES (1, 'Image');
+INSERT INTO museum.exhibit_content_type(exhibit_content_type_id, name) VALUES (2, 'Video');
+INSERT INTO museum.exhibit_content_type(exhibit_content_type_id, name) VALUES (3, 'Song');
+INSERT INTO museum.exhibit_content_type(exhibit_content_type_id, name) VALUES (4, 'Website');
 
 
 CREATE TABLE museum.exhibit_content(
