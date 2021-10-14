@@ -1,6 +1,6 @@
 CREATE TABLE museum.exhibit_content_type(
     exhibit_content_type_id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL DEFAULT '',
+    name TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -10,10 +10,10 @@ CREATE TRIGGER tr_museum_content_type_update_timestamp
     FOR EACH ROW
 EXECUTE PROCEDURE museum.fn_update_timestamp();
 
-INSERT INTO museum.content_type(exhibit_content_type_id, type) VALUES (1, 'Image');
-INSERT INTO museum.content_type(exhibit_content_type_id, type) VALUES (2, 'Video');
-INSERT INTO museum.content_type(exhibit_content_type_id, type) VALUES (3, 'Song');
-INSERT INTO museum.content_type(exhibit_content_type_id, type) VALUES (4, 'Website');
+INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (1, 'Image');
+INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (2, 'Video');
+INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (3, 'Song');
+INSERT INTO museum.content_type(exhibit_content_type_id, name) VALUES (4, 'Website');
 
 
 CREATE TABLE museum.exhibit_content(
