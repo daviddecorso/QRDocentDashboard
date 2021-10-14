@@ -20,6 +20,7 @@ CREATE TABLE museum.exhibit_content(
     exhibit_content_id SERIAL PRIMARY KEY,
     url TEXT NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
+    position INT NOT NULL,
     exhibit_content_type_id INT NOT NULL,
     exhibit_id INT NOT NULL,
     CONSTRAINT fk_museum_exhibit_content_museum_exhibit_content_type FOREIGN KEY(exhibit_content_type_id) REFERENCES museum.exhibit_content_type(exhibit_content_type_id),
