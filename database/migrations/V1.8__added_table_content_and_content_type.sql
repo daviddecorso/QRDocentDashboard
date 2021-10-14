@@ -5,8 +5,8 @@ CREATE TABLE museum.exhibit_content_type(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER tr_museum_content_type_update_timestamp
-    BEFORE UPDATE ON museum.content_type
+CREATE TRIGGER tr_museum_exhibit_content_type_update_timestamp
+    BEFORE UPDATE ON museum.exhibit_content_type
     FOR EACH ROW
 EXECUTE PROCEDURE museum.fn_update_timestamp();
 
