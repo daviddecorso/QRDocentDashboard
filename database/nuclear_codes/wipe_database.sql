@@ -1,3 +1,4 @@
+DROP FUNCTION admin.fn_create_museum_exhibit(_name text, _description text, _exhibit_contents json, _exhibit_status_id integer, _museum_id integer);
 DROP FUNCTION admin.fn_register_admin_user(_email TEXT, _password TEXT, _museum_id integer);
 DROP FUNCTION museum.fn_register_museum_user(_phone_number TEXT);
 DROP FUNCTION museum.fn_login_museum_user(_phone_number text, _confirmation_code text);

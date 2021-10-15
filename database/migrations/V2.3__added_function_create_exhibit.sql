@@ -9,79 +9,37 @@ RETURNS INT
 LANGUAGE plpgsql
 AS
 $$
+    DECLARE
+        _exhibit_id INT;
     BEGIN
-        -- CAN START WORKING ON THE FUNCTION NOW.
-        -- SOLVED STORING JSON TO TABLE AND NOW JUST SELECT THE PROPER TABLE TO CONVERT BACK TO JSON IN NODE
-        IF EXISTS(
-                    SELECT 1
-                    FROM admin.user
-                    WHERE email = _email
-                    LIMIT 1
-                 )
-        THEN
-            RETURN 0;
-        ELSE
-            INSERT INTO admin.user
-            (
-                email,
-                password,
-                museum_id
-            )
-            VALUES
-            (
-                _email,
-                _password,
-                _museum_id
-            );
+        INSERT INTO museum.exhibit
+        (
+            name,
+            description,
+            exhibit_status_id,
+            museum_id
+        )
+        VALUES
+        (
+            _name,
+            _description,
+            _exhibit_status_id,
+            _museum_id
+        )
+        RETURNING exhibit_id INTO _exhibit_id;
 
-            RETURN 1;
-        END IF;
+        INSERT INTO museum.exhibit_content
+        (
+            url,
+            description,
+            position,
+            exhibit_content_type_id,
+            exhibit_id
+        )
+        SELECT "URL", "description", "position", "contentTypeID", _exhibit_id
+        FROM json_to_recordset(_exhibit_contents)
+        AS ("URL" TEXT, "description" TEXT, "position" INT, "contentTypeID" INT);
+
+        RETURN _exhibit_id;
     END
 $$
-
-
-
--- TESTING
-DROP TABLE IF EXISTS my_table;
-
-CREATE TEMP TABLE my_table(
-    url TEXT NOT NULL DEFAULT '',
-    description TEXT NOT NULL DEFAULT '',
-    position INT NOT NULL,
-    exhibit_content_type_id INT NOT NULL,
-    exhibit_id INT NOT NULL
-);
-
-INSERT INTO my_table
-(
-    url,
-    description,
-    position,
-    exhibit_content_type_id,
-    exhibit_id
-)
-SELECT "URL", "description", "position", "contentTypeID", 1
-FROM json_to_recordset('
-                        [
-                            {
-                                "URL": "www.image.com/image",
-                                "description": "content description",
-                                "position": 1,
-                                "contentTypeID": 1
-                            },
-                            {
-                                "URL": "www.video.com/video",
-                                "description": "content description",
-                                "position": 2,
-                                "contentTypeID": 2
-                            }
-                        ]
-                        ')
-AS ("URL" TEXT, "description" TEXT, "position" INT, "contentTypeID" INT); --RETURNING url;
-
-
-SELECT 'name of exhibit' AS exhibit_name, 'description of exhibit' AS exhibit_description, *
-FROM my_table;
-
-
-DROP TABLE IF EXISTS my_table;
