@@ -33,7 +33,6 @@
     "react-router-dom": "^5.2.0",
     "react-stonecutter": "^0.3.10",
     "twilio": "^3.68.0",
-    "uuid": "^8.3.2",
     "vercel": "^23.1.2"
   },
   "devDependencies": {

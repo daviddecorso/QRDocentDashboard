@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function MobileNavButton({ text, path, isHover, icon, setPage }) {
+function MobileNavButton({ text, path, isHover, icon, setPage, overrideClick, overrideFunction }) {
     const activeStyle = {
         backgroundColor: 'rgba(255, 255, 255, 0.08)',
         justifyContent: 'left',
@@ -25,7 +25,7 @@ function MobileNavButton({ text, path, isHover, icon, setPage }) {
         <>
             <Link to={path} style={{ textDecoration: 'none' }}>
                 <Button
-                    onClick={onClick}
+                    onClick={overrideClick ? overrideFunction : onClick}
                     size="large"
                     startIcon={icon}
                     style={isHover === true ? activeStyle : nonActiveStyle}>
@@ -41,7 +41,9 @@ MobileNavButton.propTypes = {
     isHover: PropTypes.bool,
     path: PropTypes.string,
     setPage: PropTypes.func,
-    text: PropTypes.string
+    text: PropTypes.string,
+    overrideClick: PropTypes.bool,
+    overrideFunction: PropTypes.func
 };
 
 export default MobileNavButton;

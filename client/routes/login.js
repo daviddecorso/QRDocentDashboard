@@ -1,9 +1,10 @@
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import ActionButton from '../components/buttons/action-button';
 import ActionOutlineButton from '../components/buttons/action-outline-button';
-import { Link } from 'react-router-dom';
-import useAuth from '../contexts/use-auth';
+import axios from 'axios';
+import { getBaseURL } from '../../configuration';
 
 const pageStyles = {
     header: { marginTop: '10vh' },
@@ -38,24 +39,55 @@ function Login() {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
-    const auth = useAuth();
+    const history = useHistory();
+    const location = useLocation();
 
     const [errorMessage, setErrorMessage] = useState();
+    const [emailFieldError, setEmailFieldError] = useState(false);
+    const [emailErrorMsg, setEmailErrorMsg] = useState('');
+
+    const [passwordFieldError, setPasswordFieldError] = useState(false);
+    const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
 
     const loginAdminUser = () => {
         const emailInput = document.getElementById('email-input').value;
         const passwordInput = document.getElementById('password-input').value;
 
-        const { from } = location.state || { from: { pathname: '/' } };
-        auth.signin(emailInput, passwordInput, err => {
-            if (err) {
-                setErrorMessage(err);
+        let blankInput = false;
+        if (emailInput === '') {
+            setEmailFieldError(true);
+            setEmailErrorMsg('Email field must not be blank.');
+            blankInput = true;
+        }
+        if (passwordInput === '') {
+            setPasswordFieldError(true);
+            setPasswordErrorMsg('Password field must not be blank.');
+            blankInput = true;
+        }
+        if (blankInput) {
+            return;
+        }
 
-                return;
-            }
-
-            history.replace(from);
-        });
+        const { from } = location.state || { from: { pathname: '/home' } };
+        const body = {
+            email: emailInput,
+            password: passwordInput
+        };
+        axios
+            .post(getBaseURL() + 'api/loginAdminUser', body)
+            .then(res => {
+                console.log(res);
+                if (res.data.success) {
+                    localStorage.setItem('accessToken', res.data.result.accessToken);
+                    history.replace(from);
+                } else {
+                    setErrorMessage('Wrong email or password.');
+                }
+            })
+            .catch(err => {
+                setErrorMessage('An unexpected error occurred. Please try again.');
+                console.log(err);
+            });
     };
 
     return (
@@ -111,18 +143,48 @@ function Login() {
                         museum.
                     </Typography>
                     <div className={classes.formDiv}>
-                        <TextField
-                            id="email-input"
-                            variant="outlined"
-                            label="Email"
-                            className={classes.formItem}
-                        />
-                        <TextField
-                            id="password-input"
-                            variant="outlined"
-                            label="Password"
-                            className={classes.formItem}
-                        />
+                        {!emailFieldError && (
+                            <TextField
+                                id="email-input"
+                                variant="outlined"
+                                label="Email"
+                                className={classes.formItem}
+                            />
+                        )}
+
+                        {emailFieldError && (
+                            <TextField
+                                error
+                                helperText={emailErrorMsg}
+                                id="email-input"
+                                variant="outlined"
+                                label="Email"
+                                className={classes.formItem}
+                            />
+                        )}
+
+                        {!passwordFieldError && (
+                            <TextField
+                                id="password-input"
+                                variant="outlined"
+                                label="Password"
+                                type="password"
+                                className={classes.formItem}
+                            />
+                        )}
+
+                        {passwordErrorMsg && (
+                            <TextField
+                                error
+                                helperText={passwordErrorMsg}
+                                id="password-input"
+                                variant="outlined"
+                                label="Password"
+                                type="password"
+                                className={classes.formItem}
+                            />
+                        )}
+
                         <div className={classes.button}>
                             <ActionButton
                                 onClick={loginAdminUser}
