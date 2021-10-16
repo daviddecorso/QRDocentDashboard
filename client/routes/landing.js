@@ -81,17 +81,16 @@ function Landing() {
     return (
         <div>
             <div className={classes.nav}>
-                {isAuth === null ||
-                    (!isAuth && (
-                        <ActionOutlineButton
-                            text={'SIGN IN'}
-                            width={'160px'}
-                            height={'46px'}
-                            fontSize={'18px'}
-                            path={'/login'}
-                            rm={'30px'}
-                        />
-                    ))}
+                {!isAuth && (
+                    <ActionOutlineButton
+                        text={'SIGN IN'}
+                        width={'160px'}
+                        height={'46px'}
+                        fontSize={'18px'}
+                        path={'/login'}
+                        rm={'30px'}
+                    />
+                )}
                 {isAuth && (
                     <ActionOutlineButton
                         text={'GO TO DASHBOARD'}
@@ -128,16 +127,15 @@ function Landing() {
                             fontSize={'22px'}
                             path={'/qr'}
                         />
-                        {isAuth === null ||
-                            (!isAuth && (
-                                <ActionOutlineButton
-                                    text={'UPGRADE MY MUSEUM'}
-                                    width={'322px'}
-                                    height={'60px'}
-                                    fontSize={'22px'}
-                                    path={'/contact'}
-                                />
-                            ))}
+                        {!isAuth && (
+                            <ActionOutlineButton
+                                text={'UPGRADE MY MUSEUM'}
+                                width={'322px'}
+                                height={'60px'}
+                                fontSize={'22px'}
+                                path={'/contact'}
+                            />
+                        )}
                         {isAuth && (
                             <ActionOutlineButton
                                 text={'GO TO DASHBOARD'}
