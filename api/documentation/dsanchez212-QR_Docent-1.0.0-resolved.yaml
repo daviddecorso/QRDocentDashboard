@@ -404,18 +404,31 @@ paths:
                   type: string
                 description:
                   type: string
-                imageURL:
-                  type: integer
-                videoURL:
-                  type: string
-                websiteURL:
-                  type: string
+                contents:
+                  type: array
+                  items: 
+                    type: object
+                    properties:
+                      URL:
+                        type: string
+                      description:
+                        type: string
+                      position:
+                        type: integer
+                      contentTypeID:
+                        type: integer
               example: 
-                name: 'test exhibit'
+                name: 'test exhibit name'
                 description: 'this is my test exhibit bio'
-                imageURL: 'test.com'
-                videoURL: 'test.com'
-                websiteURL: 'test.com'
+                contents:
+                  - URL: 'www.song.com/song'
+                    description: 'content description'
+                    position: 1
+                    contentTypeID: 3
+                  - URL: 'www.video.com/video'
+                    description: 'content description'
+                    position: 2
+                    contentTypeID: 2
       responses:
         '200':
           description: Possible responses
@@ -450,25 +463,38 @@ paths:
             schema:       
               type: object
               properties:
+                exhibitID:
+                  type: integer
                 name:
                   type: string
                 description:
                   type: string
-                imageURL:
-                  type: integer
-                videoURL:
-                  type: string
-                websiteURL:
-                  type: string
-                exhibitID:
-                  type: integer
+                contents:
+                  type: array
+                  items: 
+                    type: object
+                    properties:
+                      URL:
+                        type: string
+                      description:
+                        type: string
+                      position:
+                        type: integer
+                      contentTypeID:
+                        type: integer
               example: 
-                name: 'test exhibit'
-                description: 'this is my test exhibit bio'
-                imageURL: 'test.com'
-                videoURL: 'test.com'
-                websiteURL: 'test.com'
                 exhibitID: 1
+                name: 'updated test exhibit name'
+                description: 'this is my updated test exhibit bio'
+                contents:
+                  - URL: 'www.image.com/image'
+                    description: 'content description'
+                    position: 2
+                    contentTypeID: 1
+                  - URL: 'www.video.com/video'
+                    description: 'content description'
+                    position: 1
+                    contentTypeID: 2
       responses:
         '200':
           description: Possible responses
@@ -547,19 +573,27 @@ paths:
                         - exhibitID: 1
                           name: 'My test Exhibit1'
                           description: 'this is my test exhibit bio'
-                          imageURL: 'test.com'
-                          videoURL: 'test.com'
-                          websiteURL: 'test.com'
-                          exhibitStatusID: 0
+                          exhibitStatusID: 1
                           createdAt: '2021-10-05T19:55:56.587Z'
+                          contents:
+                            - URL: 'www.image.com/image'
+                              description: 'content description'
+                              position: 1
+                              contentTypeID: 1
+                            - URL: 'www.song.com/song'
+                              description: 'content description'
+                              position: 2
+                              contentTypeID: 3
                         - exhibitID: 2
                           name: 'My test Exhibit2'
-                          description: 'this is my test exhibit bio 2'
-                          imageURL: 'test2.com'
-                          videoURL: 'test2.com'
-                          websiteURL: 'test2.com'
-                          exhibitStatusID: 0
-                          createdAt: '2021-10-05T19:55:56.587Z'
+                          description: 'this is my second test exhibit bio'
+                          exhibitStatusID: 1
+                          createdAt: '2021-10-05T19:58:59.587Z'
+                          contents:
+                            - URL: 'www.video.com/video'
+                              description: 'content description'
+                              position: 2
+                              contentTypeID: 2
                   summary: Exhibits retrieval successful
                 failure:
                   value: 
