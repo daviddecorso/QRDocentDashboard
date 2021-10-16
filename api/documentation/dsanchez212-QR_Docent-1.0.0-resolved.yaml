@@ -78,16 +78,52 @@ paths:
                 success:
                   value: 
                     success: true
-                    result:
-                      accessToken: '<access token>'
-                      refreshToken: '<refresh token>'
-                      confirmationCode: 101010
                   summary: Login successful
                 failure:
                   value: 
                     success: false
                     message: '<error message>'
                   summary: Login failed
+                  
+  /verifyMuseumUserConfirmationCode:
+    post:
+      tags:
+        - Museum
+      summary: Verifies the confirmation code sent to a mobile user
+      description: Pass in a valid phone number in the request body following the format [+] [country code] [subscriber number including area code].
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+                confirmationCode:
+                  type: string
+              example: 
+                phoneNumber: '+13057101065'
+                confirmationCode: '956143'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      accessToken: '<access token>'
+                      refreshToken: '<refresh token>'
+                  summary: Verification successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Verification failed
                   
   /refreshMuseumUserToken:
     get:
