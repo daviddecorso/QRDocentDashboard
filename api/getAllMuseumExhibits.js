@@ -8,9 +8,19 @@ const API = async(req, res) =>
     const museumID = userInfo.museumID;
 
     const queryString = `
-        SELECT exhibit_id, name, description, image, video, website, exhibit_status_id, created_at 
-        FROM museum.exhibit 
-        WHERE museum_id = $1
+        SELECT e.exhibit_id, e.name, e.description, e.exhibit_status_id, e.created_at,
+            json_agg(
+                json_build_object(
+                        'URL', ec.url,
+                        'description', ec.description,
+                        'position', ec.position,
+                        'contentTypeID', ec.exhibit_content_type_id
+                ) ORDER BY ec.position
+            ) AS exhibit_contents
+        FROM museum.exhibit AS e
+            JOIN museum.exhibit_content AS ec ON e.exhibit_id = ec.exhibit_id
+        WHERE e.museum_id = $1
+        GROUP BY e.exhibit_id
         `;
     const parameters = [museumID];
     const queryResult = await query(queryString, parameters);
@@ -22,11 +32,9 @@ const API = async(req, res) =>
             exhibitID: queryResult.rows[i].exhibit_id,
             name: queryResult.rows[i].name,
             description: queryResult.rows[i].description,
-            imageURL: queryResult.rows[i].image,
-            videoURL: queryResult.rows[i].video,
-            websiteURL: queryResult.rows[i].website,
             exhibitStatusID: queryResult.rows[i].exhibit_status_id,
-            createdAt: queryResult.rows[i].created_at
+            createdAt: queryResult.rows[i].created_at,
+            contents: queryResult.rows[i].exhibit_contents
         };
 
         exhibits.push(exhibit);

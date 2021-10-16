@@ -1,26 +1,28 @@
+import { failure, success } from './utility/responseObject';
 import authentication from './middleware/authentication';
 import query from '../database/databaseConnection';
-import { success } from './utility/responseObject';
 
 const API = async(req, res) =>
 {
+    const exhibitID = req.body.exhibitID;
     const name = req.body.name;
     const description = req.body.description;
-    const imageURL = req.body.imageURL;
-    const videoURL = req.body.videoURL;
-    const websiteURL = req.body.websiteURL;
-    const exhibitID = req.body.exhibitID;
+    const exhibitContents = JSON.stringify(req.body.contents);
 
-    const queryString = `
-        UPDATE museum.exhibit 
-        SET name = $1, description = $2, image = $3, video = $4, website = $5 
-        WHERE exhibit_id = $6
-        `;
-    const parameters = [name, description, imageURL, videoURL, websiteURL, exhibitID];
-    await query(queryString, parameters);
+    const queryString = 'SELECT admin.fn_update_museum_exhibit($1, $2, $3, $4) AS success';
+    const parameters = [exhibitID, name, description, exhibitContents];
+    const queryResult = await query(queryString, parameters);
 
-    res.status(200).setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(success()));
+    if (queryResult.rows[0].success)
+    {
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(success()));
+    }
+    else
+    {
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure('error updating exhibit')));
+    }
 };
 
 export default authentication(API);
