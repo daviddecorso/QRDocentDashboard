@@ -1,6 +1,7 @@
 import {
     IconHelp,
     IconHome,
+    IconLogout,
     IconMenu2,
     IconNotes,
     IconReportAnalytics,
@@ -12,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import Brand from '../components/brand';
 import MobileNavButton from './buttons/mobile-nav-button';
 import NavButton from './buttons/nav-button';
+import { useHistory } from 'react-router';
 
 const pageStyles = {
     navStyle: {
@@ -54,16 +56,19 @@ const anlyIcon = <IconReportAnalytics size={24} color="white" />;
 const notesIcon = <IconNotes size={24} color="white" />;
 const settingsIcon = <IconSettings size={24} color="white" />;
 const helpIcon = <IconHelp size={24} color="white" />;
+const logoutIcon = <IconLogout size={24} color="white" />;
 
 const homeButton = 'Home';
 const analyticsButton = 'Analytics';
 const exhibitsButton = 'Exhibits';
 const settingsButton = 'Settings';
 const helpButton = 'Help';
+const signoutButton = 'Sign Out';
 
 function NavBar() {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
+    const history = useHistory();
 
     // Controls which nav button is highlighted.
     const [activePage, setActivePage] = useState(homeButton);
@@ -98,7 +103,7 @@ function NavBar() {
                     <div className={classes.navStyle}>
                         <NavButton
                             text={homeButton}
-                            path={'/'}
+                            path={'/home'}
                             icon={homeIcon}
                             isHover={activePage === homeButton}
                             setPage={setActivePage}
@@ -116,6 +121,17 @@ function NavBar() {
                             icon={notesIcon}
                             isHover={activePage === exhibitsButton}
                             setPage={setActivePage}
+                        />
+                        <NavButton
+                            text={signoutButton}
+                            icon={logoutIcon}
+                            isHover={activePage === signoutButton}
+                            setPage={setActivePage}
+                            overrideClick={true}
+                            overrideFunction={() => {
+                                localStorage.setItem('accessToken', 'logout');
+                                history.replace('/');
+                            }}
                         />
                     </div>
                 </div>
