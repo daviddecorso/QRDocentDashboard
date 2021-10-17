@@ -11,10 +11,10 @@ const API = async(req, res) =>
         SELECT e.exhibit_id, e.name, e.description, e.exhibit_status_id, e.created_at,
             json_agg(
                 json_build_object(
-                        'URL', ec.url,
-                        'description', ec.description,
-                        'position', ec.position,
-                        'contentTypeID', ec.exhibit_content_type_id
+                    'URL', ec.url,
+                    'description', ec.description,
+                    'position', ec.position,
+                    'contentTypeID', ec.exhibit_content_type_id
                 ) ORDER BY ec.position
             ) AS exhibit_contents
         FROM museum.exhibit AS e
