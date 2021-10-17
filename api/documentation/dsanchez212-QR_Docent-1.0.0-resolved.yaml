@@ -183,13 +183,19 @@ paths:
                   value: 
                     success: true
                     result:
-                      insertedScan:
+                      createdScan:
                         scanID: 21
                         name: 'test exhibit'
                         description: 'description for the test exhibit'
-                        imageURL: 'imageURL.com/image'
-                        videoURL: 'videoURL.com/video'
-                        websiteURL: 'websiteURL.com'
+                        contents:
+                          - URL: 'www.video.com/video'
+                            description: 'content description'
+                            position: 1
+                            contentTypeID: 2
+                          - URL: 'www.image.com/image'
+                            description: 'content description'
+                            position: 2
+                            contentTypeID: 1
                   summary: Scan creation successful
                 failure:
                   value: 
@@ -254,18 +260,30 @@ paths:
                     success: true
                     result:
                       scans: 
-                        - scanID: 1
-                          name: 'My test Exhibit1'
-                          description: 'this is my test exhibit bio'
-                          imageURL: 'test.com'
-                          videoURL: 'test.com'
-                          websiteURL: 'test.com'
-                        - scanID: 2
-                          name: 'My test Exhibit2'
-                          description: 'this is my test exhibit bio 2'
-                          imageURL: 'test2.com'
-                          videoURL: 'test2.com'
-                          websiteURL: 'test2.com'
+                      - scanID: 21
+                        name: 'test exhibit'
+                        description: 'description for the test exhibit'
+                        contents:
+                          - URL: 'www.video.com/video'
+                            description: 'content description'
+                            position: 1
+                            contentTypeID: 2
+                          - URL: 'www.image.com/image'
+                            description: 'content description'
+                            position: 2
+                            contentTypeID: 1
+                      - scanID: 22
+                        name: 'test exhibit 2'
+                        description: 'description for the test second exhibit'
+                        contents:
+                          - URL: 'www.image.com/image'
+                            description: 'content description'
+                            position: 1
+                            contentTypeID: 1
+                          - URL: 'www.song.com/song'
+                            description: 'content description'
+                            position: 2
+                            contentTypeID: 3
                   summary: Scans retrieval successful
                 failure:
                   value: 
