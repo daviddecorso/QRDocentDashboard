@@ -130,6 +130,7 @@ function NavBar() {
                             overrideClick={true}
                             overrideFunction={() => {
                                 localStorage.setItem('accessToken', 'logout');
+                                localStorage.setItem('refreshToken', 'logout');
                                 history.replace('/');
                             }}
                         />
