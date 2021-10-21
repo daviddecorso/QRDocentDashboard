@@ -76,9 +76,9 @@ function Login() {
         axios
             .post(getBaseURL() + 'api/loginAdminUser', body)
             .then(res => {
-                console.log(res);
                 if (res.data.success) {
                     localStorage.setItem('accessToken', res.data.result.accessToken);
+                    localStorage.setItem('refreshToken', res.data.result.refreshToken);
                     history.replace(from);
                 } else {
                     setErrorMessage('Wrong email or password.');
