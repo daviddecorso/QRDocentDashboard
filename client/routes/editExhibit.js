@@ -16,7 +16,7 @@ function EditExhibit() {
                 </Container>
             </div>
 
-            <ExhibitForm />
+            <ExhibitForm isEdit={true} />
         </>
     );
 }
