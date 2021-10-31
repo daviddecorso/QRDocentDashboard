@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AddExhibit from './routes/addExhibit';
 import Analytics from './routes/analytics';
@@ -5,13 +6,12 @@ import { CssBaseline } from '@material-ui/core';
 import EditExhibit from './routes/editExhibit';
 import Exhibits from './routes/exhibits';
 import IndexRoute from './routes/home';
-import isLogin from './contexts/auth';
+import isLogin from './util/auth';
 import Landing from './routes/landing';
 import Login from './routes/login';
 import NavBar from './components/nav-bar';
 import PropTypes from 'prop-types';
 import QrRedirect from './routes/qr-redirect';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import Theme from './styles/theme.js';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -44,6 +44,7 @@ PrivateRoute.propTypes = {
 };
 
 export default function App() {
+    const [exhibits, setExhibits] = useState([]);
     return (
         <Router>
             <main>
@@ -57,7 +58,7 @@ export default function App() {
                             <IndexRoute />
                         </PrivateRoute>
                         <Route exacy path="/login">
-                            <Login />
+                            <Login setExhibits={setExhibits} />
                         </Route>
                         <Route path="/qr">
                             <QrRedirect />
@@ -68,15 +69,14 @@ export default function App() {
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits">
                             <NavBar />
-                            <Exhibits />
+                            <Exhibits exhibits={exhibits} setExhibits={setExhibits} />
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits/add">
                             <NavBar />
-                            <AddExhibit />
+                            <AddExhibit exhibits={exhibits} setExhibits={setExhibits} />
                         </PrivateRoute>
-                        <PrivateRoute exact path="/exhibits/edit">
-                            <NavBar />
-                            <EditExhibit />
+                        <PrivateRoute path="/exhibits/edit/:id">
+                            <EditExhibit exhibits={exhibits} setExhibits={setExhibits} />
                         </PrivateRoute>
                     </Switch>
                 </div>

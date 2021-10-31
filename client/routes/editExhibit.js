@@ -1,8 +1,22 @@
 import { Container, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import ExhibitForm from './exhibitForm';
-import React from 'react';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router';
 
-function EditExhibit() {
+function EditExhibit({ exhibits }) {
+    const [exhibit, setExhibit] = useState(null);
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        exhibits.forEach(e => {
+            if (Number(id) === e.exhibitID) {
+                setExhibit(e);
+            }
+        });
+    }, []);
+
     return (
         <>
             <div className="content">
@@ -16,9 +30,15 @@ function EditExhibit() {
                 </Container>
             </div>
 
-            <ExhibitForm />
+            <ExhibitForm isEdit={true} id={id} exhibit={exhibit} />
         </>
     );
 }
+
+EditExhibit.propTypes = {
+    exhibits: PropTypes.shape({
+        forEach: PropTypes.func
+    })
+};
 
 export default EditExhibit;

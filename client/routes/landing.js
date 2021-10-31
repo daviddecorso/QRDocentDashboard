@@ -1,7 +1,7 @@
 import { IconArrowUpCircle, IconBrandSpotify, IconDeviceAnalytics } from '@tabler/icons';
 import ActionButton from '../components/buttons/action-button';
 import ActionOutlineButton from '../components/buttons/action-outline-button';
-import isLogin from '../contexts/auth';
+import isLogin from '../util/auth';
 import { makeStyles } from '@material-ui/core';
 import phoneMockup from 'url:../img/app-mockup.png';
 import React from 'react';
@@ -115,8 +115,8 @@ function Landing() {
                 <div className={classes.heroContent}>
                     <h1 className={classes.title}>A MUSEUM GUIDE FOR THE 21ST CENTURY</h1>
                     <p className={classes.subText}>
-                        I don&apos;t know what text should go here, but it needs to be good! Two
-                        short sentences on why someone should get the app!
+                        QR Docent is an app that aims to enhance your museum visit and lets you
+                        bring your favorite exhibits home with you!
                     </p>
                     <div className={classes.buttons}>
                         <ActionButton
