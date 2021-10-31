@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION admin.fn_create_museum_exhibit(
    _name TEXT = '',
    _description TEXT = '',
+   _image TEXT = '',
    _exhibit_contents json = '[]',
    _exhibit_status_id INT = 0,
    _museum_id INT = 0
@@ -16,6 +17,7 @@ $$
         (
             name,
             description,
+            image,
             exhibit_status_id,
             museum_id
         )
@@ -23,6 +25,7 @@ $$
         (
             _name,
             _description,
+            _image,
             _exhibit_status_id,
             _museum_id
         )

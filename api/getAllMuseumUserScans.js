@@ -8,7 +8,7 @@ const API = async(req, res) =>
     const userID = userInfo.userID;
 
     const queryString = `
-        SELECT s.scan_id, e.name, e.description,
+        SELECT s.scan_id, e.name, e.description, e.image,
             json_agg(
                 json_build_object(
                     'URL', ec.url,
@@ -33,6 +33,7 @@ const API = async(req, res) =>
             scanID: queryResult.rows[i].scan_id,
             name: queryResult.rows[i].name,
             description: queryResult.rows[i].description,
+            mainImage: queryResult.rows[i].image,
             contents: queryResult.rows[i].exhibit_contents
         };
 
