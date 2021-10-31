@@ -15,7 +15,7 @@ function AddExhibit() {
                     </Typography>
                 </Container>
             </div>
-            <ExhibitForm isAdd={true} apiRoute={''} />
+            <ExhibitForm isAdd={true} />
         </>
     );
 }

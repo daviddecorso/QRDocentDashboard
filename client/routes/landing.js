@@ -1,7 +1,7 @@
 import { IconArrowUpCircle, IconBrandSpotify, IconDeviceAnalytics } from '@tabler/icons';
 import ActionButton from '../components/buttons/action-button';
 import ActionOutlineButton from '../components/buttons/action-outline-button';
-import isLogin from '../contexts/auth';
+import isLogin from '../util/auth';
 import { makeStyles } from '@material-ui/core';
 import phoneMockup from 'url:../img/app-mockup.png';
 import React from 'react';

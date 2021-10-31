@@ -1,8 +1,11 @@
 import { Container, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import ExhibitListItem from '../components/exhibitListItem';
+import formatDate from '../util/formatDate';
+import getExhibits from '../util/getExhibits';
 import { IconPlus } from '@tabler/icons';
 import PrimaryButton from '../components/buttons/primary-button';
-import React from 'react';
+import PropTypes from 'prop-types';
 
 const pageStyles = {
     header: {
@@ -39,33 +42,22 @@ const pageStyles = {
     }
 };
 
-// Mock exhibit data
-const mockData = [
-    {
-        name: 'Aretha Franklin',
-        date: '7/21/21',
-        artistImg: 'https://i.scdn.co/image/ab6761610000f178f12270128127ba170f90097d',
-        status: 0
-    },
-    {
-        name: 'James Brown',
-        date: '7/31/21',
-        artistImg: 'https://i.scdn.co/image/8590cf083b8ab7c1e13128e6f306a879e47ae49c',
-        status: 1
-    },
-    {
-        name: 'The Temptations',
-        date: '8/12/21',
-        artistImg: 'https://i.scdn.co/image/ab6761610000f1783f0f76df1047720f2e57fc35',
-        status: 2
-    }
-];
-
-export default function Exhibits() {
+export default function Exhibits({ exhibits, setExhibits }) {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
     const isMobile = useMediaQuery('(max-width:960px)');
+
+    const [refreshed, setRefreshed] = useState(false);
+
+    useEffect(() => {
+        if (exhibits.length === 0) {
+            console.log('Exhibits array empty.');
+            getExhibits(setExhibits, setRefreshed);
+        } else {
+            console.log(exhibits);
+        }
+    }, [refreshed]);
 
     return (
         <div>
@@ -101,14 +93,15 @@ export default function Exhibits() {
                                     {isMobile && <span>Status</span>}
                                 </div>
                                 <div>
-                                    {mockData.map((exhibit, index) => (
+                                    {exhibits.map((exhibit, index) => (
                                         <ExhibitListItem
                                             name={exhibit.name}
-                                            date={exhibit.date}
+                                            date={formatDate(exhibit.createdAt)}
                                             artistImg={exhibit.artistImg}
-                                            status={exhibit.status}
+                                            status={exhibit.exhibitStatusID}
                                             index={index}
-                                            key={exhibit.name}
+                                            id={exhibit.exhibitID}
+                                            key={exhibit.exhibitID}
                                         />
                                     ))}
                                 </div>
@@ -120,3 +113,11 @@ export default function Exhibits() {
         </div>
     );
 }
+
+Exhibits.propTypes = {
+    exhibits: PropTypes.shape({
+        length: PropTypes.number,
+        map: PropTypes.func
+    }),
+    setExhibits: PropTypes.func
+};
