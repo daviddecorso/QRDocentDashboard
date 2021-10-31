@@ -19,6 +19,7 @@ CREATE TABLE museum.exhibit(
     exhibit_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
+    image TEXT NOT NULL DEFAULT '',
     exhibit_status_id INT NOT NULL,
     museum_id INT NOT NULL,
     CONSTRAINT fk_museum_exhibit_museum_exhibit_status FOREIGN KEY(exhibit_status_id) REFERENCES museum.exhibit_status(exhibit_status_id),

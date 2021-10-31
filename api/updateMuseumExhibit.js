@@ -7,10 +7,11 @@ const API = async(req, res) =>
     const exhibitID = req.body.exhibitID;
     const name = req.body.name;
     const description = req.body.description;
+    const image = req.body.mainImage;
     const exhibitContents = JSON.stringify(req.body.contents);
 
-    const queryString = 'SELECT admin.fn_update_museum_exhibit($1, $2, $3, $4) AS success';
-    const parameters = [exhibitID, name, description, exhibitContents];
+    const queryString = 'SELECT admin.fn_update_museum_exhibit($1, $2, $3, $4, $5) AS success';
+    const parameters = [exhibitID, name, description, image, exhibitContents];
     const queryResult = await query(queryString, parameters);
 
     if (queryResult.rows[0].success)

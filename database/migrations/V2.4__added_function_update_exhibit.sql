@@ -2,6 +2,7 @@ CREATE OR REPLACE FUNCTION admin.fn_update_museum_exhibit(
     _exhibit_id INT = 0,
     _name TEXT = '',
     _description TEXT = '',
+    _image TEXT = '',
     _exhibit_contents json = '[]'
 )
 RETURNS BOOLEAN
@@ -10,7 +11,7 @@ AS
 $$
     BEGIN
         UPDATE museum.exhibit
-        SET name = _name, description = _description
+        SET name = _name, description = _description, image = _image
         WHERE exhibit_id = _exhibit_id; 
 
         DELETE FROM museum.exhibit_content

@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION museum.fn_create_museum_scan(
    _user_id INT = 0,
    _exhibit_id INT = 0
 )
-RETURNS TABLE(_scan_id INT, _name TEXT, _description TEXT, _exhibit_contents json)
+RETURNS TABLE(_scan_id INT, _name TEXT, _description TEXT, _image TEXT, _exhibit_contents json)
 LANGUAGE plpgsql
 AS
 $$
@@ -17,7 +17,7 @@ $$
                  )
         THEN
             RETURN QUERY
-                SELECT 0, '', '', '[]'::json;
+                SELECT 0, '', '', '', '[]'::json;
         ELSE
             INSERT INTO museum.scan
             (
@@ -32,7 +32,7 @@ $$
             RETURNING scan_id INTO _scan_id;
 
             RETURN QUERY
-                SELECT s.scan_id, e.name, e.description,
+                SELECT s.scan_id, e.name, e.description, e.image,
                     json_agg(
                         json_build_object(
                             'URL', ec.url,

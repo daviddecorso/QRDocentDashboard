@@ -7,12 +7,13 @@ const API = async(req, res) =>
     const userInfo = req.middleware.userInfo;
     const name = req.body.name;
     const description = req.body.description;
+    const image = req.body.mainImage;
     const exhibitContents = JSON.stringify(req.body.contents);
     const defaultExhibitStatusID = 1;
     const museumID = userInfo.museumID;
 
-    const queryString = 'SELECT admin.fn_create_museum_exhibit($1, $2, $3, $4, $5) AS exhibit_id';
-    const parameters = [name, description, exhibitContents, defaultExhibitStatusID, museumID];
+    const queryString = 'SELECT admin.fn_create_museum_exhibit($1, $2, $3, $4, $5, $6) AS exhibit_id';
+    const parameters = [name, description, image, exhibitContents, defaultExhibitStatusID, museumID];
     const queryResult = await query(queryString, parameters);
 
     if (queryResult.rows.length > 0)

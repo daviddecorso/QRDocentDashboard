@@ -9,7 +9,8 @@ const API = async(req, res) =>
     const exhibitID = req.body.exhibitID;
 
     const queryString = `
-        SELECT _scan_id AS scan_id, _name AS name, _description AS description, _exhibit_contents AS exhibit_contents
+        SELECT _scan_id AS scan_id, _name AS name, _description AS description, 
+        _image AS image, _exhibit_contents AS exhibit_contents
         FROM museum.fn_create_museum_scan($1, $2);
         `;
     const parameters = [userID, exhibitID];
@@ -21,6 +22,7 @@ const API = async(req, res) =>
             scanID: queryResult.rows[0].scan_id,
             name: queryResult.rows[0].name,
             description: queryResult.rows[0].description,
+            mainImage: queryResult.rows[0].image,
             contents: queryResult.rows[0].exhibit_contents
         };
 

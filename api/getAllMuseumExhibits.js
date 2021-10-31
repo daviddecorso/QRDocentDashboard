@@ -8,7 +8,7 @@ const API = async(req, res) =>
     const museumID = userInfo.museumID;
 
     const queryString = `
-        SELECT e.exhibit_id, e.name, e.description, e.exhibit_status_id, e.created_at,
+        SELECT e.exhibit_id, e.name, e.description, e.image, e.exhibit_status_id, e.created_at,
             json_agg(
                 json_build_object(
                     'URL', ec.url,
@@ -32,6 +32,7 @@ const API = async(req, res) =>
             exhibitID: queryResult.rows[i].exhibit_id,
             name: queryResult.rows[i].name,
             description: queryResult.rows[i].description,
+            mainImage: queryResult.rows[i].image,
             exhibitStatusID: queryResult.rows[i].exhibit_status_id,
             createdAt: queryResult.rows[i].created_at,
             contents: queryResult.rows[i].exhibit_contents

@@ -187,6 +187,7 @@ paths:
                         scanID: 21
                         name: 'test exhibit'
                         description: 'description for the test exhibit'
+                        mainImage: 'image.com/mainImage'
                         contents:
                           - URL: 'www.video.com/video'
                             description: 'content description'
@@ -263,6 +264,7 @@ paths:
                       - scanID: 21
                         name: 'test exhibit'
                         description: 'description for the test exhibit'
+                        mainImage: 'image.com/mainImage1'
                         contents:
                           - URL: 'www.video.com/video'
                             description: 'content description'
@@ -275,6 +277,7 @@ paths:
                       - scanID: 22
                         name: 'test exhibit 2'
                         description: 'description for the test second exhibit'
+                        mainImage: 'image.com/mainImage2'
                         contents:
                           - URL: 'www.image.com/image'
                             description: 'content description'
@@ -422,6 +425,8 @@ paths:
                   type: string
                 description:
                   type: string
+                mainImage:
+                  type: string
                 contents:
                   type: array
                   items: 
@@ -438,6 +443,7 @@ paths:
               example: 
                 name: 'test exhibit name'
                 description: 'this is my test exhibit bio'
+                mainImage: 'image.com/mainImage'
                 contents:
                   - URL: 'www.song.com/song'
                     description: 'content description'
@@ -487,6 +493,8 @@ paths:
                   type: string
                 description:
                   type: string
+                mainImage:
+                  type: string
                 contents:
                   type: array
                   items: 
@@ -504,6 +512,7 @@ paths:
                 exhibitID: 1
                 name: 'updated test exhibit name'
                 description: 'this is my updated test exhibit bio'
+                mainImage: 'image.com/mainImage22'
                 contents:
                   - URL: 'www.image.com/image'
                     description: 'content description'
@@ -591,6 +600,7 @@ paths:
                         - exhibitID: 1
                           name: 'My test Exhibit1'
                           description: 'this is my test exhibit bio'
+                          mainImage: 'image.com/mainImage1'
                           exhibitStatusID: 1
                           createdAt: '2021-10-05T19:55:56.587Z'
                           contents:
@@ -605,6 +615,7 @@ paths:
                         - exhibitID: 2
                           name: 'My test Exhibit2'
                           description: 'this is my second test exhibit bio'
+                          mainImage: 'image.com/mainImage2'
                           exhibitStatusID: 1
                           createdAt: '2021-10-05T19:58:59.587Z'
                           contents:
