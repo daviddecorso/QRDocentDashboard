@@ -74,7 +74,7 @@ const pageStyles = {
     }
 };
 
-function ExhibitListItem({ name, date, artistImg, status, index }) {
+function ExhibitListItem({ name, date, artistImg, status, index, id }) {
     // Open/close state for edit/delete menu
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -109,7 +109,7 @@ function ExhibitListItem({ name, date, artistImg, status, index }) {
     const handleMenuClose = item => {
         setAnchorEl(null);
         if (item === 'edit') {
-            history.push('/exhibits/edit');
+            history.push('/exhibits/edit/' + id);
         }
         if (item === 'delete') {
             handleAlertOpen();
@@ -229,7 +229,8 @@ ExhibitListItem.propTypes = {
     date: PropTypes.string,
     index: PropTypes.number,
     name: PropTypes.string,
-    status: PropTypes.number
+    status: PropTypes.number,
+    id: PropTypes.any
 };
 
 export default ExhibitListItem;

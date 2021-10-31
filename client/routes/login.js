@@ -5,6 +5,8 @@ import ActionButton from '../components/buttons/action-button';
 import ActionOutlineButton from '../components/buttons/action-outline-button';
 import axios from 'axios';
 import { getBaseURL } from '../../configuration';
+import getExhibits from '../util/getExhibits';
+import PropTypes from 'prop-types';
 
 const pageStyles = {
     header: { marginTop: '10vh' },
@@ -35,7 +37,7 @@ const pageStyles = {
     }
 };
 
-function Login() {
+function Login({ setExhibits }) {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
@@ -79,6 +81,7 @@ function Login() {
                 if (res.data.success) {
                     localStorage.setItem('accessToken', res.data.result.accessToken);
                     localStorage.setItem('refreshToken', res.data.result.refreshToken);
+                    getExhibits(setExhibits);
                     history.replace(from);
                 } else {
                     setErrorMessage('Wrong email or password.');
@@ -213,5 +216,9 @@ function Login() {
         </>
     );
 }
+
+Login.propTypes = {
+    setExhibits: PropTypes.func
+};
 
 export default Login;

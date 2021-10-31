@@ -15,7 +15,7 @@ import { getBaseURL } from '../../configuration';
 import isURL from 'validator/es/lib/isURL';
 import PrimaryButton from '../components/buttons/primary-button';
 import PropTypes from 'prop-types';
-import refreshToken from '../contexts/refresh';
+import refreshToken from '../util/refresh';
 import SuccessButton from '../components/buttons/success-button';
 import WarningButton from '../components/buttons/warning-button';
 import 'microtip/microtip.css';
@@ -102,17 +102,7 @@ const getContentTypeId = type => {
     }
 };
 
-function ExhibitForm({
-    isAdd,
-    isEdit,
-    apiRoute,
-    nameInputText,
-    bioInputText,
-    videoInputText,
-    songInputText,
-    websiteInputText,
-    imageInputText
-}) {
+function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
     // State for showing active card in card list
     const [activeButton, setActiveButton] = useState(1);
 
@@ -124,7 +114,6 @@ function ExhibitForm({
 
     // State for showing error when exhibit name is left empty
     const [noNameError, setNameError] = useState(false);
-
     const [songLinkErr, setSongLinkErr] = useState(false);
     const [videoLinkErr, setVideoLinkErr] = useState(false);
     const [imageLinkErr, setImageLinkErr] = useState(false);
@@ -137,56 +126,28 @@ function ExhibitForm({
     const isMobile = useMediaQuery('(max-width:960px)');
     const isSmallMobile = useMediaQuery('(max-width:410px)');
 
-    let nameInput;
-    let bioInput;
-    let videoInput;
-    let songInput;
-    let websiteInput;
-    let imageInput;
-
-    // let descInput;
+    const apiRoute =
+        'https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=' +
+        getBaseURL() +
+        'qr/' +
+        id;
 
     useEffect(() => {
-        nameInput = document.getElementById('name-input');
-        bioInput = document.getElementById('bio-input');
-        videoInput = document.getElementById('video-input');
-        songInput = document.getElementById('song-input');
-        websiteInput = document.getElementById('website-input');
-        imageInput = document.getElementById('image-input');
-
-        // descInput = document.getElementById('description-input');
-
-        // Fills form with props if they exist
-        if (nameInputText) {
-            nameInput.value = nameInputText;
-        }
-
-        if (bioInputText) {
-            bioInput.value = bioInputText;
-        }
-
-        if (videoInputText) {
-            videoInput.value = videoInputText;
-        }
-
-        if (songInputText) {
-            songInput.value = songInputText;
-        }
-
-        if (websiteInputText) {
-            websiteInput.value = websiteInputText;
-        }
-
-        if (imageInputText) {
-            imageInput.value = imageInputText;
-        }
-
         if (isEdit) {
-            setCardType(getContentTypeFromId(contentArr[0].contentTypeID));
-        }
+            if (exhibit !== null) {
+                setCardType(getContentTypeFromId(exhibit.contents[0].contentTypeID));
+                setContentArr(exhibit.contents);
+                document.getElementById('name-input').value = exhibit.name;
+                document.getElementById('bio-input').value = exhibit.description;
 
-        // getPreviewFormText();
-    }, [contentArr]);
+                // getContentTypeFromId(exhibit.contents[0].contentTypeID).toLowerCase() + '-input'
+                document.getElementById(cardType.toLowerCase() + '-input').value =
+                    exhibit.contents[0].URL;
+                document.getElementById('description-input').value =
+                    exhibit.contents[0].description;
+            }
+        }
+    }, [exhibit]);
 
     /* const getPreviewFormText = () => {
         contentArr.forEach(card => {
@@ -260,17 +221,14 @@ function ExhibitForm({
             return false;
         }
 
-        const exhibit = {
+        const newExhibit = {
             name: document.getElementById('name-input').value,
             description: document.getElementById('bio-input').value,
             contents: contentArr
         };
-
-        refreshToken();
-
         if (isAdd) {
             axios
-                .post(getBaseURL() + '/api/createMuseumExhibit', exhibit, {
+                .post(getBaseURL() + '/api/createMuseumExhibit', newExhibit, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('accessToken')
                     }
@@ -280,6 +238,24 @@ function ExhibitForm({
                     if (!res.data.success) {
                         if (res.data.message === 'jwt expired') {
                             console.log('JWT EXPIRED!');
+                            refreshToken.then(
+                                axios
+                                    .post(getBaseURL() + '/api/createMuseumExhibit', newExhibit, {
+                                        headers: {
+                                            Authorization:
+                                                'Bearer ' + localStorage.getItem('accessToken')
+                                        }
+                                    })
+                                    .then(result => {
+                                        console.log(result);
+
+                                        // success!
+                                    })
+                                    .catch(err => {
+                                        // error!!
+                                        console.log(err);
+                                    })
+                            );
                         }
                     } else {
                         // success message
@@ -511,15 +487,14 @@ function ExhibitForm({
 }
 
 ExhibitForm.propTypes = {
+    exhibit: PropTypes.shape({
+        contents: PropTypes.any,
+        description: PropTypes.any,
+        name: PropTypes.any
+    }),
+    id: PropTypes.any,
     isAdd: PropTypes.bool,
-    isEdit: PropTypes.bool,
-    apiRoute: PropTypes.string,
-    bioInputText: PropTypes.string,
-    imageInputText: PropTypes.string,
-    nameInputText: PropTypes.string,
-    songInputText: PropTypes.string,
-    videoInputText: PropTypes.string,
-    websiteInputText: PropTypes.string
+    isEdit: PropTypes.bool
 };
 
 export default ExhibitForm;
