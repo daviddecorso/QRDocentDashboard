@@ -133,7 +133,7 @@ function ExhibitListItem({ name, date, artistImg, status, index, id }) {
     const handleDelete = () => {
         handleAlertClose();
         axios
-            .post(getBaseURL() + 'api/deleteMuseumExhibit', {Number(id)}, {
+            .post(getBaseURL() + 'api/deleteMuseumExhibit', {exhibitID: Number(id)}, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('accessToken')
                 }
