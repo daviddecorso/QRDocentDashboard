@@ -1,8 +1,9 @@
 import { Container, Typography } from '@material-ui/core';
 import ExhibitForm from './exhibitForm';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-function AddExhibit() {
+function AddExhibit({ exhibits, setExhibits }) {
     return (
         <>
             <div className="content">
@@ -15,9 +16,14 @@ function AddExhibit() {
                     </Typography>
                 </Container>
             </div>
-            <ExhibitForm isAdd={true} />
+            <ExhibitForm isAdd={true} exhibits={exhibits} setExhibits={setExhibits} />
         </>
     );
 }
+
+AddExhibit.propTypes = {
+    exhibits: PropTypes.any,
+    setExhibits: PropTypes.any
+};
 
 export default AddExhibit;

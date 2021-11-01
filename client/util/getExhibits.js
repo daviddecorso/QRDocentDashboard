@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getBaseURL } from '../../configuration';
-import refreshToken from './refresh';
 
 export default function getExhibits(setExhibits, setRefreshed) {
     axios
@@ -15,20 +14,36 @@ export default function getExhibits(setExhibits, setRefreshed) {
                 setExhibits(res.data.result.exhibits);
             } else {
                 console.log('We need to refresh!');
-                refreshToken.then(tokenRes => {
-                    console.log(tokenRes);
-                    axios
-                        .get(getBaseURL() + 'api/getAllMuseumExhibits', {
-                            headers: {
-                                Authorization: 'Bearer ' + localStorage.getItem('accessToken')
-                            }
-                        })
-                        .then(refreshRes => {
-                            if (setRefreshed !== null) {
-                                setRefreshed(refreshRes);
-                            }
-                        });
-                });
+                axios
+                    .get(getBaseURL() + '/api/refreshAdminUserToken', {
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('refreshToken')
+                        }
+                    })
+                    .then(tokenRes => {
+                        if (tokenRes.data.success) {
+                            console.log('Token Refreshed!');
+                            localStorage.setItem('accessToken', tokenRes.data.result.accessToken);
+                            axios
+                                .get(getBaseURL() + 'api/getAllMuseumExhibits', {
+                                    headers: {
+                                        Authorization: 'Bearer ' + tokenRes.data.result.accessToken
+                                    }
+                                })
+                                .then(refreshRes => {
+                                    if (setRefreshed !== null) {
+                                        setRefreshed(refreshRes);
+                                    }
+                                })
+                                .catch(refreshErr => console.log(refreshErr));
+                        } else {
+                            // If a user's refresh token is invalid we want them to login again.
+                            console.error('Invalid refresh token.');
+                            localStorage.setItem('accessToken', 'logout');
+                            localStorage.setItem('refreshToken', 'logout');
+                            location.assign(getBaseURL() + '/login');
+                        }
+                    });
             }
         })
         .catch(err => {

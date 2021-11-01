@@ -15,6 +15,8 @@ import {
 } from '@material-ui/core';
 import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons';
 import React, { useState } from 'react';
+import axios from 'axios';
+import { getBaseURL } from '../../configuration';
 import MuiAlert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
 import Status from './status';
@@ -130,7 +132,66 @@ function ExhibitListItem({ name, date, artistImg, status, index, id }) {
 
     const handleDelete = () => {
         handleAlertClose();
-        handleDeleteSuccessOpen();
+        axios
+            .post(getBaseURL() + 'api/deleteMuseumExhibit', Number(id), {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+                }
+            })
+            .then(res => {
+                if (res.data.success) {
+                    console.log(res);
+                    console.log(id);
+                    handleDeleteSuccessOpen();
+                } else {
+                    console.log('We need to refresh!');
+                    axios
+                        .get(getBaseURL() + '/api/refreshAdminUserToken', {
+                            headers: {
+                                Authorization: 'Bearer ' + localStorage.getItem('refreshToken')
+                            }
+                        })
+                        .then(tokenRes => {
+                            if (tokenRes.data.success) {
+                                console.log('Token Refreshed!');
+                                localStorage.setItem(
+                                    'accessToken',
+                                    tokenRes.data.result.accessToken
+                                );
+                                axios
+                                    .post(getBaseURL() + 'api/deleteMuseumExhibit', Number(id), {
+                                        headers: {
+                                            Authorization:
+                                                'Bearer ' + tokenRes.data.result.accessToken
+                                        }
+                                    })
+                                    .then(result => {
+                                        if (result.data.success) {
+                                            console.log(result);
+                                            console.log(id);
+                                            handleDeleteSuccessOpen();
+                                        } else {
+                                            console.log(
+                                                'Not able to delete exhibit after a refresh.'
+                                            );
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            } else {
+                                // If a user's refresh token is invalid we want them to login again.
+                                console.error('Invalid refresh token.');
+                                localStorage.setItem('accessToken', 'logout');
+                                localStorage.setItem('refreshToken', 'logout');
+                                location.assign(getBaseURL() + '/login');
+                            }
+                        });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 
     // Get correct style

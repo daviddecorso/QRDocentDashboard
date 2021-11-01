@@ -39,7 +39,8 @@ function ExhibitList({
     setActive,
     content,
     setContent,
-    contentType
+    contentType,
+    setFormProps
 }) {
     const useStyles = makeStyles(styles);
     const classes = useStyles();
@@ -91,6 +92,12 @@ function ExhibitList({
             className={isActiveButton ? classes.clicked : classes.unclicked}
             onClick={() => {
                 setActiveButton(position);
+                setFormProps(
+                    content[position - 1].URL,
+                    content[position - 1].description,
+                    contentId,
+                    position
+                );
             }}>
             <span style={{ fontSize: '20px', marginLeft: '1.5rem' }}>
                 {contentType(contentId) + ' card'}
@@ -124,7 +131,8 @@ ExhibitList.propTypes = {
     contentId: PropTypes.any,
     position: PropTypes.number,
     setActive: PropTypes.func,
-    setContent: PropTypes.func
+    setContent: PropTypes.func,
+    setFormProps: PropTypes.func
 };
 
 export default ExhibitList;
