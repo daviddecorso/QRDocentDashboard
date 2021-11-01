@@ -28,6 +28,7 @@ const pageStyles = {
     noAcctDiv: { maxWidth: '550px', marginTop: '15vh' },
     formDiv: { display: 'flex', flexDirection: 'column', maxWidth: '500px' },
     formItem: { marginTop: '1rem' },
+    colorLink: { '& a': { color: 'white' } },
     errorDiv: {
         backgroundColor: '#DE312B',
         textAlign: 'center',
@@ -200,12 +201,13 @@ function Login({ setExhibits }) {
                             />
                         </div>
                     </div>
-
-                    <Link>
-                        <Typography component="span" variant="body1">
-                            Forgot password?
-                        </Typography>
-                    </Link>
+                    <div className={classes.colorLink}>
+                        <Link>
+                            <Typography component="span" variant="body1">
+                                Forgot password?
+                            </Typography>
+                        </Link>
+                    </div>
                     <div className={classes.errorDiv}>
                         <Typography component="span" variant="body1">
                             {errorMessage}
