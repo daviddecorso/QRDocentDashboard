@@ -15,7 +15,6 @@ import { getBaseURL } from '../../configuration';
 import isURL from 'validator/es/lib/isURL';
 import PrimaryButton from '../components/buttons/primary-button';
 import PropTypes from 'prop-types';
-import refreshToken from '../util/refresh';
 import SuccessButton from '../components/buttons/success-button';
 import WarningButton from '../components/buttons/warning-button';
 import 'microtip/microtip.css';
@@ -70,6 +69,7 @@ const pageStyles = {
 // Tooltip content
 const tooltipText = {
     bio: 'This is the biography tooltip.',
+    mainImg: 'This is the exhibit image tooltip.',
     video: 'This is the video tooltip',
     song: 'This is the song tooltip',
     website: 'This is the website tooltip',
@@ -102,7 +102,7 @@ const getContentTypeId = type => {
     }
 };
 
-function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
+function ExhibitForm({ isAdd, isEdit, id, exhibit, exhibits, setExhibits }) {
     // State for showing active card in card list
     const [activeButton, setActiveButton] = useState(1);
 
@@ -112,8 +112,11 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
     // State for active card type
     const [cardType, setCardType] = useState('Song');
 
+    const [cardPosition, setCardPosition] = useState(1);
+
     // State for showing error when exhibit name is left empty
     const [noNameError, setNameError] = useState(false);
+    const [mainImageLinkError, setMainImageLinkError] = useState(false);
     const [songLinkErr, setSongLinkErr] = useState(false);
     const [videoLinkErr, setVideoLinkErr] = useState(false);
     const [imageLinkErr, setImageLinkErr] = useState(false);
@@ -139,6 +142,7 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                 setContentArr(exhibit.contents);
                 document.getElementById('name-input').value = exhibit.name;
                 document.getElementById('bio-input').value = exhibit.description;
+                document.getElementById('mainimage-input').value = exhibit.mainImage;
 
                 // getContentTypeFromId(exhibit.contents[0].contentTypeID).toLowerCase() + '-input'
                 document.getElementById(cardType.toLowerCase() + '-input').value =
@@ -157,9 +161,28 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
         });
     }; */
 
+    const setFormProps = (linkText, descText, cardId, position) => {
+        console.log(`${linkText} ${descText} ${cardId}`);
+        setCardType(getContentTypeFromId(cardId));
+        document.getElementById(cardType.toLowerCase() + '-input').value = linkText;
+        document.getElementById('description-input').value = descText;
+        setCardPosition(position);
+    };
+
     const validateInput = () => {
         const input = document.getElementById(cardType.toLowerCase() + '-input').value;
+        const mainImg = document.getElementById('mainimage-input').value;
         let error = false;
+
+        if (!isURL(mainImg)) {
+            setErrText('Must be a valid URL.');
+            setMainImageLinkError(true);
+        }
+
+        if (mainImg === '') {
+            setErrText('Field must not be empty.');
+            setMainImageLinkError(true);
+        }
 
         if (input === '') {
             setErrText('Field must not be empty.');
@@ -213,6 +236,20 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
         console.log(contentArr);
     };
 
+    const editCard = () => {
+        const tempArr = contentArr;
+        if (!validateInput()) {
+            return false;
+        }
+
+        tempArr[cardPosition - 1].URL = document.getElementById(
+            cardType.toLowerCase() + '-input'
+        ).value;
+        tempArr[cardPosition - 1].description = document.getElementById('description-input').value;
+
+        setContentArr(tempArr);
+    };
+
     // Save exhibit
     const onClickSave = () => {
         // Errors if exhibit name is empty.
@@ -224,6 +261,7 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
         const newExhibit = {
             name: document.getElementById('name-input').value,
             description: document.getElementById('bio-input').value,
+            mainImage: document.getElementById('mainimage-input').value,
             contents: contentArr
         };
         if (isAdd) {
@@ -238,27 +276,138 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                     if (!res.data.success) {
                         if (res.data.message === 'jwt expired') {
                             console.log('JWT EXPIRED!');
-                            refreshToken.then(
-                                axios
-                                    .post(getBaseURL() + '/api/createMuseumExhibit', newExhibit, {
-                                        headers: {
-                                            Authorization:
-                                                'Bearer ' + localStorage.getItem('accessToken')
-                                        }
-                                    })
-                                    .then(result => {
-                                        console.log(result);
 
-                                        // success!
-                                    })
-                                    .catch(err => {
-                                        // error!!
-                                        console.log(err);
-                                    })
-                            );
+                            axios
+                                .get(getBaseURL() + '/api/refreshAdminUserToken', {
+                                    headers: {
+                                        Authorization:
+                                            'Bearer ' + localStorage.getItem('refreshToken')
+                                    }
+                                })
+                                .then(tokenRes => {
+                                    if (tokenRes.data.success) {
+                                        console.log('Token Refreshed!');
+                                        localStorage.setItem(
+                                            'accessToken',
+                                            tokenRes.data.result.accessToken
+                                        );
+                                        axios
+                                            .post(
+                                                getBaseURL() + '/api/createMuseumExhibit',
+                                                newExhibit,
+                                                {
+                                                    headers: {
+                                                        Authorization:
+                                                            'Bearer ' +
+                                                            tokenRes.data.result.accessToken
+                                                    }
+                                                }
+                                            )
+                                            .then(result => {
+                                                // success!
+                                                console.log(result);
+                                                const tempExhibitsArr = exhibits;
+                                                tempExhibitsArr.push(newExhibit);
+                                                setExhibits(tempExhibitsArr);
+                                                location.assign(getBaseURL() + '/exhibits');
+                                            })
+                                            .catch(err => {
+                                                // error!!
+                                                console.log(err);
+                                            });
+                                    } else {
+                                        // If a user's refresh token is invalid we want them to login again.
+                                        console.error('Invalid refresh token.');
+                                        localStorage.setItem('accessToken', 'logout');
+                                        localStorage.setItem('refreshToken', 'logout');
+                                        location.assign(getBaseURL() + '/login');
+                                    }
+                                });
                         }
                     } else {
                         // success message
+                        const tempExhibitsArr = exhibits;
+                        tempExhibitsArr.push(newExhibit);
+                        setExhibits(tempExhibitsArr);
+                        location.assign(getBaseURL() + '/exhibits');
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+
+        if (isEdit) {
+            const editedExhibit = {
+                exhibitID: Number(id),
+                name: document.getElementById('name-input').value,
+                description: document.getElementById('bio-input').value,
+                mainImage: document.getElementById('mainimage-input').value,
+                contents: contentArr
+            };
+
+            axios
+                .post(getBaseURL() + '/api/updateMuseumExhibit', editedExhibit, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (!res.data.success) {
+                        if (res.data.message === 'jwt expired') {
+                            console.log('JWT EXPIRED!');
+
+                            axios
+                                .get(getBaseURL() + '/api/refreshAdminUserToken', {
+                                    headers: {
+                                        Authorization:
+                                            'Bearer ' + localStorage.getItem('refreshToken')
+                                    }
+                                })
+                                .then(tokenRes => {
+                                    if (tokenRes.data.success) {
+                                        console.log('Token Refreshed!');
+                                        localStorage.setItem(
+                                            'accessToken',
+                                            tokenRes.data.result.accessToken
+                                        );
+                                        axios
+                                            .post(
+                                                getBaseURL() + '/api/updateMuseumExhibit',
+                                                editedExhibit,
+                                                {
+                                                    headers: {
+                                                        Authorization:
+                                                            'Bearer ' +
+                                                            tokenRes.data.result.accessToken
+                                                    }
+                                                }
+                                            )
+                                            .then(result => {
+                                                // success!
+                                                console.log(result);
+                                                location.assign(getBaseURL() + '/exhibits');
+                                            })
+                                            .catch(err => {
+                                                // error!!
+                                                console.log(err);
+                                            });
+                                    } else {
+                                        // If a user's refresh token is invalid we want them to login again.
+                                        console.error('Invalid refresh token.');
+                                        localStorage.setItem('accessToken', 'logout');
+                                        localStorage.setItem('refreshToken', 'logout');
+                                        location.assign(getBaseURL() + '/login');
+                                    }
+                                });
+                        }
+                    } else {
+                        // success message
+                        const tempExhibitsArr = exhibits;
+                        tempExhibitsArr.push(newExhibit);
+                        setExhibits(tempExhibitsArr);
+                        location.assign(getBaseURL() + '/exhibits');
                     }
                 })
                 .catch(err => {
@@ -268,6 +417,7 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
     };
 
     const handleSelectChange = event => {
+        document.getElementById('description-input').value = '';
         setCardType(event.target.value);
     };
 
@@ -316,6 +466,25 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                         </span>
                     </div>
                     <div className={classes.formInput}>
+                        <TextField
+                            label="Exhibit Image Link"
+                            id="mainimage-input"
+                            multiline
+                            fullWidth
+                            variant="outlined"
+                            error={mainImageLinkError}
+                            helperText={errText}
+                        />
+                        <span
+                            tabIndex="0"
+                            aria-label={tooltipText.mainImg}
+                            role="tooltip"
+                            data-microtip-position={isMobile ? 'top-left' : 'top'}
+                            className={classes.formIcon}>
+                            <IconHelp color={'white'} />
+                        </span>
+                    </div>
+                    <div className={classes.formInput}>
                         <Typography component={'span'} variant={'h6'}>
                             Card Type:
                         </Typography>
@@ -341,6 +510,17 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                                 icon={<IconPlus size={22} />}
                             />
                         </div>
+                        {isEdit && (
+                            <PrimaryButton
+                                text={'SAVE CARD'}
+                                width={'180px'}
+                                height={'40px'}
+                                fontSize={'14px'}
+                                lm={'1rem'}
+                                onClick={editCard}
+                                icon={<IconDeviceFloppy size={22} />}
+                            />
+                        )}
                     </div>
                     {cardType === 'Video' && (
                         <div className={classes.formInput}>
@@ -449,15 +629,15 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                     <div className={classes.buttons}>
                         <WarningButton
                             text={'CANCEL'}
-                            width={'140px'}
+                            width={'200px'}
                             rm={isSmallMobile ? '5rem' : '0'}
                             path={'/exhibits'}
                             icon={<IconX />}
                             isMobile={isSmallMobile}
                         />
                         <SuccessButton
-                            text={'SAVE'}
-                            width={'140px'}
+                            text={'SAVE EXHIBIT'}
+                            width={'200px'}
                             lm={isSmallMobile ? '0' : '2rem'}
                             icon={<IconDeviceFloppy />}
                             onClick={onClickSave}
@@ -477,6 +657,7 @@ function ExhibitForm({ isAdd, isEdit, id, exhibit }) {
                                 content={contentArr}
                                 setContent={setContentArr}
                                 contentType={getContentTypeFromId}
+                                setFormProps={setFormProps}
                             />
                         ))}
                     </div>
@@ -490,11 +671,14 @@ ExhibitForm.propTypes = {
     exhibit: PropTypes.shape({
         contents: PropTypes.any,
         description: PropTypes.any,
+        mainImage: PropTypes.any,
         name: PropTypes.any
     }),
+    exhibits: PropTypes.any,
     id: PropTypes.any,
     isAdd: PropTypes.bool,
-    isEdit: PropTypes.bool
+    isEdit: PropTypes.bool,
+    setExhibits: PropTypes.func
 };
 
 export default ExhibitForm;

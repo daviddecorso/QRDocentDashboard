@@ -25,8 +25,7 @@ const pageStyles = {
         border: 'grey 1px solid',
         borderRadius: '10px',
         marginTop: '2rem',
-        paddingTop: '1rem',
-        paddingBottom: '2rem'
+        paddingTop: '1rem'
     },
     listHeader: {
         display: 'grid',
@@ -97,7 +96,7 @@ export default function Exhibits({ exhibits, setExhibits }) {
                                         <ExhibitListItem
                                             name={exhibit.name}
                                             date={formatDate(exhibit.createdAt)}
-                                            artistImg={exhibit.artistImg}
+                                            artistImg={exhibit.mainImage}
                                             status={exhibit.exhibitStatusID}
                                             index={index}
                                             id={exhibit.exhibitID}
