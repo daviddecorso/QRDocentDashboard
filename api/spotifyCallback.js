@@ -33,7 +33,7 @@ const API = async(req, res) =>
     })
 };
 
-export default authentication(API);
+export default API;
 
 
 

@@ -1,6 +1,5 @@
 import { failure, success } from './utility/responseObject';
 import { getBaseURL } from '../configuration';
-import authentication from './middleware/authentication';
 import query from '../database/databaseConnection';
 import querystring from 'querystring';
 
@@ -18,7 +17,7 @@ const API = async(req, res) =>
         }))
 };
 
-export default authentication(API);
+export default API;
 
 
 
