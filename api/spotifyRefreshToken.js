@@ -1,39 +1,43 @@
-import { failure, success } from './utility/responseObject';
-import { getBaseURL } from '../configuration';
-import authentication from './middleware/authentication';
-import query from '../database/databaseConnection';
-import querystring from 'querystring';
+import axios from 'axios';
+import { failure } from '../api/utility/responseObject';
 
 const API = async(req, res) =>
 {
-    // TODO: Fix naming, depracations, and make calls async/await!
-    var refresh_token = req.query.refresh_token;
-    var authOptions = {
+    const refreshToken = req.query.refresh_token;
+    const configOptions = {
+        method: 'post',
         url: 'https://accounts.spotify.com/api/token',
-        headers: {
-            'Authorization': 'Basic ' + (new Buffer(
-                process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
-            ).toString('base64'))
-        },
-        form: {
+        params: {
             grant_type: 'refresh_token',
-            refresh_token: refresh_token
+            refresh_token: refreshToken
         },
-        json: true
+        headers: {
+            Authorization: 'Basic ' +
+                Buffer.from(process.env.SPOTIFY_QR_DOCENT_ID + ':' + process.env.SPOTIFY_QR_DOCENT_SECRET)
+                    .toString('base64')
+        }
     };
 
-    request.post(authOptions, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            var access_token = body.access_token;
-            console.log(access_token)
+    try
+    {
+        const response = await axios(configOptions);
+
+        if (response.statusCode === 200)
+        {
+            const accessToken = response.body.access_token;
+
+            console.log(response.body);
             res.send({
-                'access_token': access_token
+                access_token: accessToken
             });
         }
-    });
+    }
+    catch (error)
+    {
+        console.log(error);
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(failure(error.message)));
+    }
 };
 
 export default API;
-
-
-
