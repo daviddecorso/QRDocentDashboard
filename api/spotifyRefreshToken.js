@@ -22,11 +22,11 @@ const API = async(req, res) =>
     {
         const response = await axios(configOptions);
 
-        if (response.statusCode === 200)
+        if (response.status === 200)
         {
-            const accessToken = response.body.access_token;
+            const accessToken = response.data.access_token;
 
-            console.log(response.body);
+            console.log(response.data);
             res.send({
                 access_token: accessToken
             });
