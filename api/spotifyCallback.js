@@ -11,7 +11,7 @@ const API = async(req, res) =>
         url: 'https://accounts.spotify.com/api/token',
         params: {
             code: code,
-            redirectURI,
+            redirect_uri: redirectURI,
             grant_type: 'authorization_code'
         },
         headers: {

@@ -8,7 +8,7 @@ const API = (req, res) =>
         response_type: 'code',
         client_id: process.env.SPOTIFY_QR_DOCENT_ID,
         scope: 'user-read-private user-read-email ugc-image-upload playlist-modify-public playlist-modify-private',
-        redirectURI
+        redirect_uri: redirectURI
     });
 
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
