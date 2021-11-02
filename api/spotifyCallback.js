@@ -24,10 +24,10 @@ const API = async(req, res) =>
     try
     {
         const response = await axios(configOptions);
-        const accessToken = response.body.access_token;
-        const refreshToken = response.body.refresh_token;
+        const accessToken = response.data.access_token;
+        const refreshToken = response.data.refresh_token;
 
-        console.log(response.body);
+        console.log(response.data);
         res.redirect(process.env.FRONTEND_URI + '?access_token=' + accessToken + '&refresh_token=' + refreshToken);
     }
     catch (error)
