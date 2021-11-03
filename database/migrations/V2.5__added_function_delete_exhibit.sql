@@ -6,6 +6,9 @@ LANGUAGE plpgsql
 AS
 $$
     BEGIN
+        DELETE FROM museum.scan
+        WHERE exhibit_id = _exhibit_id;
+
         DELETE FROM museum.exhibit_content
         WHERE exhibit_id = _exhibit_id;
 
