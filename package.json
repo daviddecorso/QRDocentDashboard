@@ -33,7 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-stonecutter": "^0.3.10",
     "twilio": "^3.68.0",
-    "validator": "^13.6.0",
+    "validator": "^13.7.0",
     "vercel": "^23.1.2"
   },
   "devDependencies": {
