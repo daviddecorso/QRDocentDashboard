@@ -7,7 +7,7 @@ CREATE TABLE admin.analytics(
 );
 
 CREATE INDEX idx_admin_analytics_fk_museum_id
-ON admin.museum(museum_id);
+ON admin.analytics(museum_id);
 
 CREATE INDEX idx_admin_analytics_date_created
 ON admin.analytics(date_created);
