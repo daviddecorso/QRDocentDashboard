@@ -3,13 +3,14 @@ CREATE OR REPLACE FUNCTION admin.fn_get_analytics_by_date_range(
    _start_date DATE = CAST(NOW() AT TIME ZONE 'EDT' AS DATE),
    _end_date DATE = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
 )
-RETURNS TABLE(_date DATE, _average_user_visit TIME, _total_scans INT, _average_daily_scans FLOAT, _exhibit_analytics json)
+RETURNS TABLE(_total_scans INT, _average_daily_scans REAL, _average_user_visit_from_range TIME, _date DATE, _average_user_visit TIME, _exhibit_analytics json)
 LANGUAGE plpgsql
 AS
 $$
     DECLARE
         _total_scans INT;
-        _average_daily_scans FLOAT;
+        _average_daily_scans REAL;
+        _average_user_visit_from_range TIME;
     BEGIN
         -- Get total scans from given range
         SELECT SUM(ea.total_scans) AS total_scans
@@ -27,9 +28,15 @@ $$
             GROUP BY a.analytics_id, a.date_created) AS total_scans_per_day
         INTO _average_daily_scans;
 
+        -- Get average user visits from given range
+        SELECT CAST(AVG(average_user_visit) AS TIME) AS average_user_visit_from_range
+        FROM admin.analytics
+        WHERE museum_id = _museum_id AND (date_created >= _start_date AND date_created <= _end_date)
+        INTO _average_user_visit_from_range;
+
         -- Represent the analytics and exhibit analytics in one query from given range (aggregate exhibits per one analytics day).
         RETURN QUERY
-            SELECT a.date_created AS date, a.average_user_visit, COALESCE(_total_scans, 0), COALESCE(ROUND(_average_daily_scans, 2), 0),
+            SELECT COALESCE(_total_scans, 0), COALESCE(_average_daily_scans, 0), COALESCE(_average_user_visit_from_range, '00:00:00'::TIME), a.date_created AS date, a.average_user_visit,
                         json_agg(
                             json_build_object(
                                     'exhibitID', ea.exhibit_id,
