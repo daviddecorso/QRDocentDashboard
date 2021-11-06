@@ -17,7 +17,7 @@ $$
             JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
         WHERE a.museum_id = _museum_id AND (a.date_created >= _start_date AND a.date_created <= _end_date)
         INTO _total_scans;
-        
+
         -- Get average daily scans from given range
         SELECT AVG(total_scans) AS average_daily_scans FROM
             (SELECT SUM(ea.total_scans) AS total_scans
@@ -27,10 +27,8 @@ $$
             GROUP BY a.analytics_id, a.date_created) AS total_scans_per_day
         INTO _average_daily_scans;
 
-        
-        -- Represent the analytics and exhibit analytics in one query (aggregate exhibits per one analytics day).
-        -- Then establish a date range for this data.
-        SELECT a.date_created AS date, a.average_user_visit,
+        -- Represent the analytics and exhibit analytics in one query from given range (aggregate exhibits per one analytics day).
+        SELECT a.date_created AS date, a.average_user_visit, COALESCE(_total_scans, 0), COALESCE(_average_daily_scans, 0),
                     json_agg(
                         json_build_object(
                                 'exhibitID', ea.exhibit_id,
