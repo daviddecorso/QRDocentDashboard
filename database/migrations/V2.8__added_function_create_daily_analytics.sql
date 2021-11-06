@@ -31,12 +31,14 @@ $$
             INSERT INTO admin.analytics
             (
                 average_user_visit,
-                museum_id
+                museum_id,
+                date_created
             )
             VALUES
             (
                 COALESCE(_average_user_visit, CAST('00:00:00' AS TIME)),
-                _museum_id
+                _museum_id,
+                _date_of_analytics
             )
             RETURNING analytics_id INTO _analytics_id;
 
