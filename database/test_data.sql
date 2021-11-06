@@ -57,3 +57,37 @@ SELECT e.exhibit_id, COUNT(s.exhibit_id) AS total_scans FROM museum.exhibit AS e
         AND CAST(s.created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
 WHERE e.museum_id = 1
 GROUP BY e.exhibit_id;
+
+
+
+-- Represent the analytics and exhibit analytics in one query (aggregate exhibits per one analytics day).
+-- Then establish a date range for this data.
+SELECT a.date_created AS date, a.average_user_visit,
+            json_agg(
+                json_build_object(
+                        'exhibitID', ea.exhibit_id,
+                        'name', e.name,
+                        'mainImage', e.image,
+                        'scans', ea.total_scans
+                    )
+                ) AS exhibit_analytics
+FROM admin.analytics AS a
+    JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
+    JOIN museum.exhibit AS e ON ea.exhibit_id = e.exhibit_id
+WHERE a.museum_id = _museum_id AND (a.date_created >= _start_date AND a.date_created <= _end_date)
+GROUP BY a.analytics_id, a.date_created
+ORDER BY a.date_created DESC;
+
+-- Get total scans from given range
+SELECT SUM(ea.total_scans) AS total_scans
+FROM admin.analytics AS a
+    JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
+WHERE a.museum_id = 1 AND (a.date_created >= '2021-11-04'::DATE AND a.date_created <= '2021-11-06'::DATE);
+
+-- Get average daily scans from given range
+SELECT AVG(total_scans) AS average_daily_scans FROM
+    (SELECT SUM(ea.total_scans) AS total_scans
+    FROM admin.analytics AS a
+        JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
+    WHERE a.museum_id = 1 AND (a.date_created >= '2021-11-04'::DATE AND a.date_created <= '2021-11-06'::DATE)
+    GROUP BY a.analytics_id, a.date_created) AS total_scans_per_day;
