@@ -44,17 +44,13 @@ VALUES
 
 
 -- Get the time spent for each user in the museum for TODAY.
-SELECT CAST(AVG(time_spent) AS TIME) FROM
+SELECT CAST(AVG(time_spent) AS TIME) AS average_user_visit FROM
     (SELECT CAST(MAX(CAST(created_at AS TIME)) - MIN(CAST(created_at AS TIME)) AS TIME) AS time_spent
     FROM museum.scan
     WHERE CAST(created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
     GROUP BY user_id) AS result;
 
-SELECT user_id, CAST(MAX(CAST(created_at AS TIME)) - MIN(CAST(created_at AS TIME)) AS TIME) AS time_spent
-FROM museum.scan
-WHERE CAST(created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
-GROUP BY user_id ORDER BY user_id;
-
-SELECT * FROM museum.scan ORDER BY user_id, created_at;
-
-SELECT CAST(created_at AS DATE) FROM museum.scan ORDER BY user_id, created_at;
+-- Get total scans for an exhibit for TODAY.
+SELECT e.exhibit_id, COUNT(s.exhibit_id) FROM museum.exhibit AS e
+    LEFT JOIN museum.scan AS s ON e.exhibit_id = s.exhibit_id AND CAST(s.created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
+GROUP BY e.exhibit_id;
