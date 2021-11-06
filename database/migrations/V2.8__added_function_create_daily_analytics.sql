@@ -13,7 +13,7 @@ $$
         IF EXISTS(
                     SELECT 1
                     FROM admin.analytics
-                    WHERE date_created = _date_of_analytics
+                    WHERE date_created = _date_of_analytics AND museum_id = _museum_id
                     LIMIT 1
                  )
         THEN
@@ -35,7 +35,7 @@ $$
             )
             VALUES
             (
-                _average_user_visit,
+                COALESCE(_average_user_visit, CAST('00:00:00' AS TIME)),
                 _museum_id
             )
             RETURNING analytics_id INTO _analytics_id;
