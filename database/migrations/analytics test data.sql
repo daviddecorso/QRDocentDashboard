@@ -56,5 +56,5 @@ SELECT CAST(AVG(time_spent) AS TIME) AS average_user_visit FROM
 SELECT e.exhibit_id, COUNT(s.exhibit_id) AS total_scans FROM museum.exhibit AS e
     LEFT JOIN museum.scan AS s ON e.exhibit_id = s.exhibit_id
         AND CAST(s.created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
-        AND e.museum_id = 1
+WHERE e.museum_id = 1
 GROUP BY e.exhibit_id;
