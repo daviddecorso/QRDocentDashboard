@@ -42,14 +42,13 @@ VALUES
 
 -- Testing for average time in a specific date
 
-
 -- Get the time spent for each user in the museum for TODAY.
 SELECT CAST(AVG(time_spent) AS TIME) AS average_user_visit FROM
     (SELECT CAST(MAX(CAST(s.created_at AS TIME)) - MIN(CAST(s.created_at AS TIME)) AS TIME) AS time_spent
     FROM museum.scan AS s
         JOIN museum.exhibit AS e ON s.exhibit_id = e.exhibit_id
     WHERE CAST(s.created_at AS DATE) = CAST(NOW() AT TIME ZONE 'EDT' AS DATE) AND e.museum_id = 1
-    GROUP BY user_id) AS result;
+    GROUP BY user_id) AS time_spent_per_user;
 
 
 -- Get total scans for all exhibits for TODAY.

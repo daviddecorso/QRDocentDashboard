@@ -3,7 +3,7 @@ CREATE TABLE admin.analytics(
     average_user_visit TIME NOT NULL,
     museum_id INT NOT NULL,
     CONSTRAINT fk_admin_analytics_admin_museum FOREIGN KEY(museum_id) REFERENCES admin.museum(museum_id),
-    date_created DATE NOT NULL DEFAULT CURRENT_DATE
+    date_created DATE NOT NULL DEFAULT CAST(NOW() AT TIME ZONE 'EDT' AS DATE)
 );
 
 CREATE INDEX idx_admin_analytics_fk_museum_id
