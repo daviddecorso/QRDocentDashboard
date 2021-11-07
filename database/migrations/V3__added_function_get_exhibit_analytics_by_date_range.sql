@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION admin.fn_get_exhibit_analytics_by_date_range(
+CREATE OR REPLACE FUNCTION admin.fn_get_graph_analytics_by_date_range(
    _museum_id INT = 0,
    _start_date DATE = CAST(NOW() AT TIME ZONE 'EDT' AS DATE),
    _end_date DATE = CAST(NOW() AT TIME ZONE 'EDT' AS DATE)

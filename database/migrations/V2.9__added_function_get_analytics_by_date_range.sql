@@ -35,6 +35,6 @@ $$
         WHERE museum_id = _museum_id AND (date_created >= _start_date AND date_created <= _end_date)
         INTO _average_user_visit_from_range;
 
-        
+
     END
 $$
