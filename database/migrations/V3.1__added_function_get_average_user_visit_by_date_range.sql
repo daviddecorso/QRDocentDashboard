@@ -29,7 +29,7 @@ $$
             -- Get average user visits from given range
             SELECT CAST(AVG(average_user_visit) AS TIME) AS average_user_visit_from_range
             FROM admin.analytics
-            WHERE museum_id = 1 AND (date_created >= _start_date AND date_created <= _end_date)
+            WHERE museum_id = _museum_id AND (date_created >= _start_date AND date_created <= _end_date)
             INTO _average_user_visit;
 
             RETURN COALESCE(_average_user_visit, CAST('00:00:00' AS TIME));
