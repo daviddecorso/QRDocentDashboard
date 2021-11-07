@@ -91,3 +91,37 @@ SELECT AVG(total_scans) AS average_daily_scans FROM
         JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
     WHERE a.museum_id = 1 AND (a.date_created >= '2021-11-04'::DATE AND a.date_created <= '2021-11-06'::DATE)
     GROUP BY a.analytics_id, a.date_created) AS total_scans_per_day;
+
+
+DROP TABLE IF EXISTS exhibit_percentages;
+
+CREATE TEMP TABLE exhibit_percentages
+(
+    exhibit_id INT NOT NULL,
+    exhibit_scans_percentage REAL NOT NULL
+);
+
+INSERT INTO exhibit_percentages
+(
+    exhibit_id,
+    exhibit_scans_percentage
+)
+-- Percentage scanned per exhibit in given range
+SELECT e.exhibit_id,
+    (
+        SUM(ea.total_scans) * 100.0 /
+        (SELECT SUM(ea.total_scans) AS total_scans
+        FROM admin.analytics AS a
+            JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
+        WHERE a.museum_id = 1 AND (a.date_created >= '2021-10-31'::DATE AND a.date_created <= '2021-11-06'::DATE))
+    ) AS exhibit_scans_percentage
+FROM admin.analytics AS a
+    JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
+    JOIN museum.exhibit AS e ON ea.exhibit_id = e.exhibit_id
+WHERE a.museum_id = 1 AND (a.date_created >= '2021-10-31'::DATE AND a.date_created <= '2021-11-06'::DATE)
+GROUP BY e.exhibit_id;
+
+SELECT * FROM exhibit_percentages;
+
+DROP TABLE IF EXISTS exhibit_percentages;
+
