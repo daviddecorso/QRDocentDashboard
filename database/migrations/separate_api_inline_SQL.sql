@@ -26,3 +26,7 @@ WHERE a.museum_id = 1 AND (a.date_created >= '2021-11-2'::DATE AND a.date_create
 GROUP BY e.exhibit_id
 ORDER BY SUM(ea.total_scans) DESC
 LIMIT 1;
+
+-- Figure out how to represent the data for today. Have it where we automate and create the analytical data after museum closing (6-7pm ish) to provide data for today sooner
+-- Or manually generate data per each API call for today data.
+-- Can probably still get the cards data for today APIs a little easier, chart data won't be possible in combination with the automated tables for analyitcal data.
