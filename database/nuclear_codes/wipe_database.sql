@@ -1,3 +1,4 @@
+-- ************* DONT FORGET TO RE-ADD Tom's user back after wiping!!!!!!!!! *************
 DROP FUNCTION museum.fn_create_museum_scan(_user_id integer, _exhibit_id integer);
 DROP FUNCTION admin.fn_update_museum_exhibit(_exhibit_id integer, _name text, _description text, _exhibit_contents json);
 DROP FUNCTION admin.fn_delete_museum_exhibit(_exhibit_id integer);
