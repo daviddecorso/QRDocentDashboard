@@ -43,7 +43,7 @@ SELECT admin.fn_get_total_scans_by_date_range(1, '2021-11-07'::DATE, '2021-11-07
 SELECT admin.fn_get_total_scans_by_date_range(1, '2021-11-06'::DATE, '2021-11-07'::DATE) AS total_scans;
 SELECT admin.fn_get_total_scans_by_date_range(1, '2021-11-06'::DATE, '2021-11-06'::DATE) AS total_scans;
 
--- Get average daily scans from given range
+-- Get average daily scans from given range (Inline SQL, no need for today implementation)
 SELECT AVG(total_scans) AS average_daily_scans_from_range FROM
     (SELECT SUM(ea.total_scans) AS total_scans
     FROM admin.analytics AS a
@@ -55,6 +55,12 @@ SELECT AVG(total_scans) AS average_daily_scans_from_range FROM
 SELECT CAST(AVG(average_user_visit) AS TIME) AS average_user_visit_from_range
 FROM admin.analytics
 WHERE museum_id = 1 AND (date_created >= '2021-10-31'::DATE AND date_created <= '2021-11-06'::DATE);
+
+-- Note how independent TODAYs stats are from in relation to previous stats. (Make it like Today, Last 7 days, Month, Year, etc).
+SELECT admin.fn_get_average_user_visit_by_date_range(1, '2021-11-07'::DATE, '2021-11-07'::DATE) AS average_user_visit;
+SELECT admin.fn_get_average_user_visit_by_date_range(1, '2021-11-06'::DATE, '2021-11-07'::DATE) AS average_user_visit;
+SELECT admin.fn_get_average_user_visit_by_date_range(1, '2021-11-06'::DATE, '2021-11-06'::DATE) AS average_user_visit;
+
 
 -- Get most popular exhibit from given range
 SELECT e.exhibit_id, e.name, e.image, SUM(ea.total_scans) AS most_scans_from_range
