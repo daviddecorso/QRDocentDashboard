@@ -10,6 +10,7 @@ const API = async(req, res) =>
         const parametersGetMuseum = [];
         const queryResultGetMuseum = await query(queryStringGetMuseum, parametersGetMuseum);
 
+        // Tally all analytics for all museums separately.
         const failures = [];
         for (let i = 0; i < queryResultGetMuseum.rows.length; i++)
         {
