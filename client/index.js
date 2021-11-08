@@ -40,7 +40,7 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 PrivateRoute.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.any
 };
 
 export default function App() {
