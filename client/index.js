@@ -45,6 +45,8 @@ PrivateRoute.propTypes = {
 
 export default function App() {
     const [exhibits, setExhibits] = useState([]);
+    const [snackbarText, setSnackbarText] = useState('');
+    const [openSuccess, setOpenSuccess] = useState(false);
     return (
         <Router>
             <main>
@@ -69,14 +71,31 @@ export default function App() {
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits">
                             <NavBar />
-                            <Exhibits exhibits={exhibits} setExhibits={setExhibits} />
+                            <Exhibits
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                openSuccess={openSuccess}
+                                setOpenSuccess={setOpenSuccess}
+                                snackbarText={snackbarText}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits/add">
                             <NavBar />
-                            <AddExhibit exhibits={exhibits} setExhibits={setExhibits} />
+                            <AddExhibit
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                setOpenSuccess={setOpenSuccess}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                         <PrivateRoute path="/exhibits/edit/:id">
-                            <EditExhibit exhibits={exhibits} setExhibits={setExhibits} />
+                            <EditExhibit
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                setOpenSuccess={setOpenSuccess}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                     </Switch>
                 </div>
