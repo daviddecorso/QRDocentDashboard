@@ -10,6 +10,7 @@ import isLogin from './util/auth';
 import Landing from './routes/landing';
 import Login from './routes/login';
 import NavBar from './components/nav-bar';
+import Privacy from './routes/privacy';
 import PropTypes from 'prop-types';
 import QrRedirect from './routes/qr-redirect';
 import ReactDOM from 'react-dom';
@@ -59,11 +60,14 @@ export default function App() {
                             <NavBar />
                             <IndexRoute />
                         </PrivateRoute>
-                        <Route exacy path="/login">
+                        <Route exact path="/login">
                             <Login setExhibits={setExhibits} />
                         </Route>
                         <Route path="/qr">
                             <QrRedirect />
+                        </Route>
+                        <Route exact path="/privacy">
+                            <Privacy />
                         </Route>
                         <PrivateRoute exact path="/analytics">
                             <NavBar />
