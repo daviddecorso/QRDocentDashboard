@@ -76,7 +76,7 @@ const pageStyles = {
     }
 };
 
-function ExhibitListItem({ name, date, artistImg, status, index, id }) {
+function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, setExhibits }) {
     // Open/close state for edit/delete menu
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -130,19 +130,34 @@ function ExhibitListItem({ name, date, artistImg, status, index, id }) {
         setOpenDeleteSuccess(false);
     };
 
+    const removeExhibit = () => {
+        const tempArr = exhibits;
+        tempArr.splice(Number(index), 1);
+        setExhibits(tempArr);
+
+        // Scuffed fix until I fix removing the exhibit from the exhibits state.
+        history.push('/exhibits/');
+    };
+
     const handleDelete = () => {
         handleAlertClose();
         axios
-            .post(getBaseURL() + 'api/deleteMuseumExhibit', { exhibitID: Number(id) }, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+            .post(
+                getBaseURL() + 'api/deleteMuseumExhibit',
+                { exhibitID: Number(id) },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+                    }
                 }
-            })
+            )
             .then(res => {
                 if (res.data.success) {
                     console.log(res);
                     console.log(id);
+
                     handleDeleteSuccessOpen();
+                    removeExhibit();
                 } else {
                     console.log('We need to refresh!');
                     axios
@@ -169,6 +184,7 @@ function ExhibitListItem({ name, date, artistImg, status, index, id }) {
                                         if (result.data.success) {
                                             console.log(result);
                                             console.log(id);
+                                            removeExhibit();
                                             handleDeleteSuccessOpen();
                                         } else {
                                             console.log(
@@ -254,8 +270,10 @@ function ExhibitListItem({ name, date, artistImg, status, index, id }) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Deleting will remove this exhibit and all its contents. This exhibit&apos;s
-                        QR code will no longer work. If you want to reuse this exhibit&apos;s QR
-                        code for another purpose, please edit the exhibit information instead.
+                        QR code will no longer work, scans data related to this exhibit will be
+                        deleted, and this exhibit will be removed from users&apos; scans lists on
+                        the app. (Exhibits should not be deleted just because they are no longer in
+                        use.)
                         <br />
                         <br /> This action cannot be undone.
                     </DialogContentText>
@@ -291,7 +309,9 @@ ExhibitListItem.propTypes = {
     index: PropTypes.number,
     name: PropTypes.string,
     status: PropTypes.number,
-    id: PropTypes.any
+    id: PropTypes.any,
+    exhibits: PropTypes.any,
+    setExhibits: PropTypes.func
 };
 
 export default ExhibitListItem;

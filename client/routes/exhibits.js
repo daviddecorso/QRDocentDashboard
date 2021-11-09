@@ -1,9 +1,11 @@
-import { Container, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import { Container, makeStyles, Snackbar, Typography, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import ExhibitListItem from '../components/exhibitListItem';
+import ExhibitListSkeleton from '../components/exhibitListSkeleton';
 import formatDate from '../util/formatDate';
 import getExhibits from '../util/getExhibits';
 import { IconPlus } from '@tabler/icons';
+import MuiAlert from '@material-ui/lab/Alert';
 import PrimaryButton from '../components/buttons/primary-button';
 import PropTypes from 'prop-types';
 
@@ -41,7 +43,13 @@ const pageStyles = {
     }
 };
 
-export default function Exhibits({ exhibits, setExhibits }) {
+export default function Exhibits({
+    exhibits,
+    setExhibits,
+    openSuccess,
+    setOpenSuccess,
+    snackbarText
+}) {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
 
@@ -49,14 +57,27 @@ export default function Exhibits({ exhibits, setExhibits }) {
 
     const [refreshed, setRefreshed] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         if (exhibits.length === 0) {
             console.log('Exhibits array empty.');
             getExhibits(setExhibits, setRefreshed);
+            setIsLoading(true);
         } else {
+            setIsLoading(false);
             console.log(exhibits);
         }
-    }, [refreshed]);
+    }, [refreshed, exhibits]);
+
+    const handleSuccessClose = (event, reason) => {
+        console.log('Do we ever get here?');
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSuccess(false);
+    };
 
     return (
         <div>
@@ -92,22 +113,35 @@ export default function Exhibits({ exhibits, setExhibits }) {
                                     {isMobile && <span>Status</span>}
                                 </div>
                                 <div>
-                                    {exhibits.map((exhibit, index) => (
-                                        <ExhibitListItem
-                                            name={exhibit.name}
-                                            date={formatDate(exhibit.createdAt)}
-                                            artistImg={exhibit.mainImage}
-                                            status={exhibit.exhibitStatusID}
-                                            index={index}
-                                            id={exhibit.exhibitID}
-                                            key={exhibit.exhibitID}
-                                        />
-                                    ))}
+                                    {isLoading && <ExhibitListSkeleton />}
+                                    {!isLoading &&
+                                        exhibits.map((exhibit, index) => (
+                                            <ExhibitListItem
+                                                name={exhibit.name}
+                                                date={formatDate(exhibit.createdAt)}
+                                                artistImg={exhibit.mainImage}
+                                                status={exhibit.exhibitStatusID}
+                                                index={index}
+                                                id={exhibit.exhibitID}
+                                                key={exhibit.exhibitID}
+                                                exhibits={exhibits}
+                                                setExhibits={setExhibits}
+                                            />
+                                        ))}
                                 </div>
                             </div>
                         </Container>
                     </div>
                 </div>
+                <Snackbar open={openSuccess} autoHideDuration={10000} onClose={handleSuccessClose}>
+                    <MuiAlert
+                        onClose={handleSuccessClose}
+                        severity="success"
+                        elevation={4}
+                        variant="filled">
+                        {snackbarText}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         </div>
     );
@@ -118,5 +152,8 @@ Exhibits.propTypes = {
         length: PropTypes.number,
         map: PropTypes.func
     }),
-    setExhibits: PropTypes.func
+    setExhibits: PropTypes.func,
+    openSuccess: PropTypes.bool,
+    setOpenSuccess: PropTypes.func,
+    snackbarText: PropTypes.string
 };
