@@ -1,4 +1,5 @@
 -- ************* DONT FORGET TO RE-ADD Tom's user back after wiping!!!!!!!!! *************
+-- Re-add admin user account: INSERT INTO museum.user(phone_number, confirmation_code) VALUES('+13057101065', '123456');
 DROP FUNCTION museum.fn_create_museum_scan(_user_id integer, _exhibit_id integer);
 DROP FUNCTION admin.fn_update_museum_exhibit(_exhibit_id integer, _name text, _description text, _image text, _exhibit_contents json);
 DROP FUNCTION admin.fn_delete_museum_exhibit(_exhibit_id integer);
