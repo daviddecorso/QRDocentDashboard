@@ -3,7 +3,7 @@ import ExhibitForm from './exhibitForm';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function AddExhibit({ exhibits, setExhibits }) {
+function AddExhibit({ exhibits, setExhibits, setOpenSuccess, setSnackbarText }) {
     return (
         <>
             <div className="content">
@@ -16,14 +16,22 @@ function AddExhibit({ exhibits, setExhibits }) {
                     </Typography>
                 </Container>
             </div>
-            <ExhibitForm isAdd={true} exhibits={exhibits} setExhibits={setExhibits} />
+            <ExhibitForm
+                isAdd={true}
+                exhibits={exhibits}
+                setExhibits={setExhibits}
+                setOpenSuccess={setOpenSuccess}
+                setSnackbarText={setSnackbarText}
+            />
         </>
     );
 }
 
 AddExhibit.propTypes = {
     exhibits: PropTypes.any,
-    setExhibits: PropTypes.any
+    setExhibits: PropTypes.any,
+    setOpenSuccess: PropTypes.func,
+    setSnackbarText: PropTypes.func
 };
 
 export default AddExhibit;

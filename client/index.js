@@ -10,6 +10,7 @@ import isLogin from './util/auth';
 import Landing from './routes/landing';
 import Login from './routes/login';
 import NavBar from './components/nav-bar';
+import Privacy from './routes/privacy';
 import PropTypes from 'prop-types';
 import QrRedirect from './routes/qr-redirect';
 import ReactDOM from 'react-dom';
@@ -40,11 +41,13 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 PrivateRoute.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.any
 };
 
 export default function App() {
     const [exhibits, setExhibits] = useState([]);
+    const [snackbarText, setSnackbarText] = useState('');
+    const [openSuccess, setOpenSuccess] = useState(false);
     return (
         <Router>
             <main>
@@ -57,11 +60,14 @@ export default function App() {
                             <NavBar />
                             <IndexRoute />
                         </PrivateRoute>
-                        <Route exacy path="/login">
+                        <Route exact path="/login">
                             <Login setExhibits={setExhibits} />
                         </Route>
                         <Route path="/qr">
                             <QrRedirect />
+                        </Route>
+                        <Route exact path="/privacy">
+                            <Privacy />
                         </Route>
                         <PrivateRoute exact path="/analytics">
                             <NavBar />
@@ -69,14 +75,31 @@ export default function App() {
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits">
                             <NavBar />
-                            <Exhibits exhibits={exhibits} setExhibits={setExhibits} />
+                            <Exhibits
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                openSuccess={openSuccess}
+                                setOpenSuccess={setOpenSuccess}
+                                snackbarText={snackbarText}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits/add">
                             <NavBar />
-                            <AddExhibit exhibits={exhibits} setExhibits={setExhibits} />
+                            <AddExhibit
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                setOpenSuccess={setOpenSuccess}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                         <PrivateRoute path="/exhibits/edit/:id">
-                            <EditExhibit exhibits={exhibits} setExhibits={setExhibits} />
+                            <EditExhibit
+                                exhibits={exhibits}
+                                setExhibits={setExhibits}
+                                setOpenSuccess={setOpenSuccess}
+                                setSnackbarText={setSnackbarText}
+                            />
                         </PrivateRoute>
                     </Switch>
                 </div>
