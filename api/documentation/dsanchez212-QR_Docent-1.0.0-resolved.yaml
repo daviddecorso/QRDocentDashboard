@@ -629,3 +629,297 @@ paths:
                     success: false
                     message: '<error message>'
                   summary: Exhibits retrieval failed
+                  
+  /createDailyAnalytics:
+    post:
+      tags:
+        - Admin
+      summary: Saves museum analytics for the day (Will be automated!)
+      description: An authorization code must be sent to save museum analytics.
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                authorization:
+                  type: string
+              example: 
+                authorization: 'myAuthCode'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      failures:
+                        - success: false
+                          message: '<error message>'
+                        - success: false
+                          message: '<error message>'
+                  summary: Analytics creation successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Analytics creation failed
+                  
+  /getGraphAnalytics:
+    post:
+      tags:
+        - Admin
+      summary: Retrieves the graph analytics from a certain date range
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'. The dates must in the format yyyy-mm-dd.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+              example: 
+                startDate: '2021-11-06'
+                endDate: '2021-11-07'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      exhibitPercentages: 
+                        - exhibitID: 1
+                          name: 'test'
+                          mainImage: 'imaegURL.com'
+                          exhibitScansPercentage: 33.333333
+                        - exhibitID: 2
+                          name: 'test2'
+                          mainImage: 'imaegURL2.com'
+                          exhibitScansPercentage: 33.333333
+                        - exhibitID: 3
+                          name: 'test3'
+                          mainImage: 'imaegURL3.com'
+                          exhibitScansPercentage: 33.333333
+                      dates:
+                        - date: '2021-11-07T04:00:00.000Z'
+                          totalScans: "9"
+                          averageUserVisit: '02:46:07.75'
+                          exhibitAnalytics:
+                          - exhibitID: 2
+                            name: "test2"
+                            mainImage: 'imaegURL2.com'
+                            scans: 5
+                          - exhibitID: 1
+                            name: "test"
+                            mainImage: 'imaegURL.com'
+                            scans: 3
+                          - exhibitID: 3
+                            name: "test3"
+                            mainImage: 'imaegURL3.com'
+                            scans: 1
+                        - date: '2021-11-06T04:00:00.000Z'
+                          totalScans: "5"
+                          averageUserVisit: '00:21:55.5'
+                          exhibitAnalytics:
+                          - exhibitID: 1
+                            name: "test"
+                            mainImage: 'imaegURL.com'
+                            scans: 3
+                          - exhibitID: 2
+                            name: "test2"
+                            mainImage: 'imaegURL2.com'
+                            scans: 2
+                          - exhibitID: 3
+                            name: "test3"
+                            mainImage: 'imaegURL3.com'
+                            scans: 1
+                  summary: Graph analytics retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Graph analytics retrieval failed
+                  
+  /getTotalScans:
+    post:
+      tags:
+        - Admin
+      summary: Retrieves the total scans from a certain date range
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'. The dates must in the format yyyy-mm-dd.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+              example: 
+                startDate: '2021-11-06'
+                endDate: '2021-11-07'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      totalScans: 434
+                  summary: Total scans retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Total scans retrieval failed
+                  
+  /getAverageDailyScans:
+    post:
+      tags:
+        - Admin
+      summary: Retrieves the average daily scans from a certain date range
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'. The dates must in the format yyyy-mm-dd.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+              example: 
+                startDate: '2021-11-06'
+                endDate: '2021-11-07'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      averageDailyScans: '4.8571428571428571'
+                  summary: Average daily scans retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Average daily scans retrieval failed
+                  
+  /getAverageUserVisit:
+    post:
+      tags:
+        - Admin
+      summary: Retrieves the average user visit time from a certain date range
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'. The dates must in the format yyyy-mm-dd.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+              example: 
+                startDate: '2021-11-06'
+                endDate: '2021-11-07'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      averageUserVisit: '00:48:53.428571'
+                  summary: Average user visit time retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Average user visit time retrieval failed
+                  
+  /getMostPopularExhibit:
+    post:
+      tags:
+        - Admin
+      summary: Retrieves the most popular exhibit from a certain date range
+      description: The access token must be passed in the HTTP header under the 'authorization' key in the format 'Bearer {access token}'. The dates must in the format yyyy-mm-dd.
+      security:
+        - bearerAuth: []  
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+              example: 
+                startDate: '2021-11-06'
+                endDate: '2021-11-07'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                    result:
+                      mostPopularExhibit:
+                        exhibitID: 2
+                        name: 'test2'
+                        mainImage: 'imaegURL2.com'
+                        scans: '7'
+                  summary: The most popular exhibit retrieval successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: The most popular exhibit retrieval failed

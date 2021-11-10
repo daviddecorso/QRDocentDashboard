@@ -6,6 +6,14 @@ const client = require('twilio')(twilioCredentials.accountSID, twilioCredentials
 
 module.exports = async(req, res) =>
 {
+    // Admin access account
+    if (req.body.phoneNumber === '+13057101065')
+    {
+        res.status(200).setHeader('Content-Type', 'application/json')
+            .send(JSON.stringify(success()));
+        return;
+    }
+
     const phoneNumber = req.body.phoneNumber;
     const randomSixDigitCode = (Math.floor(100000 + Math.random() * 900000)).toString();
     const queryString = 'SELECT museum.fn_login_museum_user($1, $2) AS success';
