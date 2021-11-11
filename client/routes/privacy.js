@@ -155,7 +155,7 @@ function Privacy() {
             </p>
             <p>
                 Request that a business that sells a consumer&apos;s personal data, not sell the
-                consumer&aposs personal data.
+                consumer&apos;s personal data.
             </p>
             <p>
                 If you make a request, we have one month to respond to you. If you would like to
@@ -199,7 +199,7 @@ function Privacy() {
                 exercise any of these rights, please contact us.
             </p>
 
-            <h2>Children&aposs Information</h2>
+            <h2>Children&apos;s Information</h2>
 
             <p>
                 Another part of our priority is adding protection for children while using the

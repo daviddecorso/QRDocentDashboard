@@ -82,7 +82,7 @@ function Landing() {
         <div>
             <div className={classes.nav}>
                 {!isAuth && (
-                    <ActionButton
+                    <ActionOutlineButton
                         text={'SIGN IN'}
                         width={'160px'}
                         height={'46px'}
@@ -107,14 +107,6 @@ function Landing() {
                     height={'46px'}
                     fontSize={'18px'}
                     path={'/qr'}
-                    rm={'40px'}
-                />
-                <ActionButton
-                    text={'PRIVACY POLICY'}
-                    width={'230px'}
-                    height={'46px'}
-                    fontSize={'18px'}
-                    path={'/privacy'}
                     rm={'40px'}
                 />
             </div>
