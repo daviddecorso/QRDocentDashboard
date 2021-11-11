@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 import React from 'react';
 
 const pageStyles = {
-    shit: {
+    shift: {
         marginLeft: '10%',
         marginRight: '10%'
     }
@@ -12,7 +12,7 @@ function Privacy() {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
     return (
-        <div className={classes.shit}>
+        <div className={classes.shift}>
             <h1>Privacy Policy for InfiniteVision Technologies</h1>
 
             <p>
