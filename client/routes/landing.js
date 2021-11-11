@@ -101,7 +101,6 @@ function Landing() {
                         rm={'30px'}
                     />
                 )}
-
                 <ActionButton
                     text={'GET THE APP'}
                     width={'190px'}
