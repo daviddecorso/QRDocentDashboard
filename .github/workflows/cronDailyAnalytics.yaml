@@ -1,0 +1,15 @@
+name: cronDailyAnalytics
+on:
+  schedule: # Runs every day at 23:59 UTC (6:59 PM EST)
+    - cron: '59 23 * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API createDailyAnalytics
+        run: |
+          curl -X 'POST' \
+          'https://qrdocent.com/api/createDailyAnalytics' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d '{"authorization": "QRDocent!s@n@mazing@appl!c@t!on100"}'
