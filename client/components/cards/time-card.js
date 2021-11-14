@@ -251,8 +251,7 @@ function TimeCard({ styles }) {
 }
 
 TimeCard.propTypes = {
-    styles: PropTypes.object,
-    data: PropTypes.object
+    styles: PropTypes.object
 };
 
 export default TimeCard;

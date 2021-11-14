@@ -167,8 +167,7 @@ function ExhibitCard({ styles }) {
 }
 
 ExhibitCard.propTypes = {
-    styles: PropTypes.object,
-    data: PropTypes.object
+    styles: PropTypes.object
 };
 
 export default ExhibitCard;

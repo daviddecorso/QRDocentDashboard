@@ -216,8 +216,7 @@ function NumericCard({ styles }) {
 }
 
 NumericCard.propTypes = {
-    styles: PropTypes.object,
-    data: PropTypes.object
+    styles: PropTypes.object
 };
 
 export default NumericCard;
