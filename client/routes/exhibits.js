@@ -56,19 +56,18 @@ export default function Exhibits({
     const isMobile = useMediaQuery('(max-width:960px)');
 
     const [refreshed, setRefreshed] = useState(false);
-
     const [isLoading, setIsLoading] = useState(true);
+    const [noExhibits, setNoExhibits] = useState(false);
 
     useEffect(() => {
-        if (exhibits.length === 0) {
+        if (exhibits.length === 0 && !noExhibits) {
             console.log('Exhibits array empty.');
-            getExhibits(setExhibits, setRefreshed);
+            getExhibits(setExhibits, setRefreshed, setNoExhibits);
             setIsLoading(true);
         } else {
             setIsLoading(false);
-            console.log(exhibits);
         }
-    }, [refreshed, exhibits]);
+    }, [refreshed, exhibits, noExhibits]);
 
     const handleSuccessClose = (event, reason) => {
         console.log('Do we ever get here?');

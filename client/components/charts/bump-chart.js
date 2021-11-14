@@ -54,7 +54,7 @@ function BumpChart({ data, theme, title }) {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: '',
+                        legend: 'Date',
                         legendPosition: 'middle',
                         legendOffset: 32
                     }}
@@ -73,7 +73,7 @@ function BumpChart({ data, theme, title }) {
 }
 
 BumpChart.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.array,
     theme: PropTypes.object,
     title: PropTypes.string
 };
