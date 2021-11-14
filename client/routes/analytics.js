@@ -1,118 +1,21 @@
-import { Chip, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import { Chip, makeStyles, Modal, Typography, useMediaQuery } from '@material-ui/core';
 import { CSSGrid, makeResponsive, measureItems } from 'react-stonecutter';
+import { format, getDate, getMonth, parseISO } from 'date-fns';
 import { IconCalendarStats, IconChartBar, IconClock, IconRoute } from '@tabler/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import BumpChart from '../components/charts/bump-chart';
+import { DateRangePicker } from 'react-date-range';
 import ExhibitCard from '../components/cards/exhibit-card';
+import { getBaseURL } from '../../configuration';
+import getMinutesFromTimestamp from '../util/getMinutesFromTimestamp';
 import LineGraph from '../components/charts/line-graph';
 import NumericCard from '../components/cards/numeric-card';
 import PieChart from '../components/charts/pie-chart';
+import { Skeleton } from '@material-ui/lab';
 import TimeCard from '../components/cards/time-card';
-
-const mockDataTime = {
-    avgLengthMins: 141,
-    percent: 5.6
-};
-
-const mockDataNumScans = {
-    numScans: 16987,
-    percent: -12.4
-};
-
-const mockDataExhibit = {
-    name: 'Aretha Franklin',
-    change: 2
-};
-
-// Data for total scans chart, x-axis represents the date and the y-axis repesentes total scans
-const totalScansData = [
-    {
-        id: 'Scans',
-        color: 'hsl(172, 70%, 50%)',
-        data: [
-            { x: '14', y: '912' },
-            { x: '15', y: '712' },
-            { x: '16', y: '200' },
-            { x: '17', y: '788' },
-            { x: '18', y: '600' },
-            { x: '19', y: '722' },
-            { x: '20', y: '650' }
-        ]
-    }
-];
-
-// Data for pie chart, value reperesnts percent of total scans
-// Alternatively, the value could represent number of scans
-const scansPieData = [
-    {
-        id: 'Aretha Franklin',
-        label: 'Aretha Franklin',
-        value: 73.2
-    },
-    {
-        id: 'James Brown',
-        label: 'James Brown',
-        value: 26.8
-    }
-];
-
-// Data for average time spent in musuem over time line graph
-// x-axis represents date and y-axis represents time in hours
-const avgTimeData = [
-    {
-        id: 'Average Time',
-        color: 'hsl(172, 70%, 50%)',
-        data: [
-            { x: '14', y: '1.52' },
-            { x: '15', y: '2.64' },
-            { x: '16', y: '2.01' },
-            { x: '17', y: '2.22' },
-            { x: '18', y: '1.96' },
-            { x: '19', y: '1.07' },
-            { x: '20', y: '2.11' }
-        ]
-    }
-];
-
-// Data for exhibit ranking bump chart. x-axis is date, y-axis is rank
-const rankingData = [
-    {
-        id: 'Aretha Franklin',
-        data: [
-            { x: '14', y: '1' },
-            { x: '15', y: '1' },
-            { x: '16', y: '1' },
-            { x: '17', y: '2' },
-            { x: '18', y: '1' },
-            { x: '19', y: '2' },
-            { x: '20', y: '3' }
-        ]
-    },
-    {
-        id: 'James Brown',
-        data: [
-            { x: '14', y: '2' },
-            { x: '15', y: '2' },
-            { x: '16', y: '2' },
-            { x: '17', y: '3' },
-            { x: '18', y: '2' },
-            { x: '19', y: '3' },
-            { x: '20', y: '2' }
-        ]
-    },
-    {
-        id: 'Exhibit 3',
-        data: [
-            { x: '14', y: '3' },
-            { x: '15', y: '3' },
-            { x: '16', y: '3' },
-            { x: '17', y: '1' },
-            { x: '18', y: '3' },
-            { x: '19', y: '1' },
-            { x: '20', y: '1' }
-        ]
-    }
-];
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 // Default colors for charts
 const theme = {
@@ -140,9 +43,6 @@ const theme = {
         }
     }
 };
-
-// Hard-coding this until implemented
-const dateRange = '9/19 - 9/25';
 
 const cardStyles = {
     root: {
@@ -211,6 +111,21 @@ const pageStyles = {
         gridTemplateColumns: 'repeat(3, 1fr)',
         gridTemplateRows: 'repeat(5, 1fr)',
         gridAutoFlow: 'row'
+    },
+    datePicker: {
+        backgroundColor: 'white',
+        color: 'black',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: '10px',
+        paddingTop: '.5rem',
+        paddingBottom: '.5rem',
+        textAlign: 'center'
+    },
+    graphSkeleton: {
+        borderRadius: '20px'
     }
 };
 
@@ -221,16 +136,191 @@ export default function Analytics() {
     const isMobile = useMediaQuery('(max-width: 960px)');
     const isMedium = useMediaQuery('(max-width: 1339px)');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     // State for filters
     const [timeFilter, setTimeFilter] = useState(true);
     const [scansFilter, setScansFilter] = useState(true);
     const [pathingFilter, setPathingFilter] = useState(true);
+
+    // State for charts
+    const [totalScansData, setTotalScansData] = useState([]);
+    const [timeData, setTimeData] = useState([]);
+    const [percentData, setPercentData] = useState([]);
+    const [rankData, setRankData] = useState([]);
 
     // Defines grid for charts
     const Grid = makeResponsive(measureItems(CSSGrid), {
         maxWidth: isMedium ? 700 : 1500,
         minPadding: 100
     });
+
+    // State for date range
+    const [showDateRange, setShowDateRange] = useState(false);
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ]);
+
+    const setTotalScansGraph = res => {
+        const scansData = [{ id: 'Scans', color: 'hsl(172, 70%, 50%)', data: [] }];
+        res.data.result.dates.forEach(date => {
+            scansData[0].data.push({
+                x: getMonth(parseISO(date.date)) + 1 + '/' + getDate(parseISO(date.date)),
+                y: date.totalScans
+            });
+        });
+        const tempArray = scansData[0].data;
+        tempArray.reverse();
+        scansData[0].data = tempArray;
+        setTotalScansData(scansData);
+    };
+
+    const setTimeGraph = res => {
+        const timeArr = [{ id: 'Minutes', color: 'hsl(172, 70%, 50%)', data: [] }];
+        res.data.result.dates.forEach(date => {
+            timeArr[0].data.push({
+                x: getMonth(parseISO(date.date)) + 1 + '/' + getDate(parseISO(date.date)),
+                y: getMinutesFromTimestamp(date.averageUserVisit)
+            });
+        });
+
+        const tempArray = timeArr[0].data;
+        tempArray.reverse();
+        timeArr[0].data = tempArray;
+        setTimeData(timeArr);
+    };
+
+    const setPercentGraph = res => {
+        const percentArr = [];
+        res.data.result.exhibitPercentages.forEach(exhibit => {
+            percentArr.push({
+                id: exhibit.name,
+                label: exhibit.name,
+                value: exhibit.exhibitScansPercentage
+            });
+        });
+        setPercentData(percentArr);
+    };
+
+    const setRankGraph = res => {
+        const rankArr = [];
+        if (res.data.result.dates.length > 0) {
+            res.data.result.dates[0].exhibitAnalytics.forEach(exhibit => {
+                rankArr.push({ id: exhibit.name, data: [] });
+            });
+            res.data.result.dates.forEach(date => {
+                for (let i = 0; i < date.exhibitAnalytics.length; i++) {
+                    rankArr[i].data.push({
+                        x: getMonth(parseISO(date.date)) + 1 + '/' + getDate(parseISO(date.date)),
+                        y: date.exhibitAnalytics[i].scans
+                    });
+                }
+            });
+        }
+
+        rankArr.forEach(exhibit => {
+            exhibit.data.reverse();
+        });
+        setRankData(rankArr);
+    };
+
+    const graphAnalyticsRequest = body => {
+        setIsLoading(true);
+        axios
+            .post(getBaseURL() + 'api/getGraphAnalytics', body, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+                }
+            })
+            .then(res => {
+                console.log(res);
+                if (!res.data.success) {
+                    if (res.data.message === 'jwt expired') {
+                        console.log('JWT EXPIRED!');
+                        axios
+                            .get(getBaseURL() + 'api/refreshAdminUserToken', {
+                                headers: {
+                                    Authorization: 'Bearer ' + localStorage.getItem('refreshToken')
+                                }
+                            })
+                            .then(tokenRes => {
+                                if (tokenRes.data.success) {
+                                    console.log('Token Refreshed!');
+                                    localStorage.setItem(
+                                        'accessToken',
+                                        tokenRes.data.result.accessToken
+                                    );
+                                    axios
+                                        .post(getBaseURL() + 'api/getGraphAnalytics', body, {
+                                            headers: {
+                                                Authorization:
+                                                    'Bearer ' + tokenRes.data.result.accessToken
+                                            }
+                                        })
+                                        .then(result => {
+                                            // success!
+                                            console.log(result);
+                                            setTotalScansGraph(result);
+                                            setTimeGraph(result);
+                                            setPercentGraph(result);
+                                            setRankGraph(result);
+                                            setIsLoading(false);
+                                        })
+                                        .catch(err => {
+                                            // error!!
+                                            console.log(err);
+                                        });
+                                } else {
+                                    // If a user's refresh token is invalid we want them to login again.
+                                    console.error('Invalid refresh token.');
+                                    localStorage.setItem('accessToken', 'logout');
+                                    localStorage.setItem('refreshToken', 'logout');
+                                    location.assign(getBaseURL() + '/login');
+                                }
+                            });
+                    }
+                } else {
+                    // success
+                    setTotalScansGraph(res);
+                    setTimeGraph(res);
+                    setPercentGraph(res);
+                    setRankGraph(res);
+                    setIsLoading(false);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    // Getting today's analytics data to use as initial state.
+    useEffect(() => {
+        setIsLoading(true);
+        const body = {
+            startDate: format(Date.now(), 'yyyy-MM-dd').toString(),
+            endDate: format(Date.now(), 'yyyy-MM-dd').toString()
+        };
+        graphAnalyticsRequest(body);
+    }, []);
+
+    const getAnalytics = () => {
+        const body = {
+            startDate: format(dateRange[0].startDate, 'yyyy-MM-dd').toString(),
+            endDate: format(dateRange[0].endDate, 'yyyy-MM-dd').toString()
+        };
+        console.log(body);
+        graphAnalyticsRequest(body);
+    };
+
+    const handleClose = () => {
+        setShowDateRange(false);
+        getAnalytics();
+        console.log('Closed');
+    };
 
     return (
         <div>
@@ -240,8 +330,27 @@ export default function Analytics() {
                         ANALYTICS
                     </Typography>
                     <div className={classes.chipDiv}>
-                        <div>
-                            <IconCalendarStats /> {dateRange}
+                        <div style={{ color: 'black' }}>
+                            <Chip
+                                label="Daterange"
+                                color="primary"
+                                icon={<IconCalendarStats color={'white'} />}
+                                onClick={() => {
+                                    setShowDateRange(true);
+                                }}
+                            />
+                            <Modal open={showDateRange} onClose={handleClose}>
+                                <div className={classes.datePicker}>
+                                    <DateRangePicker
+                                        editableDateInputs={true}
+                                        onChange={item => {
+                                            setDateRange([item.selection]);
+                                        }}
+                                        moveRangeOnFirstSelection={false}
+                                        ranges={dateRange}
+                                    />
+                                </div>
+                            </Modal>
                         </div>
                         {!timeFilter && (
                             <Chip
@@ -309,55 +418,102 @@ export default function Analytics() {
                     </div>
                     <div
                         className={isMobile ? classes.mobileCardLayout : classes.cardLayoutDesktop}>
-                        <NumericCard styles={cardStyles} data={mockDataNumScans} />
-                        <TimeCard styles={cardStyles} data={mockDataTime} />
-                        <ExhibitCard styles={cardStyles} data={mockDataExhibit} />
+                        <NumericCard styles={cardStyles} />
+                        <TimeCard styles={cardStyles} />
+                        <ExhibitCard styles={cardStyles} />
                     </div>
-                    <Grid
-                        style={{ marginBottom: '1rem' }}
-                        columnWidth={500}
-                        gutterWidth={20}
-                        gutterHeight={20}
-                        itemHeight={450}
-                        duration={300}
-                        easing="ease-in-out">
-                        {scansFilter && (
-                            <div key="totalScans">
-                                <LineGraph
-                                    title={'Total Scans'}
-                                    data={totalScansData}
-                                    theme={theme}
+                    {!isLoading && (
+                        <Grid
+                            style={{ marginBottom: '1rem' }}
+                            columnWidth={500}
+                            gutterWidth={20}
+                            gutterHeight={20}
+                            itemHeight={450}
+                            duration={300}
+                            easing="ease-in-out">
+                            {scansFilter && (
+                                <div key="totalScans">
+                                    <LineGraph
+                                        title={'Total Scans'}
+                                        data={totalScansData}
+                                        theme={theme}
+                                        yAxis={'Scans'}
+                                    />
+                                </div>
+                            )}
+                            {scansFilter && (
+                                <div key="scansPie">
+                                    <PieChart
+                                        title={'Exhibit Scans Percentage'}
+                                        data={percentData}
+                                        theme={theme}
+                                    />
+                                </div>
+                            )}
+                            {timeFilter && (
+                                <div key="averageTotalTimeLine">
+                                    <LineGraph
+                                        title={'Average Visit Length'}
+                                        data={timeData}
+                                        theme={theme}
+                                        yAxis={'Minutes'}
+                                    />
+                                </div>
+                            )}
+                            {scansFilter && (
+                                <div key="exhibitRanking">
+                                    <BumpChart
+                                        title={'Exhibit Rank'}
+                                        data={rankData}
+                                        theme={theme}
+                                    />
+                                </div>
+                            )}
+                        </Grid>
+                    )}
+                    {isLoading && (
+                        <Grid
+                            style={{ marginBottom: '1rem' }}
+                            columnWidth={500}
+                            gutterWidth={20}
+                            gutterHeight={20}
+                            itemHeight={450}
+                            duration={300}
+                            easing="ease-in-out">
+                            <div>
+                                <Skeleton
+                                    className={classes.graphSkeleton}
+                                    variant="rect"
+                                    width={500}
+                                    height={450}
                                 />
                             </div>
-                        )}
-                        {scansFilter && (
-                            <div key="scansPie">
-                                <PieChart
-                                    title={'Exhibit Scans Percentage'}
-                                    data={scansPieData}
-                                    theme={theme}
+                            <div>
+                                <Skeleton
+                                    className={classes.graphSkeleton}
+                                    variant="rect"
+                                    width={500}
+                                    height={450}
                                 />
                             </div>
-                        )}
-                        {timeFilter && (
-                            <div key="averageTotalTimeLine">
-                                <LineGraph
-                                    title={'Average Total Time'}
-                                    data={avgTimeData}
-                                    theme={theme}
+                            <div>
+                                <Skeleton
+                                    className={classes.graphSkeleton}
+                                    variant="rect"
+                                    width={500}
+                                    height={450}
                                 />
                             </div>
-                        )}
-                        {scansFilter && (
-                            <div key="exhibitRanking">
-                                <BumpChart
-                                    title={'Exhibit Rank'}
-                                    data={rankingData}
-                                    theme={theme}
+                            <div>
+                                <Skeleton
+                                    className={classes.graphSkeleton}
+                                    variant="rect"
+                                    width={700}
+                                    height={450}
                                 />
                             </div>
-                        )}
-                    </Grid>
+                        </Grid>
+                    )}
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
-function LineGraph({ data, theme, title }) {
+function LineGraph({ data, theme, title, yAxis }) {
     return (
         <>
             <Card
@@ -43,7 +43,7 @@ function LineGraph({ data, theme, title }) {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'September',
+                        legend: 'Date',
                         legendOffset: 36,
                         legendPosition: 'middle'
                     }}
@@ -52,7 +52,7 @@ function LineGraph({ data, theme, title }) {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'Number of scans',
+                        legend: yAxis,
                         legendOffset: -40,
                         legendPosition: 'middle'
                     }}
@@ -75,9 +75,10 @@ function LineGraph({ data, theme, title }) {
 }
 
 LineGraph.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.array,
     theme: PropTypes.object,
-    title: PropTypes.string
+    title: PropTypes.string,
+    yAxis: PropTypes.string
 };
 
 export default LineGraph;
