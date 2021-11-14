@@ -17,7 +17,7 @@ $$
             exhibit_id INT NOT NULL,
             name TEXT NOT NULL,
             image TEXT NOT NULL,
-            exhibit_scans_percentage REAL NOT NULL
+            exhibit_scans_percentage REAL NULL
         );
 
         INSERT INTO exhibit_percentages
@@ -31,10 +31,12 @@ $$
         SELECT e.exhibit_id, e.name, e.image,
             (
                 SUM(ea.total_scans) * 100.0 /
+                NULLIF(
                 (SELECT SUM(ea.total_scans) AS total_scans
                 FROM admin.analytics AS a
                     JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
                 WHERE a.museum_id = _museum_id AND (a.date_created >= _start_date AND a.date_created <= _end_date))
+                , 0)
             ) AS exhibit_scans_percentage
         FROM admin.analytics AS a
             JOIN admin.exhibit_analytics AS ea ON a.analytics_id = ea.analytics_id
@@ -47,7 +49,7 @@ $$
                             'exhibitID', exhibit_id,
                             'name', name,
                             'mainImage', image,
-                            'exhibitScansPercentage', exhibit_scans_percentage
+                            'exhibitScansPercentage', COALESCE(exhibit_scans_percentage, 0)
                     )
                 )
         FROM exhibit_percentages
