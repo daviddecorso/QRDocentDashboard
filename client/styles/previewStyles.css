@@ -1,0 +1,26 @@
+.section::-webkit-scrollbar {
+    width: 13px;
+    overflow: overlay;
+}
+
+.section::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 100px;
+    border: solid 10px transparent;
+    box-shadow: inset 0 0 10px 10px green;
+    overflow: overlay;
+}
+
+.section::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+    overflow: overlay;
+}
+
+.wrap {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    background-color: '#282B33';
+}

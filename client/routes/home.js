@@ -1,9 +1,9 @@
 import { makeStyles, useMediaQuery } from '@material-ui/core';
-import ExhibitCard from '../components/cards/exhibit-card';
-import NumericCard from '../components/cards/numeric-card';
+import ExhibitCard from '../components/analyticsCards/exhibit-card';
+import NumericCard from '../components/analyticsCards/numeric-card';
 import PrimaryButton from '../components/buttons/primary-button';
 import React from 'react';
-import TimeCard from '../components/cards/time-card';
+import TimeCard from '../components/analyticsCards/time-card';
 
 // CSS styles for the cards
 const cardStyles = {
