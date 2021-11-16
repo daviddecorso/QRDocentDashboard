@@ -6,14 +6,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BumpChart from '../components/charts/bump-chart';
 import { DateRangePicker } from 'react-date-range';
-import ExhibitCard from '../components/cards/exhibit-card';
+import ExhibitCard from '../components/analyticsCards/exhibit-card';
 import { getBaseURL } from '../../configuration';
 import getMinutesFromTimestamp from '../util/getMinutesFromTimestamp';
 import LineGraph from '../components/charts/line-graph';
-import NumericCard from '../components/cards/numeric-card';
+import NumericCard from '../components/analyticsCards/numeric-card';
 import PieChart from '../components/charts/pie-chart';
 import { Skeleton } from '@material-ui/lab';
-import TimeCard from '../components/cards/time-card';
+import TimeCard from '../components/analyticsCards/time-card';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
