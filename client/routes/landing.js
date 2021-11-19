@@ -263,15 +263,19 @@ function Landing() {
     const isAuth = isLogin();
 
     const classes = useStyles();
-    const isLaptop = useMediaQuery('(max-width:1300px');
+
+    // const isLaptop = useMediaQuery('(max-width:1300px');
     const isMobile = useMediaQuery('(max-width:960px)');
 
     // Controls which nav button is highlighted.
     const [activePage, setActivePage] = useState('');
 
+    let navBar;
+    let navBarBg;
+
     useEffect(() => {
-        const navBar = document.getElementById('mobile-nav');
-        const navBarBg = document.getElementById('dark-bg-div');
+        navBar = document.getElementById('mobile-nav');
+        navBarBg = document.getElementById('dark-bg-div');
     });
     const openMobileMenu = () => {
         navBar.classList.remove('hidden-navbar');
@@ -528,7 +532,7 @@ function Landing() {
                         alt="Purple wave graphic"
                     />
                 )}
-                <div className={isMobile ? classes.featureDivMobile : classes.featureDiv}>
+                <div className={classes.featureDivMobile}>
                     <div
                         className={
                             isMobile ? classes.featureTextDivMobile : classes.featureTextDiv
@@ -549,12 +553,12 @@ function Landing() {
                             the music they loved from your museum again and again.
                         </p>
                         <p className={classes.featureText}>
-                            Simply scan an exhibit's QR code using the app, and a curated list of
-                            songs related to that exhibit will be added to a playlist for you.
+                            Simply scan an exhibit&apos;s QR code using the app, and a curated list
+                            of songs related to that exhibit will be added to a playlist for you.
                         </p>
                         <p className={classes.featureText}>
                             Continue scanning as you go about the museum, and at the end of your
-                            visit you'll have a unique playlist catered to your music tastes!
+                            visit you&apos;ll have a unique playlist catered to your music tastes!
                         </p>
                     </div>
                     {!isMobile && (
@@ -583,21 +587,14 @@ function Landing() {
                             <AppPreview gifSrc={exhibitsGif} />
                         </div>
                         <div className={classes.featureTextDiv}>
-                            <h3
-                                className={
-                                    isMobile
-                                        ? classes.featureTitleMobile
-                                        : classes.featureTitleRight
-                                }>
-                                INCREASED INTERACTION
-                            </h3>
+                            <h3 className={classes.featureTitleRight}>INCREASED INTERACTION</h3>
                             <p className={classes.featureTextRight}>
                                 QR Docent provides visitors with interesting and relevant content on
                                 their own smartphone that they can take home with them after their
                                 visit.
                             </p>
                             <p className={classes.featureTextRight}>
-                                When visitors scan an exhibit's QR code they are greeted with
+                                When visitors scan an exhibit&apos;s QR code they are greeted with
                                 curated content that excels on mobile devices, like videos, songs,
                                 and images they can view in the app.
                             </p>
@@ -611,14 +608,7 @@ function Landing() {
                 {isMobile && (
                     <div className={classes.featureDivRightMobile}>
                         <div className={classes.featureTextDivMobile}>
-                            <h3
-                                className={
-                                    isMobile
-                                        ? classes.featureTitleMobile
-                                        : classes.featureTitleRight
-                                }>
-                                INCREASED INTERACTION
-                            </h3>
+                            <h3 className={classes.featureTitleMobile}>INCREASED INTERACTION</h3>
                             <div className={classes.photoDivMobile}>
                                 <AppPreview gifSrc={exhibitsGif} />
                             </div>
@@ -628,7 +618,7 @@ function Landing() {
                                 visit.
                             </p>
                             <p className={classes.featureText}>
-                                When visitors scan an exhibit's QR code they are greeted with
+                                When visitors scan an exhibit&apos;s QR code they are greeted with
                                 curated content that excels on mobile devices, like videos, songs,
                                 and images they can view in the app.
                             </p>
