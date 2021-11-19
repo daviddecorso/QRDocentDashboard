@@ -532,7 +532,7 @@ function Landing() {
                         alt="Purple wave graphic"
                     />
                 )}
-                <div className={classes.featureDivMobile}>
+                <div className={isMobile ? classes.featureDivMobile : classes.featureDiv}>
                     <div
                         className={
                             isMobile ? classes.featureTextDivMobile : classes.featureTextDiv
@@ -587,7 +587,14 @@ function Landing() {
                             <AppPreview gifSrc={exhibitsGif} />
                         </div>
                         <div className={classes.featureTextDiv}>
-                            <h3 className={classes.featureTitleRight}>INCREASED INTERACTION</h3>
+                            <h3
+                                className={
+                                    isMobile
+                                        ? classes.featureTitleMobile
+                                        : classes.featureTitleRight
+                                }>
+                                INCREASED INTERACTION
+                            </h3>
                             <p className={classes.featureTextRight}>
                                 QR Docent provides visitors with interesting and relevant content on
                                 their own smartphone that they can take home with them after their
