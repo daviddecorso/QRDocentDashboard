@@ -7,14 +7,14 @@ function NavButton({ text, path, isHover, icon, setPage, closeMenu }) {
     const activeStyle = {
         backgroundColor: 'rgba(255, 255, 255, 0.08)',
         justifyContent: 'left',
-        paddingLeft: '80px',
+        paddingLeft: '60px',
         width: '320px',
         fontSize: '22px'
     };
 
     const nonActiveStyle = {
         justifyContent: 'left',
-        paddingLeft: '80px',
+        paddingLeft: '60px',
         width: '320px',
         fontSize: '22px'
     };
