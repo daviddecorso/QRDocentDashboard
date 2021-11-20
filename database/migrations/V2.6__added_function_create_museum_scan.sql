@@ -31,6 +31,11 @@ $$
             )
             RETURNING scan_id INTO _scan_id;
 
+            -- Update the exhibit status code where it is originally marked as 'not scanned'.
+            UPDATE museum.exhibit
+            SET exhibit_status_id = 2
+            WHERE exhibit_id = _exhibit_id AND (exhibit_status_id = 1 OR exhibit_status_id = 3);
+
             RETURN QUERY
                 SELECT s.scan_id, e.name, e.description, e.image,
                     json_agg(
