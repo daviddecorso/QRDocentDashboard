@@ -10,6 +10,7 @@ import isLogin from './util/auth';
 import Landing from './routes/landing';
 import Login from './routes/login';
 import NavBar from './components/nav-bar';
+import PageNotFound from './routes/404';
 import Privacy from './routes/privacy';
 import PropTypes from 'prop-types';
 import QrRedirect from './routes/qr-redirect';
@@ -101,6 +102,9 @@ export default function App() {
                                 setSnackbarText={setSnackbarText}
                             />
                         </PrivateRoute>
+                        <Route path="*">
+                            <PageNotFound />
+                        </Route>
                     </Switch>
                 </div>
             </main>

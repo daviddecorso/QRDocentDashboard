@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getBaseURL } from '../../configuration';
 
-export default function getExhibits(setExhibits, setRefreshed) {
+export default function getExhibits(setExhibits, setRefreshed, setNoExhibits) {
     axios
         .get(getBaseURL() + 'api/getAllMuseumExhibits', {
             headers: {
@@ -11,6 +11,9 @@ export default function getExhibits(setExhibits, setRefreshed) {
         .then(res => {
             console.log(res);
             if (res.data.success) {
+                if (res.data.result.exhibits.length === 0) {
+                    setNoExhibits(true);
+                }
                 setExhibits(res.data.result.exhibits);
             } else {
                 console.log('We need to refresh!');

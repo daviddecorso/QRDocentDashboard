@@ -1,4 +1,5 @@
 import {
+    Button,
     FormControl,
     LinearProgress,
     makeStyles,
@@ -14,6 +15,7 @@ import axios from 'axios';
 import ExhibitList from '../components/buttons/exhibit-list-button';
 import { getBaseURL } from '../../configuration';
 import isURL from 'validator/es/lib/isURL';
+import PreviewContainer from '../components/previewContainer';
 import PrimaryButton from '../components/buttons/primary-button';
 import PropTypes from 'prop-types';
 import SuccessButton from '../components/buttons/success-button';
@@ -64,6 +66,20 @@ const pageStyles = {
     mobilePrintButton: {
         textAlign: 'center',
         marginTop: '1rem'
+    },
+    cardButton: {
+        height: '60px',
+        width: '187px',
+        backgroundColor: '#2F333C',
+        marginBottom: '1rem',
+        fontSize: '16px'
+    },
+    cardButtonHighlight: {
+        height: '60px',
+        width: '187px',
+        backgroundColor: '#343842',
+        marginBottom: '1rem',
+        fontSize: '16px'
     }
 };
 
@@ -128,6 +144,8 @@ function ExhibitForm({
     // State for showing progress bar
     const [isLoading, setIsLoading] = useState(false);
 
+    const [toggleCards, setToggleCards] = useState(false);
+
     // State for showing error when exhibit name is left empty
     const [noNameError, setNameError] = useState(false);
     const [mainImageLinkError, setMainImageLinkError] = useState(false);
@@ -165,7 +183,8 @@ function ExhibitForm({
                     exhibit.contents[0].description;
             }
         }
-    }, [exhibit]);
+        console.log(contentArr);
+    }, [exhibit, contentArr, activeButton]);
 
     const setFormProps = (linkText, descText, cardId, position) => {
         console.log(`${linkText} ${descText} ${cardId}`);
@@ -238,8 +257,7 @@ function ExhibitForm({
 
         tempArr.push(newCard);
         setContentArr(tempArr);
-
-        console.log(contentArr);
+        setActiveButton(tempArr.length);
     };
 
     const editCard = () => {
@@ -666,21 +684,58 @@ function ExhibitForm({
                     {isLoading && <LinearProgress style={{ marginTop: '1rem' }} />}
                 </div>
                 <div className={classes.previewContainer}>
-                    <div className={classes.cardList}>
-                        {contentArr.map(contents => (
-                            <ExhibitList
-                                key={contents.URL}
-                                position={contents.position}
-                                contentId={contents.contentTypeID}
-                                activeButton={activeButton}
-                                setActive={setActiveButton}
-                                content={contentArr}
-                                setContent={setContentArr}
-                                contentType={getContentTypeFromId}
-                                setFormProps={setFormProps}
-                            />
-                        ))}
+                    <div>
+                        <Button
+                            className={
+                                !toggleCards ? classes.cardButtonHighlight : classes.cardButton
+                            }
+                            style={{ borderRadius: '30px 0 0 30px' }}
+                            onClick={() => {
+                                setToggleCards(false);
+                            }}>
+                            Cards
+                        </Button>
+                        <Button
+                            className={
+                                toggleCards ? classes.cardButtonHighlight : classes.cardButton
+                            }
+                            style={{ borderRadius: '0 30px 30px 0' }}
+                            onClick={() => {
+                                setToggleCards(true);
+                            }}>
+                            Preview
+                        </Button>
                     </div>
+                    {!toggleCards && (
+                        <div className={classes.cardList}>
+                            {contentArr.map(contents => (
+                                <ExhibitList
+                                    key={contents.URL}
+                                    position={contents.position}
+                                    contentId={contents.contentTypeID}
+                                    activeButton={activeButton}
+                                    setActive={setActiveButton}
+                                    content={contentArr}
+                                    setContent={setContentArr}
+                                    contentType={getContentTypeFromId}
+                                    setFormProps={setFormProps}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {toggleCards && (
+                        <div style={{ display: 'flex', placeContent: 'center' }}>
+                            <PreviewContainer
+                                exhibit={{
+                                    description: document.getElementById('bio-input').value,
+                                    mainImage: document.getElementById('mainimage-input').value,
+                                    name: document.getElementById('name-input').value,
+                                    scanID: Number(id),
+                                    contents: contentArr
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

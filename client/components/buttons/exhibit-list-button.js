@@ -1,6 +1,6 @@
 import { IconArrowDown, IconArrowUp, IconX } from '@tabler/icons';
 import { IconButton, makeStyles } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
@@ -44,24 +44,19 @@ function ExhibitList({
 }) {
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    let isActiveButton = activeButton === position;
+
+    const [isActiveButton, setIsActiveButton] = useState(activeButton === position);
 
     const setActiveButton = pos => {
         setActive(pos);
     };
-
-    useEffect(() => {
-        isActiveButton = activeButton === position;
-    }, [activeButton, content]);
-
-    let newContentArr = [];
 
     const isFirstElement = position === 1;
     const isLastElement = position === content.length;
 
     const changeCardPosition = (e, direction) => {
         e.stopPropagation();
-        newContentArr = content;
+        const newContentArr = content;
         if (direction === 'up') {
             if (isFirstElement) {
                 return;
@@ -77,8 +72,8 @@ function ExhibitList({
             newContentArr[position].position = position;
         }
         newContentArr.sort((a, b) => a.position - b.position);
-
         setContent(newContentArr);
+
         if (direction === 'up') {
             setActiveButton(position - 1);
         }
@@ -86,6 +81,21 @@ function ExhibitList({
             setActiveButton(position + 1);
         }
     };
+
+    const deleteCard = e => {
+        e.stopPropagation();
+        const tempContentArr = content;
+
+        // Update positions after deleting a card
+        for (let i = position; i < tempContentArr.length; i++) {
+            tempContentArr[i].position--;
+        }
+        tempContentArr.splice(position - 1, 1);
+    };
+
+    useEffect(() => {
+        setIsActiveButton(activeButton === position);
+    }, [activeButton, content, position]);
 
     return (
         <div
@@ -114,7 +124,10 @@ function ExhibitList({
                     </IconButton>
                 )}
 
-                <IconButton>
+                <IconButton
+                    onClick={event => {
+                        deleteCard(event);
+                    }}>
                     <IconX size={24} color={'white'} />
                 </IconButton>
             </div>

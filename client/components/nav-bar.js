@@ -152,7 +152,7 @@ function NavBar() {
                             <div className={classes.mobileNavItems}>
                                 <MobileNavButton
                                     text={homeButton}
-                                    path={'/'}
+                                    path={'/home'}
                                     icon={homeIcon}
                                     isHover={activePage === homeButton}
                                     setPage={setActivePage}

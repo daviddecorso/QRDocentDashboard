@@ -8,8 +8,8 @@ function Brand() {
         <div
             style={{
                 position: 'fixed',
-                left: '0',
-                top: '0',
+                left: '1px',
+                bottom: '35px',
                 display: 'flex',
                 alignItems: 'center',
                 paddingLeft: '20px'
