@@ -14,20 +14,26 @@ import { makeStyles, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import ActionButton from '../components/buttons/action-button';
 import ActionOutlineButton from '../components/buttons/action-outline-button';
-import analyticsImg from 'url:../img/laptop-analytics-2.png';
+import analyticsImg from 'url:../img/laptop-analytics-2.webp';
 import AppPreview from '../components/appPreview';
 import Brand from '../components/brand';
-import exhibitsGif from 'url:../img/exhibits-gif-1.gif';
+import exhibitsMp4 from 'url:../img/vid/exhibits-sized.mp4';
+import exhibitsPreview from 'url:../img/vid/exhibits-placeholder.webp';
+import exhibitsWebm from 'url:../img/vid/exhibits-sized.webm';
+import Footer from '../components/footer';
 import greyWave from 'url:../img/grey-wave.svg';
 import isLogin from '../util/auth';
 import MobileNavButton from '../components/buttons/mobile-nav-button';
-import phoneMockup from 'url:../img/app-mockup.png';
-import phoneMockupMobile from 'url:../img/app-mockup-mobile.png';
-import playlistGif from 'url:../img/playlist-gif-1.gif';
+import phoneMockup from 'url:../img/app-mockup.webp';
+import phoneMockupMobile from 'url:../img/app-mockup-mobile.webp';
+import playlistMp4 from 'url:../img/vid/playlist-sized.mp4';
+import playlistPreview from 'url:../img/vid/playlist-placeholder.webp';
+import playlistWebm from 'url:../img/vid/playlist-sized.webm';
 import purpleWave from 'url:../img/purple-wave-2.svg';
 import purpleWave2 from 'url:../img/purple-wave-3.svg';
 import whiteWave from 'url:../img/white-wave.svg';
 
+// Icons and text for navbar
 const downloadIcon = <IconDownload size={24} color="white" />;
 const loginIcon = <IconLogin size={24} color="white" />;
 const dashboardIcon = <IconDashboard size={24} color="white" />;
@@ -187,9 +193,11 @@ const pageStyles = {
         fontSize: '2.3rem'
     },
     featureTitleMobile: {
-        fontSize: '2.3rem',
+        fontSize: '1.9rem',
         marginTop: '0',
-        marginBottom: '0'
+        marginBottom: '1rem',
+        textAlign: 'center',
+        marginRight: '10px'
     },
     featureTextDiv: {
         maxWidth: '40vw',
@@ -226,7 +234,8 @@ const pageStyles = {
         marginLeft: '13%'
     },
     photoDivMobile: {
-        alignSelf: 'center'
+        display: 'flex',
+        justifyContent: 'center'
     },
     laptopPhoto: {
         marginLeft: '4%'
@@ -238,31 +247,18 @@ const pageStyles = {
     photoDivRight: {
         marginLeft: '7vw'
     },
-    footer: {
-        backgroundColor: '#E1E1E1',
-        height: '50px',
-        color: 'black',
-        '& a': {
-            color: '#494f5c'
-        }
-    },
     ctaDiv: {
         textAlign: 'center',
         backgroundColor: '#684DD4',
         paddingBottom: '10vh'
-    },
-    footerText: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
     }
 };
 
 function Landing() {
     const useStyles = makeStyles(pageStyles);
-    const isAuth = isLogin();
-
     const classes = useStyles();
+
+    const isAuth = isLogin();
 
     // const isLaptop = useMediaQuery('(max-width:1300px');
     const isMobile = useMediaQuery('(max-width:960px)');
@@ -291,6 +287,7 @@ function Landing() {
 
     return (
         <div>
+            {!isMobile && <Brand isPagePosition={true} />}
             {!isMobile && (
                 <div className={classes.nav}>
                     {!isAuth && (
@@ -325,7 +322,7 @@ function Landing() {
             )}
             {isMobile && (
                 <div>
-                    <span onClick={openMobileMenu}>
+                    <span onClick={openMobileMenu} style={{ position: 'fixed', zIndex: '20' }}>
                         <IconMenu2 size={'34px'} className={classes.icon} />
                     </span>
                     <>
@@ -347,7 +344,7 @@ function Landing() {
                                 {!isAuth && (
                                     <MobileNavButton
                                         text={loginButton}
-                                        path={'/exhibits'}
+                                        path={'/login'}
                                         icon={loginIcon}
                                         isHover={activePage === loginButton}
                                         setPage={setActivePage}
@@ -357,13 +354,14 @@ function Landing() {
                                 {isAuth && (
                                     <MobileNavButton
                                         text={dashboardButton}
-                                        path={'/exhibits'}
+                                        path={'/home'}
                                         icon={dashboardIcon}
                                         isHover={activePage === dashboardButton}
                                         setPage={setActivePage}
                                         closeMenu={closeMobileMenu}
                                     />
                                 )}
+                                {isAuth && <MobileNavButton />}
                                 <hr
                                     style={{
                                         width: '50px',
@@ -374,7 +372,7 @@ function Landing() {
                                 />
                                 <MobileNavButton
                                     text={privacyButton}
-                                    path={'/settings'}
+                                    path={'/privacy'}
                                     icon={privacyIcon}
                                     isHover={activePage === privacyButton}
                                     setPage={setActivePage}
@@ -382,7 +380,7 @@ function Landing() {
                                 />
                                 <MobileNavButton
                                     text={contactButton}
-                                    path={'/help'}
+                                    path={'/contact'}
                                     icon={contactIcon}
                                     isHover={activePage === contactButton}
                                     setPage={setActivePage}
@@ -545,7 +543,14 @@ function Landing() {
                         </h3>
                         {isMobile && (
                             <div className={classes.photoDivMobile}>
-                                <AppPreview gifSrc={playlistGif} />
+                                <AppPreview
+                                    webmSrc={playlistWebm}
+                                    mp4Src={playlistMp4}
+                                    previewSrc={playlistPreview}
+                                    altText={
+                                        'Video showing how to generate a playlist on the QR Docent app.'
+                                    }
+                                />
                             </div>
                         )}
                         <p className={classes.featureText}>
@@ -563,7 +568,14 @@ function Landing() {
                     </div>
                     {!isMobile && (
                         <div className={classes.photoDiv}>
-                            <AppPreview gifSrc={playlistGif} />
+                            <AppPreview
+                                webmSrc={playlistWebm}
+                                mp4Src={playlistMp4}
+                                previewSrc={playlistPreview}
+                                altText={
+                                    'Video showing how to generate a playlist on the QR Docent app.'
+                                }
+                            />
                         </div>
                     )}
                 </div>
@@ -578,13 +590,20 @@ function Landing() {
                     <img
                         className={isMobile ? classes.purpleWaveMobile : classes.purpleWave}
                         src={whiteWave}
-                        alt="White wave graphic"
+                        alt=""
                     />
                 </div>
                 {!isMobile && (
                     <div className={classes.featureDivRight}>
                         <div className={classes.photoDivRight}>
-                            <AppPreview gifSrc={exhibitsGif} />
+                            <AppPreview
+                                webmSrc={exhibitsWebm}
+                                mp4Src={exhibitsMp4}
+                                previewSrc={exhibitsPreview}
+                                altText={
+                                    'Video showing an example exhibits page on the QR Docent app.'
+                                }
+                            />
                         </div>
                         <div className={classes.featureTextDiv}>
                             <h3
@@ -617,7 +636,14 @@ function Landing() {
                         <div className={classes.featureTextDivMobile}>
                             <h3 className={classes.featureTitleMobile}>INCREASED INTERACTION</h3>
                             <div className={classes.photoDivMobile}>
-                                <AppPreview gifSrc={exhibitsGif} />
+                                <AppPreview
+                                    webmSrc={exhibitsWebm}
+                                    mp4Src={exhibitsMp4}
+                                    previewSrc={exhibitsPreview}
+                                    altText={
+                                        'Video showing an example exhibits page on the QR Docent app.'
+                                    }
+                                />
                             </div>
                             <p className={classes.featureText}>
                                 QR Docent provides visitors with interesting and relevant content on
@@ -641,23 +667,29 @@ function Landing() {
                 <div
                     style={
                         isMobile
-                            ? { backgroundColor: '#E1E1E1', height: '80px' }
+                            ? { backgroundColor: '#E1E1E1', height: '95px' }
                             : { backgroundColor: '#E1E1E1', height: '340px' }
                     }>
-                    <img className={classes.purpleWave} src={greyWave} alt="Grey wave graphic" />
+                    <img className={classes.purpleWave} src={greyWave} alt="" />
                 </div>
                 <div className={isMobile ? classes.featureDivMobile : classes.featureDiv}>
                     <div
                         className={
                             isMobile ? classes.featureTextDivMobile : classes.featureTextDiv
                         }>
-                        <h3 className={classes.featureTitle}>USEFUL ANALYTICS</h3>
+                        <h3
+                            style={{ marginTop: '2rem' }}
+                            className={
+                                isMobile ? classes.featureTitleMobile : classes.featureTitle
+                            }>
+                            USEFUL ANALYTICS
+                        </h3>
                         {isMobile && (
                             <div className={classes.laptopPhotoMobile}>
                                 <img
                                     style={{ width: '90vw', height: 'auto' }}
                                     src={analyticsImg}
-                                    alt="Custom playlist demo image"
+                                    alt="Screenshot from the analytics page of the QR Docent website"
                                 />
                             </div>
                         )}
@@ -681,7 +713,7 @@ function Landing() {
                             <img
                                 style={{ width: '46vw', height: 'auto' }}
                                 src={analyticsImg}
-                                alt="Custom playlist demo image"
+                                alt="Screenshot from the analytics page of the QR Docent website"
                             />
                         </div>
                     )}
@@ -691,14 +723,10 @@ function Landing() {
                 <div
                     style={
                         isMobile
-                            ? { backgroundColor: '#282B33', height: '100px' }
+                            ? { backgroundColor: '#282B33', height: '80px' }
                             : { backgroundColor: '#282B33', height: '190px' }
                     }>
-                    <img
-                        className={classes.purpleWave}
-                        src={purpleWave2}
-                        alt="Purple wave graphic"
-                    />
+                    <img className={classes.purpleWave} src={purpleWave2} alt="" />
                 </div>
                 <div>
                     <h3 className={classes.featureTitle}>READY TO UPGRADE YOUR MUSEUM?</h3>
@@ -716,15 +744,7 @@ function Landing() {
                     />
                 </div>
             </div>
-            <div className={classes.footer}>
-                <div className={classes.footerText}>
-                    <p>© 2021</p>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/contact">Contact</a>
-                    <a href="/login">Dashboard Login</a>
-                    <a href="/qr/app">Download App</a>
-                </div>
-            </div>
+            <Footer />
         </div>
     );
 }
