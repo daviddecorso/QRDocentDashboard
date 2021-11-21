@@ -1,11 +1,9 @@
 import {
-    IconHelp,
     IconHome,
     IconLogout,
     IconMenu2,
     IconNotes,
     IconReportAnalytics,
-    IconSettings,
     IconX
 } from '@tabler/icons';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
@@ -54,15 +52,12 @@ const pageStyles = {
 const homeIcon = <IconHome size={24} color="white" />;
 const anlyIcon = <IconReportAnalytics size={24} color="white" />;
 const notesIcon = <IconNotes size={24} color="white" />;
-const settingsIcon = <IconSettings size={24} color="white" />;
-const helpIcon = <IconHelp size={24} color="white" />;
 const logoutIcon = <IconLogout size={24} color="white" />;
 
 const homeButton = 'Home';
 const analyticsButton = 'Analytics';
 const exhibitsButton = 'Exhibits';
 const settingsButton = 'Settings';
-const helpButton = 'Help';
 const signoutButton = 'Sign Out';
 
 function NavBar() {
@@ -127,6 +122,7 @@ function NavBar() {
                             icon={logoutIcon}
                             isHover={activePage === signoutButton}
                             setPage={setActivePage}
+                            path={''}
                             overrideClick={true}
                             overrideFunction={() => {
                                 localStorage.setItem('accessToken', 'logout');
@@ -183,20 +179,18 @@ function NavBar() {
                                     }}
                                 />
                                 <MobileNavButton
-                                    text={settingsButton}
-                                    path={'/settings'}
-                                    icon={settingsIcon}
+                                    text={signoutButton}
+                                    path={''}
+                                    icon={logoutIcon}
                                     isHover={activePage === settingsButton}
                                     setPage={setActivePage}
                                     closeMenu={closeMobileMenu}
-                                />
-                                <MobileNavButton
-                                    text={helpButton}
-                                    path={'/help'}
-                                    icon={helpIcon}
-                                    isHover={activePage === helpButton}
-                                    setPage={setActivePage}
-                                    closeMenu={closeMobileMenu}
+                                    overrideClick={true}
+                                    overrideFunction={() => {
+                                        localStorage.setItem('accessToken', 'logout');
+                                        localStorage.setItem('refreshToken', 'logout');
+                                        history.replace('/');
+                                    }}
                                 />
                             </div>
                             <div className={classes.mobileBrand}>

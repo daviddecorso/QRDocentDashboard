@@ -1,19 +1,27 @@
 import Button from '@material-ui/core/Button';
 import { IconQrcode } from '@tabler/icons';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-function Brand() {
+function Brand({ isPagePosition }) {
+    const navStyle = {
+        position: 'fixed',
+        left: '1px',
+        bottom: '35px',
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: '20px'
+    };
+    const pageStyle = {
+        position: 'absolute',
+        left: '0',
+        top: '0',
+        display: 'flex',
+        alignItems: 'center'
+    };
     return (
-        <div
-            style={{
-                position: 'fixed',
-                left: '1px',
-                bottom: '35px',
-                display: 'flex',
-                alignItems: 'center',
-                paddingLeft: '20px'
-            }}>
+        <div style={isPagePosition ? pageStyle : navStyle}>
             <Link to="/" style={{ textDecoration: 'none' }}>
                 <Button
                     size="large"
@@ -33,5 +41,9 @@ function Brand() {
         </div>
     );
 }
+
+Brand.propTypes = {
+    isPagePosition: PropTypes.bool
+};
 
 export default Brand;
