@@ -668,7 +668,7 @@ function Landing() {
                     style={
                         isMobile
                             ? { backgroundColor: '#E1E1E1', height: '95px' }
-                            : { backgroundColor: '#E1E1E1', height: '340px' }
+                            : { backgroundColor: '#E1E1E1', height: '300px' }
                     }>
                     <img className={classes.purpleWave} src={greyWave} alt="" />
                 </div>
