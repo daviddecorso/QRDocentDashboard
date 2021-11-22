@@ -468,7 +468,7 @@ function Landing() {
                 </div>
                 {!isMobile && (
                     <img
-                        className={(classes.mockupImg, 'animated animatedFadeInUpImage fadeInUp')}
+                        className={'animated animatedFadeInUpImage fadeInUp'}
                         src={phoneMockup}
                         alt="QR Docent app mockup on mobile device."
                     />
