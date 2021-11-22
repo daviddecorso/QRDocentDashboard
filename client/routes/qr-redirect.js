@@ -106,7 +106,7 @@ function QrRedirect() {
                     </p>
 
                     <div className={isMobile ? classes.buttonsMobile : classes.buttons}>
-                        <a href="">
+                        <a href="https://apps.apple.com/us/app/qr-docent/id1594267050">
                             <img
                                 style={{ width: '130px', height: '43.45px' }}
                                 src={appleBadge}
