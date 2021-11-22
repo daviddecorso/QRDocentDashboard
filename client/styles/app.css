@@ -51,3 +51,51 @@ body {
         margin-left: 70px;
     }
 }
+
+@keyframes fadeInUp {
+    from {
+        transform: translate3d(0, 80px, 0);
+        z-index: -1;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+        z-index: -1;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeInUp {
+    from {
+        transform: translate3d(0, 80px, 0);
+        z-index: -1;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+        z-index: -1;
+        opacity: 1;
+    }
+}
+
+.animated {
+    animation-duration: 1.2s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 1.2s;
+    -webkit-animation-fill-mode: both;
+}
+
+.animatedFadeInUpImage {
+    width: auto;
+    height: 800px;
+    margin-top: 15vh;
+    margin-left: 10vw;
+    z-index: -1;
+    opacity: 0;
+}
+
+.fadeInUp {
+    opacity: 0;
+    animation-name: fadeInUp;
+    -webkit-animation-name: fadeInUp;
+}
