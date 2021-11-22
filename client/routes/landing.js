@@ -468,7 +468,7 @@ function Landing() {
                 </div>
                 {!isMobile && (
                     <img
-                        className={classes.mockupImg}
+                        className={(classes.mockupImg, 'animated animatedFadeInUpImage fadeInUp')}
                         src={phoneMockup}
                         alt="QR Docent app mockup on mobile device."
                     />
@@ -584,7 +584,7 @@ function Landing() {
                 <div
                     style={
                         isMobile
-                            ? { backgroundColor: '#684DD4', height: '70px' }
+                            ? { backgroundColor: '#684DD4', height: '60px' }
                             : { backgroundColor: '#684DD4', height: '250px' }
                     }>
                     <img
