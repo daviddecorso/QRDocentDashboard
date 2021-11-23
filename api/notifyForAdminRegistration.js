@@ -15,6 +15,10 @@ module.exports = async(req, res) =>
     {
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            ignoreTLS: false,
+            secure: false,
             auth: {
                 user: process.env.NODEMAILER_EMAIL,
                 pass: process.env.NODEMAILER_PASSWORD

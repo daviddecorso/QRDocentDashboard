@@ -340,6 +340,52 @@ paths:
                     message: '<error message>'
                   summary: Registration failed
                   
+  /notifyForAdminRegistration:
+    post:
+      tags:
+        - Admin
+      summary: Sends an email to request registration for QR Docent
+      description: Client information must be provided, with the message being optional.
+      requestBody: 
+        content:
+          application/json:
+            schema:       
+              type: object
+              properties:
+                name:
+                  type: string
+                phoneNumber:
+                  type: string
+                email:
+                  type: string
+                museumName:
+                  type: string
+                message:
+                  type: string
+              example: 
+                name: 'Dirty Dan'
+                phoneNumber: '555-444-3333'
+                email: 'test@email.com'
+                museumName: 'My Cool Museum'
+                message: 'Hey register me bro!'
+      responses:
+        '200':
+          description: Possible responses
+          content:
+            application/json:
+              schema:
+                type: object
+              examples: 
+                success:
+                  value: 
+                    success: true
+                  summary: Request successful
+                failure:
+                  value: 
+                    success: false
+                    message: '<error message>'
+                  summary: Request failed
+                  
   /loginAdminUser:
     post:
       tags:
