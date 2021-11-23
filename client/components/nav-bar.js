@@ -94,7 +94,7 @@ function NavBar() {
         <>
             {!isMobile && (
                 <div>
-                    <Brand />
+                    <Brand isPagePosition={true} />
                     <div className={classes.navStyle}>
                         <NavButton
                             text={homeButton}

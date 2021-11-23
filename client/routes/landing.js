@@ -31,6 +31,7 @@ import playlistPreview from 'url:../img/vid/playlist-placeholder.webp';
 import playlistWebm from 'url:../img/vid/playlist-sized.webm';
 import purpleWave from 'url:../img/purple-wave-2.svg';
 import purpleWave2 from 'url:../img/purple-wave-3.svg';
+import { Waypoint } from 'react-waypoint';
 import whiteWave from 'url:../img/white-wave.svg';
 
 // Icons and text for navbar
@@ -201,7 +202,7 @@ const pageStyles = {
     },
     featureTextDiv: {
         maxWidth: '40vw',
-        marginTop: '10vh'
+        marginTop: '6vh'
     },
     featureTextDivMobile: {
         marginLeft: '4vw',
@@ -212,7 +213,8 @@ const pageStyles = {
     },
     featureTitleRight: {
         fontSize: '2.3rem',
-        textAlign: 'left'
+        textAlign: 'left',
+        marginTop: '7vh'
     },
     featureDivRight: {
         display: 'flex',
@@ -251,6 +253,20 @@ const pageStyles = {
         textAlign: 'center',
         backgroundColor: '#684DD4',
         paddingBottom: '10vh'
+    },
+    animated: {
+        animationDuration: '1.2s',
+        animationFillMode: 'both',
+        WebkitAnimationDuration: '1.2s',
+        WebkitAnimationFillMode: 'both'
+    },
+    animatedFadeInUpText: {
+        opacity: 0
+    },
+    fadeInUpText: {
+        opacity: 0,
+        animationName: 'fadeInUpText',
+        WebkitAnimationName: 'fadeInUpText'
     }
 };
 
@@ -266,6 +282,7 @@ function Landing() {
     // Controls which nav button is highlighted.
     const [activePage, setActivePage] = useState('');
 
+    // State for mobile navbar
     let navBar;
     let navBarBg;
 
@@ -273,6 +290,7 @@ function Landing() {
         navBar = document.getElementById('mobile-nav');
         navBarBg = document.getElementById('dark-bg-div');
     });
+
     const openMobileMenu = () => {
         navBar.classList.remove('hidden-navbar');
         navBar.classList.add('mobile-navbar');
@@ -532,15 +550,26 @@ function Landing() {
                 )}
                 <div className={isMobile ? classes.featureDivMobile : classes.featureDiv}>
                     <div
+                        id="playlist-title-div"
                         className={
-                            isMobile ? classes.featureTextDivMobile : classes.featureTextDiv
+                            isMobile
+                                ? classes.featureTextDivMobile
+                                : `${classes.featureTextDiv} ${classes.animatedFadeInUpText}`
                         }>
-                        <h3
-                            className={
-                                isMobile ? classes.featureTitleMobile : classes.featureTitle
-                            }>
-                            CUSTOM PLAYLISTS
-                        </h3>
+                        <Waypoint
+                            onEnter={() => {
+                                document
+                                    .getElementById('playlist-title-div')
+                                    .classList.add(classes.animated, classes.fadeInUpText);
+                            }}>
+                            <h3
+                                className={
+                                    isMobile ? classes.featureTitleMobile : classes.featureTitle
+                                }>
+                                CUSTOM PLAYLISTS
+                            </h3>
+                        </Waypoint>
+
                         {isMobile && (
                             <div className={classes.photoDivMobile}>
                                 <AppPreview
@@ -605,30 +634,40 @@ function Landing() {
                                 }
                             />
                         </div>
-                        <div className={classes.featureTextDiv}>
-                            <h3
-                                className={
-                                    isMobile
-                                        ? classes.featureTitleMobile
-                                        : classes.featureTitleRight
-                                }>
-                                INCREASED INTERACTION
-                            </h3>
-                            <p className={classes.featureTextRight}>
-                                QR Docent provides visitors with interesting and relevant content on
-                                their own smartphone that they can take home with them after their
-                                visit.
-                            </p>
-                            <p className={classes.featureTextRight}>
-                                When visitors scan an exhibit&apos;s QR code they are greeted with
-                                curated content that excels on mobile devices, like videos, songs,
-                                and images they can view in the app.
-                            </p>
-                            <p className={classes.featureTextRight}>
-                                This personalized list of interactive content will be impactful and
-                                keep visitors engaged during their visit.
-                            </p>
-                        </div>
+                        <Waypoint
+                            topOffset={'50px'}
+                            onEnter={() => {
+                                document
+                                    .getElementById('interaction-title-div')
+                                    .classList.add(classes.animated, classes.fadeInUpText);
+                            }}>
+                            <div
+                                id="interaction-title-div"
+                                className={`${classes.featureTextDiv}${classes.animatedFadeInUpText}`}>
+                                <h3
+                                    className={
+                                        isMobile
+                                            ? classes.featureTitleMobile
+                                            : classes.featureTitleRight
+                                    }>
+                                    INCREASED INTERACTION
+                                </h3>
+                                <p className={classes.featureTextRight}>
+                                    QR Docent provides visitors with interesting and relevant
+                                    content on their own smartphone that they can take home with
+                                    them after their visit.
+                                </p>
+                                <p className={classes.featureTextRight}>
+                                    When visitors scan an exhibit&apos;s QR code they are greeted
+                                    with curated content that excels on mobile devices, like videos,
+                                    songs, and images they can view in the app.
+                                </p>
+                                <p className={classes.featureTextRight}>
+                                    This personalized list of interactive content will be impactful
+                                    and keep visitors engaged during their visit.
+                                </p>
+                            </div>
+                        </Waypoint>
                     </div>
                 )}
                 {isMobile && (
@@ -674,16 +713,26 @@ function Landing() {
                 </div>
                 <div className={isMobile ? classes.featureDivMobile : classes.featureDiv}>
                     <div
+                        id="analytics-title"
                         className={
-                            isMobile ? classes.featureTextDivMobile : classes.featureTextDiv
+                            isMobile
+                                ? classes.featureTextDivMobile
+                                : `${classes.featureTextDiv} ${classes.animatedFadeInUpText}`
                         }>
-                        <h3
-                            style={{ marginTop: '2rem' }}
-                            className={
-                                isMobile ? classes.featureTitleMobile : classes.featureTitle
-                            }>
-                            USEFUL ANALYTICS
-                        </h3>
+                        <Waypoint
+                            onEnter={() => {
+                                document
+                                    .getElementById('analytics-title')
+                                    .classList.add(classes.animated, classes.fadeInUpText);
+                            }}>
+                            <h3
+                                style={{ marginTop: '2rem' }}
+                                className={
+                                    isMobile ? classes.featureTitleMobile : classes.featureTitle
+                                }>
+                                USEFUL ANALYTICS
+                            </h3>
+                        </Waypoint>
                         {isMobile && (
                             <div className={classes.laptopPhotoMobile}>
                                 <img
@@ -693,6 +742,7 @@ function Landing() {
                                 />
                             </div>
                         )}
+
                         <p className={classes.featureText}>
                             QR Docent provides museums with useful analytics, empowering them to
                             make their museum the best it can be and give visitors more of what they
