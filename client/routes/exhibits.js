@@ -65,12 +65,12 @@ export default function Exhibits({
             getExhibits(setExhibits, setRefreshed, setNoExhibits);
             setIsLoading(true);
         } else {
+            console.log(exhibits);
             setIsLoading(false);
         }
     }, [refreshed, exhibits, noExhibits]);
 
     const handleSuccessClose = (event, reason) => {
-        console.log('Do we ever get here?');
         if (reason === 'clickaway') {
             return;
         }
@@ -147,10 +147,7 @@ export default function Exhibits({
 }
 
 Exhibits.propTypes = {
-    exhibits: PropTypes.shape({
-        length: PropTypes.number,
-        map: PropTypes.func
-    }),
+    exhibits: PropTypes.array,
     setExhibits: PropTypes.func,
     openSuccess: PropTypes.bool,
     setOpenSuccess: PropTypes.func,

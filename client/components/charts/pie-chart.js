@@ -29,6 +29,7 @@ function PieChart({ data, theme, title }) {
                     data={data}
                     theme={theme}
                     margin={{ top: 40, right: 100, bottom: 80, left: 100 }}
+                    valueFormat=" >-1.1%"
                     sortByValue={true}
                     activeOuterRadiusOffset={8}
                     colors={colors}

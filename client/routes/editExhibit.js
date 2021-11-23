@@ -4,7 +4,7 @@ import ExhibitForm from './exhibitForm';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 
-function EditExhibit({ exhibits, setOpenSuccess, setSnackbarText }) {
+function EditExhibit({ exhibits, setExhibits, setOpenSuccess, setSnackbarText }) {
     const [exhibit, setExhibit] = useState(null);
 
     const { id } = useParams();
@@ -34,6 +34,8 @@ function EditExhibit({ exhibits, setOpenSuccess, setSnackbarText }) {
                 isEdit={true}
                 id={id}
                 exhibit={exhibit}
+                exhibits={exhibits}
+                setExhibits={setExhibits}
                 setOpenSuccess={setOpenSuccess}
                 setSnackbarText={setSnackbarText}
             />
@@ -42,9 +44,8 @@ function EditExhibit({ exhibits, setOpenSuccess, setSnackbarText }) {
 }
 
 EditExhibit.propTypes = {
-    exhibits: PropTypes.shape({
-        forEach: PropTypes.func
-    }),
+    exhibits: PropTypes.array,
+    setExhibits: PropTypes.func,
     setOpenSuccess: PropTypes.func,
     setSnackbarText: PropTypes.func
 };

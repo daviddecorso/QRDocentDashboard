@@ -13,7 +13,7 @@ import {
     Typography,
     useMediaQuery
 } from '@material-ui/core';
-import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons';
+import { IconDotsVertical, IconPencil, IconPrinter, IconTrash } from '@tabler/icons';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { getBaseURL } from '../../configuration';
@@ -73,6 +73,9 @@ const pageStyles = {
     },
     exhibitName: {
         fontSize: '18px'
+    },
+    exhibitLink: {
+        color: 'white'
     }
 };
 
@@ -115,6 +118,14 @@ function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, s
         }
         if (item === 'delete') {
             handleAlertOpen();
+        }
+        if (item === 'print') {
+            window.location.assign(
+                'https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=' +
+                    getBaseURL() +
+                    'qr/' +
+                    id
+            );
         }
     };
 
@@ -226,7 +237,9 @@ function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, s
                     src={artistImg}
                     alt={`Picture of ${name}`}
                 />
-                <p className={classes.exhibitName}>{name}</p>
+                <a href={'/exhibits/edit/' + id} className={classes.exhibitLink}>
+                    <p className={classes.exhibitName}>{name}</p>
+                </a>
                 {!isMobile && (
                     <Typography component="span" variant="body1">
                         {date}
@@ -251,6 +264,11 @@ function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, s
                         <MenuItem onClick={() => handleMenuClose('edit')}>
                             <div>
                                 <IconPencil /> <span>Edit</span>
+                            </div>
+                        </MenuItem>
+                        <MenuItem onClick={() => handleMenuClose('print')}>
+                            <div>
+                                <IconPrinter /> <span>Print</span>
                             </div>
                         </MenuItem>
                         <MenuItem onClick={() => handleMenuClose('delete')}>

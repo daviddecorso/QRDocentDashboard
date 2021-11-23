@@ -289,6 +289,8 @@ function ExhibitForm({
             contents: contentArr
         };
 
+        const tempExhibitsArr = exhibits;
+
         setIsLoading(true);
 
         if (isAdd) {
@@ -335,7 +337,6 @@ function ExhibitForm({
                                                 console.log(result);
                                                 setOpenSuccess(true);
                                                 setSnackbarText('Successfully created exhibit!');
-                                                const tempExhibitsArr = exhibits;
                                                 tempExhibitsArr.push(newExhibit);
                                                 setExhibits(tempExhibitsArr);
                                                 location.assign(getBaseURL() + '/exhibits');
@@ -355,7 +356,6 @@ function ExhibitForm({
                         }
                     } else {
                         // success message
-                        const tempExhibitsArr = exhibits;
                         setOpenSuccess(true);
                         setSnackbarText('Successfully created exhibit!');
                         tempExhibitsArr.push(newExhibit);
@@ -437,7 +437,6 @@ function ExhibitForm({
                         }
                     } else {
                         // success message
-                        const tempExhibitsArr = exhibits;
                         setOpenSuccess(true);
                         setSnackbarText('Exhibit saved!');
                         tempExhibitsArr.push(newExhibit);

@@ -200,7 +200,7 @@ export default function Analytics() {
             percentArr.push({
                 id: exhibit.name,
                 label: exhibit.name,
-                value: exhibit.exhibitScansPercentage
+                value: Number(exhibit.exhibitScansPercentage) / 100
             });
         });
         setPercentData(percentArr);
