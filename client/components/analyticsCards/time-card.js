@@ -242,7 +242,7 @@ function TimeCard({ styles }) {
                         <MenuItem onClick={() => handleClose('Today')}>Today</MenuItem>
                         <MenuItem onClick={() => handleClose('This Week')}>This Week</MenuItem>
                         <MenuItem onClick={() => handleClose('This Month')}>This Month</MenuItem>
-                        <MenuItem onClick={() => handleClose('All Time')}>All Time</MenuItem>
+                        <MenuItem onClick={() => handleClose('This Year')}>This Year</MenuItem>
                     </Menu>
                 </div>
             </Card>
