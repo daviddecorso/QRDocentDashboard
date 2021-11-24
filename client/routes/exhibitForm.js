@@ -1,6 +1,7 @@
 import {
     Button,
     FormControl,
+    IconButton,
     LinearProgress,
     makeStyles,
     MenuItem,
@@ -9,7 +10,14 @@ import {
     Typography,
     useMediaQuery
 } from '@material-ui/core';
-import { IconDeviceFloppy, IconHelp, IconPlus, IconPrinter, IconX } from '@tabler/icons';
+import {
+    IconArrowLeft,
+    IconDeviceFloppy,
+    IconHelp,
+    IconPlus,
+    IconPrinter,
+    IconX
+} from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ExhibitList from '../components/buttons/exhibit-list-button';
@@ -23,6 +31,10 @@ import WarningButton from '../components/buttons/warning-button';
 import 'microtip/microtip.css';
 
 const pageStyles = {
+    content: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
     pageTitle: {
         textAlign: 'center',
         marginBottom: '2rem'
@@ -80,6 +92,11 @@ const pageStyles = {
         backgroundColor: '#343842',
         marginBottom: '1rem',
         fontSize: '16px'
+    },
+    backButtonDiv: {
+        position: 'absolute',
+        left: '50px',
+        top: '50px'
     }
 };
 
@@ -456,288 +473,299 @@ function ExhibitForm({
     };
 
     return (
-        <div className={'content'}>
-            <div className={classes.container}>
-                <div>
-                    <div className={classes.formContainer}>
-                        <div className={classes.formHeader}>
-                            <FormControl fullWidth sx={{ m: 1 }}>
-                                <TextField
-                                    label="Exhibit name"
-                                    id="name-input"
-                                    required
-                                    variant="outlined"
-                                    error={noNameError}
-                                    helperText={noNameError ? 'Field required.' : ''}
-                                />
-                            </FormControl>
-                            {!isMobile && !isAdd && (
-                                <a href={apiRoute} style={{ textDecoration: 'none' }}>
-                                    <PrimaryButton
-                                        text={'PRINT QR'}
-                                        width={'200px'}
-                                        height={'50px'}
-                                        lm={'1rem'}
-                                        icon={<IconPrinter size={22} />}
-                                    />
-                                </a>
-                            )}
-                        </div>
-                        <div className={classes.formInput}>
-                            <TextField
-                                label="Biography"
-                                id="bio-input"
-                                multiline
-                                fullWidth
-                                variant="outlined"
-                            />
-                            <span
-                                tabIndex="0"
-                                aria-label={tooltipText.bio}
-                                role="tooltip"
-                                data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                className={classes.formIcon}>
-                                <IconHelp color={'white'} />
-                            </span>
-                        </div>
-                        <div className={classes.formInput}>
-                            <TextField
-                                label="Exhibit Image Link"
-                                id="mainimage-input"
-                                multiline
-                                fullWidth
-                                variant="outlined"
-                                error={mainImageLinkError}
-                                helperText={errText}
-                            />
-                            <span
-                                tabIndex="0"
-                                aria-label={tooltipText.mainImg}
-                                role="tooltip"
-                                data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                className={classes.formIcon}>
-                                <IconHelp color={'white'} />
-                            </span>
-                        </div>
-                        <div className={classes.formInput}>
-                            <Typography component={'span'} variant={'h6'}>
-                                Card Type:
-                            </Typography>
-                            <Select
-                                id="card-select"
-                                label={'Card Type'}
-                                value={cardType}
-                                onChange={handleSelectChange}
-                                style={{ marginLeft: '1rem' }}>
-                                <MenuItem value={'Video'}>Video</MenuItem>
-                                <MenuItem value={'Song'}>Song</MenuItem>
-                                <MenuItem value={'Website'}>Website</MenuItem>
-                                <MenuItem value={'Image'}>Image</MenuItem>
-                            </Select>
-                            <div style={{ textAlign: 'center' }}>
-                                <PrimaryButton
-                                    text={'ADD CARD'}
-                                    width={'170px'}
-                                    height={'40px'}
-                                    fontSize={'14px'}
-                                    lm={'1rem'}
-                                    onClick={addCard}
-                                    icon={<IconPlus size={22} />}
-                                />
-                            </div>
-                            {isEdit && (
-                                <PrimaryButton
-                                    text={'SAVE CARD'}
-                                    width={'180px'}
-                                    height={'40px'}
-                                    fontSize={'14px'}
-                                    lm={'1rem'}
-                                    onClick={editCard}
-                                    icon={<IconDeviceFloppy size={22} />}
-                                />
-                            )}
-                        </div>
-                        {cardType === 'Video' && (
-                            <div className={classes.formInput}>
-                                <TextField
-                                    label="Video Link"
-                                    id="video-input"
-                                    fullWidth
-                                    variant="outlined"
-                                    error={videoLinkErr}
-                                    helperText={errText}
-                                />
-                                <span
-                                    tabIndex="0"
-                                    aria-label={tooltipText.video}
-                                    role="tooltip"
-                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                    className={classes.formIcon}>
-                                    <IconHelp color={'white'} />
-                                </span>
-                            </div>
-                        )}
-                        {cardType === 'Song' && (
-                            <div className={classes.formInput}>
-                                <TextField
-                                    label="Song Link"
-                                    id="song-input"
-                                    fullWidth
-                                    variant="outlined"
-                                    error={songLinkErr}
-                                    helperText={errText}
-                                />
-                                <span
-                                    tabIndex="0"
-                                    aria-label={tooltipText.song}
-                                    role="tooltip"
-                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                    className={classes.formIcon}>
-                                    <IconHelp color={'white'} />
-                                </span>
-                            </div>
-                        )}
-                        {cardType === 'Website' && (
-                            <div className={classes.formInput}>
-                                <TextField
-                                    label="Website Link"
-                                    id="website-input"
-                                    fullWidth
-                                    variant="outlined"
-                                    error={websiteLinkErr}
-                                    helperText={errText}
-                                />
-                                <span
-                                    tabIndex="0"
-                                    aria-label={tooltipText.website}
-                                    role="tooltip"
-                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                    className={classes.formIcon}>
-                                    <IconHelp color={'white'} />
-                                </span>
-                            </div>
-                        )}
-                        {cardType === 'Image' && (
-                            <div className={classes.formInput}>
-                                <TextField
-                                    label="Image Link"
-                                    id="image-input"
-                                    fullWidth
-                                    variant="outlined"
-                                    error={imageLinkErr}
-                                    helperText={errText}
-                                />
-                                <span
-                                    tabIndex="0"
-                                    aria-label={tooltipText.image}
-                                    role="tooltip"
-                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
-                                    className={classes.formIcon}>
-                                    <IconHelp color={'white'} />
-                                </span>
-                            </div>
-                        )}
-                        {cardType !== '' && (
-                            <>
-                                <div className={classes.formInput}>
+        <>
+            <div className={classes.backButtonDiv}>
+                <IconButton
+                    onClick={() => {
+                        location.assign(getBaseURL() + '/exhibits');
+                    }}>
+                    <IconArrowLeft />
+                </IconButton>
+            </div>
+
+            <div className={classes.content}>
+                <div className={classes.container}>
+                    <div>
+                        <div className={classes.formContainer}>
+                            <div className={classes.formHeader}>
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
-                                        label={cardType + ' Description'}
-                                        id="description-input"
-                                        fullWidth
+                                        label="Exhibit name"
+                                        id="name-input"
+                                        required
                                         variant="outlined"
+                                        error={noNameError}
+                                        helperText={noNameError ? 'Field required.' : ''}
+                                    />
+                                </FormControl>
+                                {!isMobile && !isAdd && (
+                                    <a href={apiRoute} style={{ textDecoration: 'none' }}>
+                                        <PrimaryButton
+                                            text={'PRINT QR'}
+                                            width={'200px'}
+                                            height={'50px'}
+                                            lm={'1rem'}
+                                            icon={<IconPrinter size={22} />}
+                                        />
+                                    </a>
+                                )}
+                            </div>
+                            <div className={classes.formInput}>
+                                <TextField
+                                    label="Biography"
+                                    id="bio-input"
+                                    multiline
+                                    fullWidth
+                                    variant="outlined"
+                                />
+                                <span
+                                    tabIndex="0"
+                                    aria-label={tooltipText.bio}
+                                    role="tooltip"
+                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                    className={classes.formIcon}>
+                                    <IconHelp color={'white'} />
+                                </span>
+                            </div>
+                            <div className={classes.formInput}>
+                                <TextField
+                                    label="Exhibit Image Link"
+                                    id="mainimage-input"
+                                    multiline
+                                    fullWidth
+                                    variant="outlined"
+                                    error={mainImageLinkError}
+                                    helperText={errText}
+                                />
+                                <span
+                                    tabIndex="0"
+                                    aria-label={tooltipText.mainImg}
+                                    role="tooltip"
+                                    data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                    className={classes.formIcon}>
+                                    <IconHelp color={'white'} />
+                                </span>
+                            </div>
+                            <div className={classes.formInput}>
+                                <Typography component={'span'} variant={'h6'}>
+                                    Card Type:
+                                </Typography>
+                                <Select
+                                    id="card-select"
+                                    label={'Card Type'}
+                                    value={cardType}
+                                    onChange={handleSelectChange}
+                                    style={{ marginLeft: '1rem' }}>
+                                    <MenuItem value={'Video'}>Video</MenuItem>
+                                    <MenuItem value={'Song'}>Song</MenuItem>
+                                    <MenuItem value={'Website'}>Website</MenuItem>
+                                    <MenuItem value={'Image'}>Image</MenuItem>
+                                </Select>
+                                <div style={{ textAlign: 'center' }}>
+                                    <PrimaryButton
+                                        text={'ADD CARD'}
+                                        width={'170px'}
+                                        height={'40px'}
+                                        fontSize={'14px'}
+                                        lm={'1rem'}
+                                        onClick={addCard}
+                                        icon={<IconPlus size={22} />}
                                     />
                                 </div>
-                            </>
-                        )}
-                        {isMobile && (
-                            <div className={classes.mobilePrintButton}>
-                                <a href={apiRoute} style={{ textDecoration: 'none' }}>
+                                {isEdit && (
                                     <PrimaryButton
-                                        text={'PRINT QR'}
-                                        width={'200px'}
-                                        height={'50px'}
-                                        icon={<IconPrinter size={22} />}
+                                        text={'SAVE CARD'}
+                                        width={'180px'}
+                                        height={'40px'}
+                                        fontSize={'14px'}
+                                        lm={'1rem'}
+                                        onClick={editCard}
+                                        icon={<IconDeviceFloppy size={22} />}
                                     />
-                                </a>
+                                )}
+                            </div>
+                            {cardType === 'Video' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label="Video Link"
+                                        id="video-input"
+                                        fullWidth
+                                        variant="outlined"
+                                        error={videoLinkErr}
+                                        helperText={errText}
+                                    />
+                                    <span
+                                        tabIndex="0"
+                                        aria-label={tooltipText.video}
+                                        role="tooltip"
+                                        data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                        className={classes.formIcon}>
+                                        <IconHelp color={'white'} />
+                                    </span>
+                                </div>
+                            )}
+                            {cardType === 'Song' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label="Song Link"
+                                        id="song-input"
+                                        fullWidth
+                                        variant="outlined"
+                                        error={songLinkErr}
+                                        helperText={errText}
+                                    />
+                                    <span
+                                        tabIndex="0"
+                                        aria-label={tooltipText.song}
+                                        role="tooltip"
+                                        data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                        className={classes.formIcon}>
+                                        <IconHelp color={'white'} />
+                                    </span>
+                                </div>
+                            )}
+                            {cardType === 'Website' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label="Website Link"
+                                        id="website-input"
+                                        fullWidth
+                                        variant="outlined"
+                                        error={websiteLinkErr}
+                                        helperText={errText}
+                                    />
+                                    <span
+                                        tabIndex="0"
+                                        aria-label={tooltipText.website}
+                                        role="tooltip"
+                                        data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                        className={classes.formIcon}>
+                                        <IconHelp color={'white'} />
+                                    </span>
+                                </div>
+                            )}
+                            {cardType === 'Image' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label="Image Link"
+                                        id="image-input"
+                                        fullWidth
+                                        variant="outlined"
+                                        error={imageLinkErr}
+                                        helperText={errText}
+                                    />
+                                    <span
+                                        tabIndex="0"
+                                        aria-label={tooltipText.image}
+                                        role="tooltip"
+                                        data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                        className={classes.formIcon}>
+                                        <IconHelp color={'white'} />
+                                    </span>
+                                </div>
+                            )}
+                            {cardType !== '' && (
+                                <>
+                                    <div className={classes.formInput}>
+                                        <TextField
+                                            label={cardType + ' Description'}
+                                            id="description-input"
+                                            fullWidth
+                                            variant="outlined"
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            {isMobile && (
+                                <div className={classes.mobilePrintButton}>
+                                    <a href={apiRoute} style={{ textDecoration: 'none' }}>
+                                        <PrimaryButton
+                                            text={'PRINT QR'}
+                                            width={'200px'}
+                                            height={'50px'}
+                                            icon={<IconPrinter size={22} />}
+                                        />
+                                    </a>
+                                </div>
+                            )}
+                            <div className={classes.buttons}>
+                                <WarningButton
+                                    text={'CANCEL'}
+                                    width={'200px'}
+                                    rm={isSmallMobile ? '5rem' : '0'}
+                                    path={'/exhibits'}
+                                    icon={<IconX />}
+                                    isMobile={isSmallMobile}
+                                />
+                                <SuccessButton
+                                    text={'SAVE EXHIBIT'}
+                                    width={'200px'}
+                                    lm={isSmallMobile ? '0' : '2rem'}
+                                    icon={<IconDeviceFloppy />}
+                                    onClick={onClickSave}
+                                    isMobile={isSmallMobile}
+                                />
+                            </div>
+                        </div>
+                        {isLoading && <LinearProgress style={{ marginTop: '1rem' }} />}
+                    </div>
+                    <div className={classes.previewContainer}>
+                        <div style={{ display: 'flex' }}>
+                            <Button
+                                className={
+                                    !toggleCards ? classes.cardButtonHighlight : classes.cardButton
+                                }
+                                style={{ borderRadius: '30px 0 0 30px' }}
+                                onClick={() => {
+                                    setToggleCards(false);
+                                }}>
+                                Cards
+                            </Button>
+                            <Button
+                                className={
+                                    toggleCards ? classes.cardButtonHighlight : classes.cardButton
+                                }
+                                style={{ borderRadius: '0 30px 30px 0' }}
+                                onClick={() => {
+                                    setToggleCards(true);
+                                }}>
+                                Preview
+                            </Button>
+                        </div>
+                        {!toggleCards && (
+                            <div className={classes.cardList}>
+                                {contentArr.map(contents => (
+                                    <ExhibitList
+                                        key={contents.URL}
+                                        position={contents.position}
+                                        contentId={contents.contentTypeID}
+                                        activeButton={activeButton}
+                                        setActive={setActiveButton}
+                                        content={contentArr}
+                                        setContent={setContentArr}
+                                        contentType={getContentTypeFromId}
+                                        setFormProps={setFormProps}
+                                    />
+                                ))}
                             </div>
                         )}
-                        <div className={classes.buttons}>
-                            <WarningButton
-                                text={'CANCEL'}
-                                width={'200px'}
-                                rm={isSmallMobile ? '5rem' : '0'}
-                                path={'/exhibits'}
-                                icon={<IconX />}
-                                isMobile={isSmallMobile}
-                            />
-                            <SuccessButton
-                                text={'SAVE EXHIBIT'}
-                                width={'200px'}
-                                lm={isSmallMobile ? '0' : '2rem'}
-                                icon={<IconDeviceFloppy />}
-                                onClick={onClickSave}
-                                isMobile={isSmallMobile}
-                            />
-                        </div>
-                    </div>
-                    {isLoading && <LinearProgress style={{ marginTop: '1rem' }} />}
-                </div>
-                <div className={classes.previewContainer}>
-                    <div>
-                        <Button
-                            className={
-                                !toggleCards ? classes.cardButtonHighlight : classes.cardButton
-                            }
-                            style={{ borderRadius: '30px 0 0 30px' }}
-                            onClick={() => {
-                                setToggleCards(false);
-                            }}>
-                            Cards
-                        </Button>
-                        <Button
-                            className={
-                                toggleCards ? classes.cardButtonHighlight : classes.cardButton
-                            }
-                            style={{ borderRadius: '0 30px 30px 0' }}
-                            onClick={() => {
-                                setToggleCards(true);
-                            }}>
-                            Preview
-                        </Button>
-                    </div>
-                    {!toggleCards && (
-                        <div className={classes.cardList}>
-                            {contentArr.map(contents => (
-                                <ExhibitList
-                                    key={contents.URL}
-                                    position={contents.position}
-                                    contentId={contents.contentTypeID}
-                                    activeButton={activeButton}
-                                    setActive={setActiveButton}
-                                    content={contentArr}
-                                    setContent={setContentArr}
-                                    contentType={getContentTypeFromId}
-                                    setFormProps={setFormProps}
+                        {toggleCards && (
+                            <div style={{ display: 'flex', placeContent: 'center' }}>
+                                <PreviewContainer
+                                    exhibit={{
+                                        description: document.getElementById('bio-input').value,
+                                        mainImage: document.getElementById('mainimage-input').value,
+                                        name: document.getElementById('name-input').value,
+                                        scanID: Number(id),
+                                        contents: contentArr
+                                    }}
                                 />
-                            ))}
-                        </div>
-                    )}
-                    {toggleCards && (
-                        <div style={{ display: 'flex', placeContent: 'center' }}>
-                            <PreviewContainer
-                                exhibit={{
-                                    description: document.getElementById('bio-input').value,
-                                    mainImage: document.getElementById('mainimage-input').value,
-                                    name: document.getElementById('name-input').value,
-                                    scanID: Number(id),
-                                    contents: contentArr
-                                }}
-                            />
-                        </div>
-                    )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

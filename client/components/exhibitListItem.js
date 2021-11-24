@@ -63,7 +63,8 @@ const pageStyles = {
         height: '60px',
         width: '60px',
         borderRadius: '50%',
-        justifySelf: 'right'
+        justifySelf: 'right',
+        objectFit: 'cover'
     },
     mobileImage: {
         height: '60px',
