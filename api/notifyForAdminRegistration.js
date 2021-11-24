@@ -1,8 +1,7 @@
 import { failure, success } from '../api/utility/responseObject';
 import nodemailer from 'nodemailer';
 
-module.exports = async(req, res) =>
-{
+module.exports = async(req, res) => {
     const name = req.body.name;
     const phoneNumber = req.body.phoneNumber;
     const email = req.body.email;
@@ -11,11 +10,11 @@ module.exports = async(req, res) =>
     // Optional
     const message = typeof req.body.message === 'undefined' ? '' : req.body.message;
 
-    try
-    {
+    try {
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
-            //host: 'smtp.gmail.com',
+
+            // host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
@@ -41,17 +40,15 @@ module.exports = async(req, res) =>
                 <p>${message}</p>
                 `
         });
-    }
-    catch (error)
-    {
+    } catch (error) {
         console.log(error);
 
-        res.status(200).setHeader('Content-Type', 'application/json')
+        res.status(200)
+            .setHeader('Content-Type', 'application/json')
             .send(JSON.stringify(failure(error.message)));
 
         return;
     }
 
-    res.status(200).setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(success()));
+    res.status(200).setHeader('Content-Type', 'application/json').send(JSON.stringify(success()));
 };
