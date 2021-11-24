@@ -289,7 +289,7 @@ function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, s
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Deleting will remove this exhibit and all its contents. This exhibit&apos;s
-                        QR code will no longer work, scans data related to this exhibit will be
+                        QR code will no longer work, analytics data related to this exhibit will be
                         deleted, and this exhibit will be removed from users&apos; scans lists on
                         the app. (Exhibits should not be deleted just because they are no longer in
                         use.)
