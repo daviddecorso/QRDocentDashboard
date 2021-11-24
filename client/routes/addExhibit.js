@@ -6,7 +6,7 @@ import React from 'react';
 function AddExhibit({ exhibits, setExhibits, setOpenSuccess, setSnackbarText }) {
     return (
         <>
-            <div className="content">
+            <div style={{ marginTop: '40px' }}>
                 <Container maxWidth="md">
                     <Typography
                         component="h1"

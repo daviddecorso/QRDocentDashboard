@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import Brand from '../components/brand';
 import MobileNavButton from './buttons/mobile-nav-button';
 import NavButton from './buttons/nav-button';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 
 const pageStyles = {
@@ -60,13 +61,13 @@ const exhibitsButton = 'Exhibits';
 const settingsButton = 'Settings';
 const signoutButton = 'Sign Out';
 
-function NavBar() {
+function NavBar({ currentPage }) {
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
     const history = useHistory();
 
     // Controls which nav button is highlighted.
-    const [activePage, setActivePage] = useState(homeButton);
+    const [activePage, setActivePage] = useState(currentPage);
 
     // Is the page mobile?
     const isMobile = useMediaQuery('(max-width:960px)');
@@ -204,5 +205,9 @@ function NavBar() {
         </>
     );
 }
+
+NavBar.propTypes = {
+    currentPage: PropTypes.string
+};
 
 export default NavBar;

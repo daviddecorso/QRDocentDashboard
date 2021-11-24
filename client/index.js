@@ -58,7 +58,7 @@ export default function App() {
                             <Landing />
                         </Route>
                         <PrivateRoute exact path="/home">
-                            <NavBar />
+                            <NavBar currentPage={'Home'} />
                             <IndexRoute />
                         </PrivateRoute>
                         <Route exact path="/login">
@@ -71,11 +71,11 @@ export default function App() {
                             <Privacy />
                         </Route>
                         <PrivateRoute exact path="/analytics">
-                            <NavBar />
+                            <NavBar currentPage={'Analytics'} />
                             <Analytics />
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits">
-                            <NavBar />
+                            <NavBar currentPage={'Exhibits'} />
                             <Exhibits
                                 exhibits={exhibits}
                                 setExhibits={setExhibits}
@@ -86,7 +86,6 @@ export default function App() {
                             />
                         </PrivateRoute>
                         <PrivateRoute exact path="/exhibits/add">
-                            <NavBar />
                             <AddExhibit
                                 exhibits={exhibits}
                                 setExhibits={setExhibits}
