@@ -39,6 +39,14 @@ body {
     visibility: hidden;
 }
 
+.invisible {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
 @media screen and (min-width: 961px) {
     /* Makes room for the navbar on the left. */
     .content {

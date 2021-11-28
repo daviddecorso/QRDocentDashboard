@@ -63,8 +63,13 @@ const pageStyles = {
         textAlign: 'center',
         marginTop: '2rem'
     },
-    container: { display: 'flex', marginLeft: '4%' },
-    previewContainer: { marginLeft: '4%' },
+    container: {
+        display: 'flex',
+        marginLeft: '4%'
+    },
+    previewContainer: {
+        marginLeft: '4%'
+    },
     cardList: {
         backgroundColor: '#2F333C',
         borderRadius: '20px'
@@ -154,7 +159,7 @@ function ExhibitForm({
     const [contentArr, setContentArr] = useState([]);
 
     // State for active card type
-    const [cardType, setCardType] = useState('Song');
+    const [cardType, setCardType] = useState('');
 
     const [cardPosition, setCardPosition] = useState(1);
 
@@ -187,27 +192,43 @@ function ExhibitForm({
     useEffect(() => {
         if (isEdit) {
             if (exhibit !== null) {
-                setCardType(getContentTypeFromId(exhibit.contents[0].contentTypeID));
-                setContentArr(exhibit.contents);
-                document.getElementById('name-input').value = exhibit.name;
-                document.getElementById('bio-input').value = exhibit.description;
-                document.getElementById('mainimage-input').value = exhibit.mainImage;
+                const firstCardType = getContentTypeFromId(exhibit.contents[0].contentTypeID);
+                if (cardType === '') {
+                    setCardType(firstCardType);
+                    document
+                        .getElementById(`${firstCardType.toLowerCase()}-input-container`)
+                        .classList.remove('invisible');
 
-                // getContentTypeFromId(exhibit.contents[0].contentTypeID).toLowerCase() + '-input'
-                document.getElementById(cardType.toLowerCase() + '-input').value =
-                    exhibit.contents[0].URL;
-                document.getElementById('description-input').value =
-                    exhibit.contents[0].description;
+                    document.getElementById('name-input').value = exhibit.name;
+                    document.getElementById('bio-input').value = exhibit.description;
+                    document.getElementById('mainimage-input').value = exhibit.mainImage;
+
+                    document.getElementById(firstCardType.toLowerCase() + '-input').value =
+                        exhibit.contents[0].URL;
+
+                    document.getElementById(
+                        firstCardType.toLowerCase() + '-description-input'
+                    ).value = exhibit.contents[0].description;
+                }
+
+                setContentArr(exhibit.contents);
             }
         }
-        console.log(contentArr);
-    }, [exhibit, contentArr, activeButton]);
+    }, [cardType, exhibit, contentArr]);
 
     const setFormProps = (linkText, descText, cardId, position) => {
-        console.log(`${linkText} ${descText} ${cardId}`);
+        document
+            .getElementById(`${cardType.toLowerCase()}-input-container`)
+            .classList.add('invisible');
         setCardType(getContentTypeFromId(cardId));
-        document.getElementById(cardType.toLowerCase() + '-input').value = linkText;
-        document.getElementById('description-input').value = descText;
+        document
+            .getElementById(`${getContentTypeFromId(cardId).toLowerCase()}-input-container`)
+            .classList.remove('invisible');
+        document.getElementById(`${getContentTypeFromId(cardId).toLowerCase()}-input`).value =
+            linkText;
+        document.getElementById(
+            `${getContentTypeFromId(cardId).toLowerCase()}-description-input`
+        ).value = descText;
         setCardPosition(position);
     };
 
@@ -468,8 +489,16 @@ function ExhibitForm({
     };
 
     const handleSelectChange = event => {
-        document.getElementById('description-input').value = '';
+        document
+            .getElementById(`${cardType.toLowerCase()}-input-container`)
+            .classList.add('invisible');
+        document.getElementById(cardType.toLowerCase() + '-input').value = '';
+        document.getElementById(cardType.toLowerCase() + '-description-input').value = '';
         setCardType(event.target.value);
+
+        document
+            .getElementById(`${event.target.value.toLowerCase()}-input-container`)
+            .classList.remove('invisible');
     };
 
     return (
@@ -573,18 +602,20 @@ function ExhibitForm({
                                     />
                                 </div>
                                 {isEdit && (
-                                    <PrimaryButton
-                                        text={'SAVE CARD'}
-                                        width={'180px'}
-                                        height={'40px'}
-                                        fontSize={'14px'}
-                                        lm={'1rem'}
-                                        onClick={editCard}
-                                        icon={<IconDeviceFloppy size={22} />}
-                                    />
+                                    <div>
+                                        <PrimaryButton
+                                            text={'SAVE CARD'}
+                                            width={'180px'}
+                                            height={'40px'}
+                                            fontSize={'14px'}
+                                            lm={'1rem'}
+                                            onClick={editCard}
+                                            icon={<IconDeviceFloppy size={22} />}
+                                        />
+                                    </div>
                                 )}
                             </div>
-                            {cardType === 'Video' && (
+                            <div id="video-input-container" className={'invisible'}>
                                 <div className={classes.formInput}>
                                     <TextField
                                         label="Video Link"
@@ -603,8 +634,16 @@ function ExhibitForm({
                                         <IconHelp color={'white'} />
                                     </span>
                                 </div>
-                            )}
-                            {cardType === 'Song' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label={'Video description'}
+                                        id="video-description-input"
+                                        fullWidth
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+                            <div id="song-input-container" className={'invisible'}>
                                 <div className={classes.formInput}>
                                     <TextField
                                         label="Song Link"
@@ -623,8 +662,16 @@ function ExhibitForm({
                                         <IconHelp color={'white'} />
                                     </span>
                                 </div>
-                            )}
-                            {cardType === 'Website' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label={'Song description'}
+                                        id="song-description-input"
+                                        fullWidth
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+                            <div id="website-input-container" className={'invisible'}>
                                 <div className={classes.formInput}>
                                     <TextField
                                         label="Website Link"
@@ -643,8 +690,16 @@ function ExhibitForm({
                                         <IconHelp color={'white'} />
                                     </span>
                                 </div>
-                            )}
-                            {cardType === 'Image' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label={'Website description'}
+                                        id="website-description-input"
+                                        fullWidth
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+                            <div id="image-input-container" className={'invisible'}>
                                 <div className={classes.formInput}>
                                     <TextField
                                         label="Image Link"
@@ -663,8 +718,17 @@ function ExhibitForm({
                                         <IconHelp color={'white'} />
                                     </span>
                                 </div>
-                            )}
-                            {cardType !== '' && (
+                                <div className={classes.formInput}>
+                                    <TextField
+                                        label={'Image description'}
+                                        id="image-description-input"
+                                        fullWidth
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* {cardType !== '' && (
                                 <>
                                     <div className={classes.formInput}>
                                         <TextField
@@ -675,7 +739,7 @@ function ExhibitForm({
                                         />
                                     </div>
                                 </>
-                            )}
+                            )} */}
                             {isMobile && (
                                 <div className={classes.mobilePrintButton}>
                                     <a href={apiRoute} style={{ textDecoration: 'none' }}>

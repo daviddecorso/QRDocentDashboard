@@ -137,9 +137,7 @@ function ExhibitList({
 
 ExhibitList.propTypes = {
     activeButton: PropTypes.number,
-    content: PropTypes.shape({
-        length: PropTypes.any
-    }),
+    content: PropTypes.array,
     contentType: PropTypes.func,
     contentId: PropTypes.any,
     position: PropTypes.number,
