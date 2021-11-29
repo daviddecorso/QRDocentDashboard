@@ -159,7 +159,7 @@ function ExhibitForm({
     const [contentArr, setContentArr] = useState([]);
 
     // State for active card type
-    const [cardType, setCardType] = useState('');
+    const [cardType, setCardType] = useState(isEdit ? '' : 'Song');
 
     const [cardPosition, setCardPosition] = useState(1);
 
@@ -213,6 +213,8 @@ function ExhibitForm({
 
                 setContentArr(exhibit.contents);
             }
+        } else if (isAdd) {
+            document.getElementById('song-input-container').classList.remove('invisible');
         }
     }, [cardType, exhibit, contentArr]);
 
@@ -491,19 +493,24 @@ function ExhibitForm({
     };
 
     const handleSelectChange = event => {
-        document.getElementById(cardType.toLowerCase() + '-input').value = '';
-        document.getElementById(cardType.toLowerCase() + '-description-input').value = '';
-        document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
-        document.getElementById(event.target.value.toLowerCase() + '-description-input').value = '';
-        document
-            .getElementById(`${cardType.toLowerCase()}-input-container`)
-            .classList.add('invisible');
-        setCardType(event.target.value);
+        if (isEdit) {
+            document.getElementById(cardType.toLowerCase() + '-input').value = '';
+            document.getElementById(cardType.toLowerCase() + '-description-input').value = '';
+            document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
+            document.getElementById(event.target.value.toLowerCase() + '-description-input').value =
+                '';
+            document
+                .getElementById(`${cardType.toLowerCase()}-input-container`)
+                .classList.add('invisible');
+
+            document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
+            document.getElementById(event.target.value.toLowerCase() + '-description-input').value =
+                '';
+        }
         document
             .getElementById(`${event.target.value.toLowerCase()}-input-container`)
             .classList.remove('invisible');
-        document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
-        document.getElementById(event.target.value.toLowerCase() + '-description-input').value = '';
+        setCardType(event.target.value);
     };
 
     return (
