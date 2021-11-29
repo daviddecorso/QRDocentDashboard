@@ -224,8 +224,9 @@ function ExhibitForm({
         document
             .getElementById(`${getContentTypeFromId(cardId).toLowerCase()}-input-container`)
             .classList.remove('invisible');
-        document.getElementById(`${getContentTypeFromId(cardId).toLowerCase()}-input`).value =
-            linkText;
+        document.getElementById(
+            `${getContentTypeFromId(cardId).toLowerCase()}-input`
+        ).value = linkText;
         document.getElementById(
             `${getContentTypeFromId(cardId).toLowerCase()}-description-input`
         ).value = descText;
@@ -288,7 +289,8 @@ function ExhibitForm({
 
         const newCard = {
             URL: document.getElementById(cardType.toLowerCase() + '-input').value,
-            description: document.getElementById('description-input').value,
+            description: document.getElementById(cardType.toLowerCase() + '-description-input')
+                .value,
             position: tempArr.length + 1,
             contentTypeID: getContentTypeId(cardType)
         };
@@ -489,16 +491,19 @@ function ExhibitForm({
     };
 
     const handleSelectChange = event => {
+        document.getElementById(cardType.toLowerCase() + '-input').value = '';
+        document.getElementById(cardType.toLowerCase() + '-description-input').value = '';
+        document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
+        document.getElementById(event.target.value.toLowerCase() + '-description-input').value = '';
         document
             .getElementById(`${cardType.toLowerCase()}-input-container`)
             .classList.add('invisible');
-        document.getElementById(cardType.toLowerCase() + '-input').value = '';
-        document.getElementById(cardType.toLowerCase() + '-description-input').value = '';
         setCardType(event.target.value);
-
         document
             .getElementById(`${event.target.value.toLowerCase()}-input-container`)
             .classList.remove('invisible');
+        document.getElementById(event.target.value.toLowerCase() + '-input').value = '';
+        document.getElementById(event.target.value.toLowerCase() + '-description-input').value = '';
     };
 
     return (
