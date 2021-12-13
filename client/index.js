@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AddExhibit from './routes/addExhibit';
 import Analytics from './routes/analytics';
+import Contact from './routes/contact';
 import { CssBaseline } from '@material-ui/core';
 import EditExhibit from './routes/editExhibit';
 import Exhibits from './routes/exhibits';
@@ -63,6 +64,9 @@ export default function App() {
                         </PrivateRoute>
                         <Route exact path="/login">
                             <Login setExhibits={setExhibits} />
+                        </Route>
+                        <Route exact path="/contact">
+                            <Contact />
                         </Route>
                         <Route path="/qr">
                             <QrRedirect />
