@@ -109,6 +109,26 @@ body {
     }
 }
 
+@keyframes sideFade {
+    from {
+        transform: translate3d(80px, 50%, 0);
+    }
+    to {
+        transform: translate3d(0, 50%, 0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes sideFade {
+    from {
+        transform: translate3d(80px, 50%, 0);
+    }
+    to {
+        transform: translate3d(0, 50%, 0);
+        opacity: 1;
+    }
+}
+
 .animated {
     animation-duration: 1.2s;
     animation-fill-mode: both;
@@ -139,4 +159,10 @@ body {
     opacity: 0;
     animation-name: fadeInUpText;
     -webkit-animation-name: fadeInUpText;
+}
+
+.animated-icon {
+    opacity: 0;
+    animation-name: sideFade;
+    -webkit-animation-name: sideFade;
 }
