@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 import React, { useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AddExhibit from './routes/addExhibit';
@@ -17,8 +18,30 @@ import PropTypes from 'prop-types';
 import QrRedirect from './routes/qr-redirect';
 import ReactDOM from 'react-dom';
 import Theme from './styles/theme.js';
+import { initializeApp } from 'firebase/app';
 import { ThemeProvider } from '@material-ui/core/styles';
 import './styles/app.css';
+
+const firebaseConfig = {
+    apiKey: 'AIzaSyAmHCej0dg_7CckFtExi-YiQfECxz-tEu8',
+
+    authDomain: 'qumu-c2983.firebaseapp.com',
+
+    projectId: 'qumu-c2983',
+
+    storageBucket: 'qumu-c2983.appspot.com',
+
+    messagingSenderId: '859948319312',
+
+    appId: '1:859948319312:web:0abaf456fa00f1c813c755',
+
+    measurementId: 'G-N5GQQ663NZ'
+};
+
+// Initialize Firebase
+
+const app = initializeApp(firebaseConfig);
+console.log(app.name);
 
 function PrivateRoute({ children, ...rest }) {
     return (

@@ -25,6 +25,7 @@
     "bcrypt": "^5.0.1",
     "date-fns": "^2.25.0",
     "debug": "^4.3.1",
+    "firebase": "^9.14.0",
     "http-errors": "^1.8.0",
     "microtip": "^0.2.2",
     "nodemailer": "^6.7.1",
@@ -37,8 +38,7 @@
     "react-stonecutter": "^0.3.10",
     "react-waypoint": "^10.1.0",
     "twilio": "^3.68.0",
-    "validator": "^13.7.0",
-    "vercel": "^23.1.2"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@parcel/transformer-image": "2.0.0-beta.2",
