@@ -23,19 +23,19 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import './styles/app.css';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyAmHCej0dg_7CckFtExi-YiQfECxz-tEu8',
+    apiKey: process.env.FIREBASE_API_KEY,
 
-    authDomain: 'qumu-c2983.firebaseapp.com',
+    authDomain: process.env.AUTH_DOMAIN,
 
-    projectId: 'qumu-c2983',
+    projectId: process.env.PROJECT_ID,
 
-    storageBucket: 'qumu-c2983.appspot.com',
+    storageBucket: process.env.STORAGE_BUCKET,
 
-    messagingSenderId: '859948319312',
+    messagingSenderId: process.env.SENDER_ID,
 
-    appId: '1:859948319312:web:0abaf456fa00f1c813c755',
+    appId: process.env.APP_ID,
 
-    measurementId: 'G-N5GQQ663NZ'
+    measurementId: process.env.MEASUREMENT_ID
 };
 
 // Initialize Firebase
