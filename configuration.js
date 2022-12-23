@@ -25,7 +25,10 @@ function getDatabaseCredentials()
             password: '',
             host: '',
             port: 0,
-            database: ''
+            database: '',
+            ssl: {
+                rejectUnauthorized: false,
+            }
         };
 
         credentials.user = process.env.DEV_USER;

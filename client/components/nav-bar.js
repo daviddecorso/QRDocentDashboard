@@ -4,7 +4,8 @@ import {
     IconMenu2,
     IconNotes,
     IconReportAnalytics,
-    IconX
+    IconX,
+    IconBuildingBank
 } from '@tabler/icons';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
@@ -51,11 +52,13 @@ const pageStyles = {
 };
 
 const homeIcon = <IconHome size={24} color="white" />;
+const museumIcon = <IconBuildingBank size={24} color="white" />;
 const anlyIcon = <IconReportAnalytics size={24} color="white" />;
 const notesIcon = <IconNotes size={24} color="white" />;
 const logoutIcon = <IconLogout size={24} color="white" />;
 
 const homeButton = 'Home';
+const museumEditButton = 'My Museum';
 const analyticsButton = 'Analytics';
 const exhibitsButton = 'Exhibits';
 const settingsButton = 'Settings';
@@ -102,6 +105,13 @@ function NavBar({ currentPage }) {
                             path={'/home'}
                             icon={homeIcon}
                             isHover={activePage === homeButton}
+                            setPage={setActivePage}
+                        />
+                        <NavButton
+                            text={museumEditButton}
+                            path={'/home'}
+                            icon={museumIcon}
+                            isHover={activePage === museumEditButton}
                             setPage={setActivePage}
                         />
                         <NavButton

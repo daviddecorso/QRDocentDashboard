@@ -20,7 +20,7 @@ import { getBaseURL } from '../../configuration';
 import MuiAlert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
 import Status from './status';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const pageStyles = {
     listItemDarkBg: {
@@ -238,9 +238,9 @@ function ExhibitListItem({ name, date, artistImg, status, index, id, exhibits, s
                     src={artistImg}
                     alt={`Picture of ${name}`}
                 />
-                <a href={'/exhibits/edit/' + id} className={classes.exhibitLink}>
+                <Link to={'/exhibits/edit/' + id} className={classes.exhibitLink}>
                     <p className={classes.exhibitName}>{name}</p>
-                </a>
+                </Link>
                 {!isMobile && (
                     <Typography component="span" variant="body1">
                         {date}
