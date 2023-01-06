@@ -1,11 +1,11 @@
 import {
+    IconBuildingBank,
     IconHome,
     IconLogout,
     IconMenu2,
     IconNotes,
     IconReportAnalytics,
-    IconX,
-    IconBuildingBank
+    IconX
 } from '@tabler/icons';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
@@ -109,7 +109,7 @@ function NavBar({ currentPage }) {
                         />
                         <NavButton
                             text={museumEditButton}
-                            path={'/home'}
+                            path={'/mymuseum'}
                             icon={museumIcon}
                             isHover={activePage === museumEditButton}
                             setPage={setActivePage}

@@ -5,6 +5,7 @@ import Analytics from './routes/analytics';
 import Contact from './routes/contact';
 import { CssBaseline } from '@material-ui/core';
 import EditExhibit from './routes/editExhibit';
+import EditMuseum from './routes/EditMuseum';
 import Exhibits from './routes/exhibits';
 import IndexRoute from './routes/home';
 import isLogin from './util/auth';
@@ -74,6 +75,10 @@ export default function App() {
                         <Route exact path="/privacy">
                             <Privacy />
                         </Route>
+                        <PrivateRoute exact path="/mymuseum">
+                            <NavBar currentPage={'My Museum'} />
+                            <EditMuseum />
+                        </PrivateRoute>
                         <PrivateRoute exact path="/analytics">
                             <NavBar currentPage={'Analytics'} />
                             <Analytics />

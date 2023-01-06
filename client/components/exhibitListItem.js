@@ -14,13 +14,13 @@ import {
     useMediaQuery
 } from '@material-ui/core';
 import { IconDotsVertical, IconPencil, IconPrinter, IconTrash } from '@tabler/icons';
+import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { getBaseURL } from '../../configuration';
 import MuiAlert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
 import Status from './status';
-import { Link, useHistory } from 'react-router-dom';
 
 const pageStyles = {
     listItemDarkBg: {

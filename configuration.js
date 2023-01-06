@@ -27,7 +27,7 @@ function getDatabaseCredentials()
             port: 0,
             database: '',
             ssl: {
-                rejectUnauthorized: false,
+                rejectUnauthorized: false
             }
         };
 
