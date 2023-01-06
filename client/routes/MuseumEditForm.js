@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { FormControl, makeStyles, TextField } from '@material-ui/core';
-import { IconHelp } from '@tabler/icons';
+import { FormControl, makeStyles, TextField, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { IconHelp, IconUpload } from '@tabler/icons';
+import UploadButton from '../components/buttons/upload-button';
 
 const pageStyles = {
     content: {
@@ -79,12 +80,10 @@ const pageStyles = {
 
 // Tooltip content
 const tooltipText = {
-    about: 'The about field will display long-form text describing the nature of the museum.',
-
+    about: 'The about field will display long-form text describing the nature of the museum.'
 };
 
-function MuseumEditForm({isMobile}) {
-
+function MuseumEditForm({ isMobile }) {
     // Styling Init
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
@@ -93,7 +92,13 @@ function MuseumEditForm({isMobile}) {
     const [noNameError, setNameError] = useState(false);
 
     // Form Value States
+    const [backgroundImageUpload, setBackgroundImageUpload] = useState();
 
+    // Handlers
+    const handleUploadChange = (event) => {
+        const newImage = event.target.files[0];
+        setBackgroundImageUpload(newImage);
+    }
 
     return (
         <>
@@ -130,7 +135,19 @@ function MuseumEditForm({isMobile}) {
                             </span>
                         </div>
                         <div className={classes.formInput}>
-
+                            <UploadButton
+                                width={'325px'}
+                                height={'46px'}
+                                rm={'10px'}
+                                fontSize={'15px'}
+                                text={'Upload Background Image'}
+                                icon={<IconUpload/>}
+                                onChange={handleUploadChange}/>
+                            { backgroundImageUpload != undefined ? 
+                                <Typography variant="h6">
+                                    {backgroundImageUpload.name}
+                                </Typography>  
+                            : null }                          
                         </div>
                     </div>
                 </div>
@@ -138,6 +155,5 @@ function MuseumEditForm({isMobile}) {
         </>
     );
 }
-
 export default MuseumEditForm;
 
