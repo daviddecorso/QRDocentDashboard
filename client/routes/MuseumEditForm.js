@@ -1,7 +1,8 @@
-import { FormControl, makeStyles, TextField, Typography } from '@material-ui/core';
-import { IconHelp, IconUpload } from '@tabler/icons';
+import { FormControl, makeStyles, TextField, Typography, useMediaQuery } from '@material-ui/core';
+import { IconHelp, IconUpload, IconDeviceFloppy } from '@tabler/icons';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import SuccessButton from '../components/buttons/success-button';
 import UploadButton from '../components/buttons/upload-button';
 
 const pageStyles = {
@@ -84,10 +85,13 @@ const tooltipText = {
     about: 'The about field will display long-form text describing the nature of the museum.'
 };
 
-function MuseumEditForm({ isMobile }) {
+function MuseumEditForm() {
     // Styling Init
     const useStyles = makeStyles(pageStyles);
     const classes = useStyles();
+
+    const isMobile = useMediaQuery('(max-width:960px)');
+    const isSmallMobile = useMediaQuery('(max-width:410px)');
 
     // Error States
     const [noNameError, setNameError] = useState(false);
@@ -103,6 +107,10 @@ function MuseumEditForm({ isMobile }) {
         setBackgroundImageUpload(newImage);
     };
 
+    const onClickSave = () => {
+        return;
+    };
+
     return (
         <>
             <div className={classes.content}>
@@ -115,7 +123,7 @@ function MuseumEditForm({ isMobile }) {
                                     id="name-input"
                                     required
                                     variant="outlined"
-                                    onChange={(e) => setMuseumName(e.target.value)}
+                                    onChange={e => setMuseumName(e.target.value)}
                                     error={noNameError}
                                     helperText={noNameError ? 'Field required.' : ''}
                                 />
@@ -127,7 +135,7 @@ function MuseumEditForm({ isMobile }) {
                                 id="about-input"
                                 multiline
                                 fullWidth
-                                onChange={(e) => setAboutDescription(e.target.value)}
+                                onChange={e => setAboutDescription(e.target.value)}
                                 variant="outlined"
                             />
                             <span
@@ -148,10 +156,19 @@ function MuseumEditForm({ isMobile }) {
                                 text={'Upload Background Image'}
                                 icon={<IconUpload/>}
                                 onChange={handleUploadChange}/>
-                            { backgroundImageUpload !== undefined ?
-                                <Typography variant="h6">
-                                    {backgroundImageUpload.name}
-                                </Typography> : null }
+                            { backgroundImageUpload !== undefined
+                                ? <Typography variant="h6"> {backgroundImageUpload.name} </Typography>
+                                : null }
+                        </div>
+
+                        <div className={classes.buttons}>
+                            <SuccessButton
+                                text={'SAVE'}
+                                width={'150px'}
+                                lm={isSmallMobile ? '0' : '2rem'}
+                                icon={<IconDeviceFloppy />}
+                                onClick={onClickSave}
+                                isMobile={isSmallMobile}/>
                         </div>
                     </div>
                 </div>
@@ -159,9 +176,5 @@ function MuseumEditForm({ isMobile }) {
         </>
     );
 }
-
-MuseumEditForm.propTypes = {
-    isMobile: PropTypes.bool
-};
 
 export default MuseumEditForm;
