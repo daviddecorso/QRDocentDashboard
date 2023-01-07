@@ -1,5 +1,5 @@
 import { Container, Typography } from '@material-ui/core';
-import MuseumEditForm from './museumEditForm';
+import MuseumEditForm from './MuseumEditForm';
 import React from 'react';
 
 function EditMuseum() {

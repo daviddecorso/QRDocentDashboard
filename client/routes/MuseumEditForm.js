@@ -1,6 +1,7 @@
 import { FormControl, makeStyles, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
 import { IconHelp, IconUpload } from '@tabler/icons';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import UploadButton from '../components/buttons/upload-button';
 
 const pageStyles = {
@@ -92,13 +93,15 @@ function MuseumEditForm({ isMobile }) {
     const [noNameError, setNameError] = useState(false);
 
     // Form Value States
+    const [museumName, setMuseumName] = useState('');
+    const [aboutDescription, setAboutDescription] = useState('');
     const [backgroundImageUpload, setBackgroundImageUpload] = useState();
 
     // Handlers
-    const handleUploadChange = (event) => {
+    const handleUploadChange = event => {
         const newImage = event.target.files[0];
         setBackgroundImageUpload(newImage);
-    }
+    };
 
     return (
         <>
@@ -112,6 +115,7 @@ function MuseumEditForm({ isMobile }) {
                                     id="name-input"
                                     required
                                     variant="outlined"
+                                    onChange={(e) => setMuseumName(e.target.value)}
                                     error={noNameError}
                                     helperText={noNameError ? 'Field required.' : ''}
                                 />
@@ -123,6 +127,7 @@ function MuseumEditForm({ isMobile }) {
                                 id="about-input"
                                 multiline
                                 fullWidth
+                                onChange={(e) => setAboutDescription(e.target.value)}
                                 variant="outlined"
                             />
                             <span
@@ -143,11 +148,10 @@ function MuseumEditForm({ isMobile }) {
                                 text={'Upload Background Image'}
                                 icon={<IconUpload/>}
                                 onChange={handleUploadChange}/>
-                            { backgroundImageUpload != undefined ? 
+                            { backgroundImageUpload !== undefined ?
                                 <Typography variant="h6">
                                     {backgroundImageUpload.name}
-                                </Typography>  
-                            : null }                          
+                                </Typography> : null }
                         </div>
                     </div>
                 </div>
@@ -155,5 +159,9 @@ function MuseumEditForm({ isMobile }) {
         </>
     );
 }
-export default MuseumEditForm;
 
+MuseumEditForm.propTypes = {
+    isMobile: PropTypes.bool
+};
+
+export default MuseumEditForm;

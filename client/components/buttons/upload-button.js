@@ -1,7 +1,6 @@
-import React from 'react';
-import { useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 function UploadButton({ width, height, text, fontSize, lm, rm, tm, icon, onChange }) {
@@ -34,14 +33,13 @@ function UploadButton({ width, height, text, fontSize, lm, rm, tm, icon, onChang
         <>
             <input
                 ref={uploadInputRef}
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={onChange}
-                />
+                type='file'
+                accept='image/*'
+                style={{ display: 'none' }}
+                onChange={onChange}/>
             <Button
                 onClick={() => uploadInputRef.current && uploadInputRef.current.click()}
-                variant="contained"
+                variant='contained'
                 startIcon={icon}
                 className={classes.root}>
                 {text}
@@ -54,6 +52,7 @@ UploadButton.propTypes = {
     fontSize: PropTypes.string,
     height: PropTypes.string,
     icon: PropTypes.element,
+    onChange: PropTypes.any,
     rm: PropTypes.string,
     lm: PropTypes.string,
     tm: PropTypes.string,
