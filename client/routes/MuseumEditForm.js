@@ -1,7 +1,6 @@
 import { FormControl, makeStyles, TextField, Typography, useMediaQuery } from '@material-ui/core';
-import { IconHelp, IconUpload, IconDeviceFloppy } from '@tabler/icons';
+import { IconDeviceFloppy, IconHelp, IconUpload } from '@tabler/icons';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import SuccessButton from '../components/buttons/success-button';
 import UploadButton from '../components/buttons/upload-button';
 
@@ -82,7 +81,8 @@ const pageStyles = {
 
 // Tooltip content
 const tooltipText = {
-    about: 'The about field will display long-form text describing the nature of the museum.'
+    about: 'The about field will display long-form text describing the nature of the museum.',
+    hours: 'The hours field will display museum operating hours to users on the mobile app.'
 };
 
 function MuseumEditForm() {
@@ -100,7 +100,8 @@ function MuseumEditForm() {
     const [museumName, setMuseumName] = useState('');
     const [aboutDescription, setAboutDescription] = useState('');
     const [backgroundImageUpload, setBackgroundImageUpload] = useState();
-
+    const [museumHours, setMuseumHours] = useState('');
+    const [museumAddress, setMuseumAddress] = useState('');
     // Handlers
     const handleUploadChange = event => {
         const newImage = event.target.files[0];
@@ -108,7 +109,6 @@ function MuseumEditForm() {
     };
 
     const onClickSave = () => {
-        return;
     };
 
     return (
@@ -148,6 +148,33 @@ function MuseumEditForm() {
                             </span>
                         </div>
                         <div className={classes.formInput}>
+                            <TextField
+                                label="Address"
+                                id="address-input"
+                                fullWidth
+                                multiline
+                                onChange={e => setMuseumAddress(e.target.value)}
+                                variant="outlined"
+                            />
+                        </div>
+                        <div className={classes.formInput}>
+                            <TextField
+                                    label="Hours"
+                                    id="hours-input"
+                                    multiline
+                                    onChange={e => setMuseumHours(e.target.value)}
+                                    variant="outlined"
+                            />
+                            <span
+                                tabIndex="0"
+                                aria-label={tooltipText.hours}
+                                role="tooltip"
+                                data-microtip-position={isMobile ? 'top-left' : 'top'}
+                                className={classes.formIcon}>
+                                <IconHelp color={'white'} />
+                            </span>
+                        </div>
+                        <div className={classes.formInput}>
                             <UploadButton
                                 width={'325px'}
                                 height={'46px'}
@@ -160,7 +187,6 @@ function MuseumEditForm() {
                                 ? <Typography variant="h6"> {backgroundImageUpload.name} </Typography>
                                 : null }
                         </div>
-
                         <div className={classes.buttons}>
                             <SuccessButton
                                 text={'SAVE'}
