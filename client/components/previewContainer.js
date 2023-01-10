@@ -20,7 +20,7 @@ function PreviewContainer(props) {
     }
 
     // switch for mapping the content to the proper Cards
-    const contents = props.exhibit.contents.map((data, index) => {
+    const contents = props?.exhibit.contents.map((data, index) => {
         switch (data.contentTypeID) {
             case 1:
                 return (
@@ -116,12 +116,13 @@ function PreviewContainer(props) {
     };
 
     return (
+    !props.museumPreview ?
         <div style={styles.phone}>
             <div className="wrap">
                 <div style={styles.container} className="section">
                     <div
                         style={{
-                            backgroundImage: `url("${props.exhibit.mainImage}")`,
+                            backgroundImage: `url("${props?.exhibit.mainImage}")`,
                             ...styles.image
                         }}>
                         <div
@@ -177,6 +178,67 @@ function PreviewContainer(props) {
                 </div>
             </div>
         </div>
+    :
+    <div style={styles.phone}>
+        <div className="wrap">
+            <div style={styles.container} className="section">
+                <div
+                    style={{
+                        backgroundImage: `url("${props.museum.mainImage}")`,
+                        ...styles.image
+                    }}>
+                    <div
+                        style={{
+                            flex: 1,
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
+                        <div
+                            style={{
+                                height: 190,
+                                width: '100%',
+                                alignItems: 'flex-end',
+                                display: 'flex',
+                                paddingTop: 25
+                            }}>
+                            <p style={styles.name}>{props.museum.name}</p>
+                        </div>
+
+                        <div
+                            style={{
+                                backgroundColor: '#282B33',
+                                alignSelf: 'center',
+                                alignItems: 'center',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                position: 'relative',
+                                paddingRight: 15,
+                                paddingLeft: 15
+                            }}>
+                            <div style={styles.bio} onClick={seeBio}>
+                                <p style={styles.heading}>Bio</p>
+                                <p style={styles.text}>{props.museum.description}</p>
+                                {bioHeight === 151 && (
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            height: 170,
+                                            left: 0,
+                                            right: 0,
+                                            background:
+                                                'linear-gradient(rgba(40, 43, 51,0), rgba(40, 43, 51,1))'
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     );
 }
 
@@ -188,6 +250,13 @@ PreviewContainer.propTypes = {
         description: PropTypes.any,
         mainImage: PropTypes.any,
         name: PropTypes.any
+    }),
+    museum: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+        mainImage: PropTypes.any,
+        hours: PropTypes.string,
+        address: PropTypes.string
     })
 };
 

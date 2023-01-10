@@ -1,6 +1,7 @@
 import { FormControl, makeStyles, TextField, Typography, useMediaQuery } from '@material-ui/core';
 import { IconDeviceFloppy, IconHelp, IconUpload } from '@tabler/icons';
 import React, { useState } from 'react';
+import PreviewContainer from '../components/previewContainer';
 import SuccessButton from '../components/buttons/success-button';
 import UploadButton from '../components/buttons/upload-button';
 
@@ -100,12 +101,16 @@ function MuseumEditForm() {
     const [museumName, setMuseumName] = useState('');
     const [aboutDescription, setAboutDescription] = useState('');
     const [backgroundImageUpload, setBackgroundImageUpload] = useState();
+    const [backgroundImageURL, setBackgroundImageURL] = useState();
     const [museumHours, setMuseumHours] = useState('');
     const [museumAddress, setMuseumAddress] = useState('');
+
     // Handlers
     const handleUploadChange = event => {
         const newImage = event.target.files[0];
+        const imageURL = URL.createObjectURL(newImage);
         setBackgroundImageUpload(newImage);
+        setBackgroundImageURL(imageURL);
     };
 
     const onClickSave = () => {
@@ -159,11 +164,11 @@ function MuseumEditForm() {
                         </div>
                         <div className={classes.formInput}>
                             <TextField
-                                    label="Hours"
-                                    id="hours-input"
-                                    multiline
-                                    onChange={e => setMuseumHours(e.target.value)}
-                                    variant="outlined"
+                                label="Hours"
+                                id="hours-input"
+                                multiline
+                                onChange={e => setMuseumHours(e.target.value)}
+                                variant="outlined"
                             />
                             <span
                                 tabIndex="0"
@@ -196,6 +201,18 @@ function MuseumEditForm() {
                                 onClick={onClickSave}
                                 isMobile={isSmallMobile}/>
                         </div>
+                    </div>
+                    <div className={classes.previewContainer}>
+                        <PreviewContainer
+                            museumPreview
+                            museum={{
+                                name: museumName,
+                                description: aboutDescription,
+                                mainImage: backgroundImageURL,
+                                hours: museumHours,
+                                address: museumAddress
+                            }}
+                        />
                     </div>
                 </div>
             </div>

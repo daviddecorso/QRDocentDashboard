@@ -1,10 +1,10 @@
-import { Container, makeStyles, Snackbar, Typography, useMediaQuery } from '@material-ui/core';
+import { Container, IconButton, makeStyles, Menu, MenuItem, Snackbar, Typography, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { IconDotsVertical, IconPlus } from '@tabler/icons';
 import ExhibitListItem from '../components/exhibitListItem';
 import ExhibitListSkeleton from '../components/exhibitListSkeleton';
-import formatDate from '../util/formatDate';
+import formatDate, { sortDates } from '../util/formatDate';
 import getExhibits from '../util/getExhibits';
-import { IconPlus } from '@tabler/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import PrimaryButton from '../components/buttons/primary-button';
 import PropTypes from 'prop-types';
@@ -35,13 +35,18 @@ const pageStyles = {
         textAlign: 'center',
         paddingBottom: '1rem'
     },
+    sortHeader: {
+        display: 'flex',
+        justifyContent: 'right',
+        alignItems: 'center'
+    },
     mobileListHeader: {
         display: 'grid',
         gridTemplateColumns: '80px 1fr 40px 40px',
         textAlign: 'center',
         paddingBottom: '1rem'
     }
-};
+}
 
 export default function Exhibits({
     exhibits,
@@ -54,6 +59,9 @@ export default function Exhibits({
     const classes = useStyles();
 
     const isMobile = useMediaQuery('(max-width:960px)');
+
+    // Open/close state for sort menu
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const [refreshed, setRefreshed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -76,6 +84,35 @@ export default function Exhibits({
         }
 
         setOpenSuccess(false);
+    };
+
+    // Opens sort menu
+    const handleMenuClick = event => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = item => {
+        setAnchorEl(null);
+    };
+
+    // Sorts exhibits by given property
+    const sortExhibits = property => {
+        switch(property) {
+            case 'name':
+                exhibits.sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0);
+                setAnchorEl(null);
+                break;
+            case 'date':
+                exhibits.sort((a, b) => sortDates(a.createdAt, b.createdAt));
+                setAnchorEl(null);
+                break;
+            case 'status':
+                exhibits.sort((a, b) => (a.exhibitStatusID > b.exhibitStatusID) ? 1 : (a.exhibitStatusID < b.exhibitStatusID) ? -1 : 0);
+                setAnchorEl(null);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -109,6 +146,37 @@ export default function Exhibits({
                                     <span>Exhibit Name</span>
                                     {!isMobile && <span>Date Created</span>}
                                     {!isMobile && <span>QR Code Status</span>}
+                                    <div className={classes.sortHeader}>
+                                        {!isMobile && <span>Sort By</span>}
+                                        <IconButton
+                                            size='small'
+                                            aria-controls="simple-menu"
+                                            aria-haspopup="true"
+                                            onClick={handleMenuClick}>
+                                            <IconDotsVertical color={'white'} />
+                                        </IconButton>
+                                        <Menu
+                                            keepMounted
+                                            anchorEl={anchorEl}
+                                            open={Boolean(anchorEl)}
+                                            onClose={() => handleMenuClose()}>
+                                            <MenuItem onClick={() => sortExhibits('name')}>
+                                                <div>
+                                                    <span>Name</span>
+                                                </div>
+                                            </MenuItem>
+                                            <MenuItem onClick={() => sortExhibits('date')}>
+                                                <div>
+                                                    <span>Date</span>
+                                                </div>
+                                            </MenuItem>
+                                            <MenuItem onClick={() => sortExhibits('status')}>
+                                                <div>
+                                                    <span>Status</span>
+                                                </div>
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
                                     {isMobile && <span>Status</span>}
                                 </div>
                                 <div>
